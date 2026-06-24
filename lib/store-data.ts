@@ -15,12 +15,12 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: "all-in-one-bundle",
-    name: "All-In-One Supplier Vault",
+    id: "all-in-one-supplier-vault",
+    name: "All-In-One Products Pack",
     category: "Bundles",
     description:
       "Every verified supplier, tool, and template we offer — bundled into one premium vault. The fastest way to launch your reselling business.",
-    price: 39.99,
+    price: 49.99,
     oldPrice: 89.99,
     image: "/products/supplier-bundle.png",
     badge: "Best Value",
@@ -31,11 +31,11 @@ export const products: Product[] = [
   },
   {
     id: "reselling-blueprint",
-    name: "The Reselling Blueprint",
+    name: "Reselling ebook, Best Seller",
     category: "Guides",
     description:
       "A 120-page premium playbook covering sourcing, pricing, scaling, and automation — written by 7-figure resellers.",
-    price: 24.99,
+    price: 19.99,
     oldPrice: 49.99,
     image: "/products/ebook-guide.png",
     badge: "New",
@@ -46,7 +46,7 @@ export const products: Product[] = [
   },
   {
     id: "receipt-generator",
-    name: "Receipt Generator Pro",
+    name: "Receipt Generator, All Products",
     category: "Tools",
     description:
       "Generate clean, accurate receipts for 400+ brands instantly. Lifetime updates and priority support included.",
@@ -60,13 +60,12 @@ export const products: Product[] = [
     featured: true,
   },
   {
-    id: "mentorship",
-    name: "1:1 Elite Mentorship",
-    category: "Coaching",
-    description:
-      "Weekly private calls with a dedicated mentor, custom growth roadmap, and direct access to our inner circle.",
-    price: 47.0,
-    oldPrice: 99.0,
+    id: "earphones",
+    name: "AirP0ds Pro 2",
+    category: "earphones",
+   description:"🎧 Premium AirPods Pro 2 supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
+    price: 19.99,
+   oldPrice: 29.99,
     image: "/products/mentorship.png",
     badge: "Limited",
     stock: "12 left",
@@ -75,11 +74,11 @@ export const products: Product[] = [
   },
   {
     id: "cologne-supplier",
-    name: "Designer Cologne Supplier",
+    name: "All Cologne Designer Vendors",
     category: "Suppliers",
     description:
-      "Verified contacts for premium 1:1 designer fragrances with worldwide shipping and tracked delivery.",
-    price: 14.99,
+  "💎 Luxury fragrance suppliers • Top designer brands 🔥 • Worldwide shipping 🌍 • High profits 💰",
+    price: 19.99,
     oldPrice: 29.99,
     image: "/products/cologne-supplier.png",
     stock: "In Stock",
@@ -88,11 +87,11 @@ export const products: Product[] = [
   },
   {
     id: "watch-supplier",
-    name: "Luxury Watch Supplier",
+    name: "R0$ex Vendor",
     category: "Suppliers",
     description:
-      "Top-tier horology suppliers offering premium timepieces with authentication and insured shipping.",
-    price: 14.99,
+  "⌚ Premium watch supplier • Luxury models 💎 • Trusted vendor ✅ • Strong margins 💰",
+    price: 19.99,
     oldPrice: 34.99,
     image: "/products/watch-supplier.png",
     stock: "In Stock",
@@ -101,11 +100,11 @@ export const products: Product[] = [
   },
   {
     id: "apparel-supplier",
-    name: "Apparel & Sneaker Supplier",
+    name: "N!KE Sh0x Vendor",
     category: "Suppliers",
     description:
       "Trusted apparel and footwear suppliers with the best margins on premium streetwear and designer pieces.",
-    price: 12.99,
+    price: 14.99,
     oldPrice: 24.99,
     image: "/products/apparel-supplier.png",
     stock: "In Stock",
@@ -114,11 +113,11 @@ export const products: Product[] = [
   },
   {
     id: "tech-supplier",
-    name: "Premium Tech Supplier",
+    name: "!ph0ne 17 pro",
     category: "Suppliers",
     description:
       "Reliable electronics suppliers covering phones, audio, and accessories at unbeatable reseller pricing.",
-    price: 12.99,
+    price: 14.99,
     oldPrice: 24.99,
     image: "/products/tech-supplier.png",
     stock: "In Stock",
@@ -137,45 +136,45 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Marcus T.",
-    handle: "@marcusresells",
-    date: "Jun 09, 2026",
-    rating: 5,
-    text: "Made back my investment in the first week. The All-In-One Vault is genuinely the best money I've spent on my business.",
-  },
-  {
-    name: "Sofia R.",
-    handle: "@sofiaflips",
-    date: "Jun 06, 2026",
-    rating: 5,
-    text: "The mentorship calls changed everything. Went from $0 to consistent $3k months in 90 days. Incredible support.",
-  },
-  {
-    name: "David K.",
-    handle: "@dk_trades",
-    date: "May 30, 2026",
-    rating: 5,
-    text: "Instant delivery, real suppliers, no fluff. Receipt Generator Pro alone is worth the price. Highly recommend.",
-  },
-  {
-    name: "Amara N.",
-    handle: "@amara.co",
-    date: "May 24, 2026",
-    rating: 5,
-    text: "I was skeptical at first but the quality is unmatched. Everything is verified and the team actually replies fast.",
-  },
-  {
-    name: "Liam P.",
-    handle: "@liamp",
-    date: "May 18, 2026",
-    rating: 5,
-    text: "Premium feel from start to finish. The blueprint is packed with strategies I hadn't seen anywhere else.",
-  },
-  {
-    name: "Chloe W.",
-    handle: "@chloewins",
-    date: "May 11, 2026",
-    rating: 5,
-    text: "Best reselling platform I've used. Clean dashboard, fast delivery, and the suppliers are top quality.",
-  },
+  name: "Alex M.",
+  handle: "@alexm",
+  date: "Jun 12, 2025",
+  rating: 5,
+  text: "The supplier list saved me weeks of research. Found several products worth testing immediately."
+},
+{
+  name: "Daniel R.",
+  handle: "@danielr",
+  date: "Jun 08, 2025",
+  rating: 5,
+  text: "Fast delivery and well organized. Everything was easy to access after purchase."
+},
+{
+  name: "Michael T.",
+  handle: "@michaelt",
+  date: "Jun 02, 2025",
+  rating: 4.8,
+  text: "Good selection of suppliers. The fragrance contacts alone were worth the price."
+},
+{
+  name: "Sarah W.",
+  handle: "@sarahw",
+  date: "May 27, 2025",
+  rating: 5,
+  text: "Clean dashboard, instant access and useful resources for beginners."
+},
+{
+  name: "Chris P.",
+  handle: "@chrisp",
+  date: "May 19, 2025",
+  rating: 5,
+  text: "Exactly what I was looking for. No unnecessary content, just useful supplier information."
+},
+{
+  name: "Kevin J.",
+  handle: "@kevinj",
+  date: "May 11, 2025",
+  rating: 5,
+  text: "The All-In-One Vault is a great starting point if you're building your first store."
+}
 ]

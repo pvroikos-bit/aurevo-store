@@ -14,10 +14,10 @@ export function FeaturedProducts() {
             Featured
           </span>
           <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-            Hand-picked to get you started
+            What's Included In The Vault?
           </h2>
           <p className="mt-3 max-w-lg text-pretty text-muted-foreground">
-            Our most popular products, chosen by thousands of resellers to launch and scale fast.
+            Everything included with your one-time purchase.
           </p>
         </div>
 

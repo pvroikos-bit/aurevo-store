@@ -1,10 +1,13 @@
+"use client"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Infinity as InfinityIcon, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Product } from "@/lib/store-data"
+import { useCart } from "@/components/cart-context"
 
 export function ProductCard({ product }: { product: Product }) {
+  const { addToCart } = useCart()
   return (
 <Link
   href={`/products/${product.id}`}
@@ -57,10 +60,20 @@ export function ProductCard({ product }: { product: Product }) {
             {product.stock}
           </span>
         </div>
-  <Button className="mt-5 h-10 w-full justify-center gap-2 text-sm">
-    View Details
-    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-  </Button>
+  <Button
+  className="mt-5 h-10 w-full justify-center gap-2 text-sm"
+  onClick={(e) => {
+    e.preventDefault()
+
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+    })
+  }}
+>
+  Add to Cart
+</Button>
 </div>
 </Link>
 )

@@ -1,3 +1,4 @@
+"use client"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -16,21 +17,37 @@ export function CtaSection() {
               Limited 2026 launch pricing
             </span>
             <h2 className="mx-auto mt-6 max-w-2xl font-heading text-3xl font-bold tracking-tight text-balance sm:text-5xl">
-              Start your reselling business today
+              Access 500+ Verified Suppliers Today
+
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
-              Join 18,000+ resellers who trust SkroojMoney for premium suppliers, tools, and mentorship.
-              Instant access, no risk.
-            </p>
+            <div className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
+Get instant access to 500+ verified suppliers, winning products, reselling guides and exclusive tools — all in one vault.
+</div>
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button className="h-12 gap-2 px-7 text-base">
-                Get Instant Access
-                <ArrowRight className="size-4" />
-              </Button>
-              <Button variant="outline" className="h-12 px-7 text-base">
-                Talk to our team
-              </Button>
+              <Button
+  className="h-12 gap-2 px-7 text-base"
+  onClick={() => {
+    document.getElementById("pricing")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }}
+>
+  Unlock The Supplier Pack
+  <ArrowRight className="size-4" />
+</Button>
+              <Button
+  variant="outline"
+  className="h-12 px-7 text-base"
+  onClick={() =>
+    window.open("https://discord.gg/kAbCfrZ6rA", "_blank")
+  }
+>
+  Join Discord Community
+</Button>
             </div>
+            <p className="mt-4 text-sm text-center text-muted-foreground">
+  ⭐⭐⭐⭐⭐ Rated 4.9/5 by 18,000+ resellers
+</p>
           </div>
         </div>
       </div>

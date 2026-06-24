@@ -3,33 +3,33 @@ import { Zap, ShieldCheck, Clock, Boxes, BadgeCheck, Headphones } from "lucide-r
 const features = [
   {
     icon: Zap,
-    title: "Instant Delivery",
-    desc: "Every product is delivered to your inbox in under 60 seconds — no waiting, no friction.",
+    title: "🔥 Verified 1:1 Suppliers",
+    desc: "Access to 500+ vetted suppliers with proven product quality and worldwide shipping.",
   },
   {
     icon: ShieldCheck,
-    title: "Secure Payments",
-    desc: "Bank-grade encryption and trusted processors keep every transaction safe and private.",
+    title: "💰 High Profit Margins",
+    desc: "Products selected for strong resale potential and consistent profit opportunities.",
   },
   {
     icon: BadgeCheck,
-    title: "Verified Suppliers",
-    desc: "Each supplier is vetted and tested by our team so you only get proven, reliable contacts.",
+    title: "🚀 Beginner Friendly",
+    desc: "No experience needed. Follow proven systems and start selling faster.",
   },
   {
     icon: Boxes,
-    title: "Huge Selection",
-    desc: "From fragrances to electronics, find exactly the supplier or tool your business needs.",
+    title: "🌍 Worldwide Shipping",
+    desc: "Global suppliers serving 100+ countries with tracked delivery options.",
   },
   {
     icon: Headphones,
-    title: "24/7 Support",
-    desc: "Our dedicated team is online around the clock to answer questions and help you scale.",
+    title: "📦 Instant Digital Access",
+    desc: "Receive your products immediately after purchase. No waiting, no delays.",
   },
   {
     icon: Clock,
-    title: "Lifetime Updates",
-    desc: "Tools and guides receive free ongoing updates so your edge never goes stale.",
+    title: "⭐ Trusted by Resellers",
+    desc: "Used by hundreds of resellers to source products and scale their stores From 2022/2026.",
   },
 ]
 
@@ -42,10 +42,10 @@ export function Features() {
             Why SkroojMoney
           </span>
           <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-            A premium experience, end to end
+            Why Resellers Choose SkroojMoney
           </h2>
           <p className="mt-3 text-pretty text-muted-foreground">
-            We built SkroojMoney to feel as professional as the business you&apos;re building.
+            Launch and scale your reselling business with verified suppliers, winning products, and proven strategies.
           </p>
         </div>
 

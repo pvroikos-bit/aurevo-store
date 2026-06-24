@@ -1,3 +1,4 @@
+"use client"
 import { ShieldCheck, Star, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -18,26 +19,41 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
             <ShieldCheck className="size-3.5 text-primary" />
-            Trusted by 5,000+ resellers worldwide
+            Trusted by 18,000+ resellers worldwide
           </div>
 
           <h1 className="font-heading text-4xl font-bold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">
-            Access verified vendors,{" "}
-            <span className="text-primary">and scale faster today.</span>
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground text-pretty sm:text-lg">
-  Premium supplier lists, private agents, exclusive guides and tools.
-Everything you need to build a profitable reselling business.
+  Access 500+ Verified Suppliers & Private Agents
+  <span className="block text-primary">
+    Start Reselling Today.
+  </span>
+</h1>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground text-pretty sm:text-lg">
+  Get instant access to verified suppliers, private agents, premium guides,
+  receipt generators and winning products used by thousands of resellers.
 </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button className="h-12 gap-2 px-7 text-base">
+            <Button
+className="h-14 gap-2 px-8 text-base font-semibold"
+  onClick={() =>
+    document.getElementById("products")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+>
               <Zap className="size-4" />
               Browse Products
             </Button>
-            <Button variant="outline" className="h-12 px-7 text-base">
-              Get Instant Access
+<Button
+  variant="outline"
+  className="h-12 px-7 text-base"
+  onClick={() =>
+    document.getElementById("pricing")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
+>              Get Instant Access
             </Button>
           </div>
 
@@ -47,8 +63,8 @@ Everything you need to build a profitable reselling business.
                 <Star key={i} className="size-4 fill-primary text-primary" />
               ))}
             </div>
-            <span className="font-medium text-foreground">4.7/5</span>
-            <span>Rated 4.7/5 by 1,200+ resellers</span>
+            <span className="font-medium text-foreground">4.8/5</span>
+            <span>Rated 4.9/5 by 18,000+ resellers</span>
           </div>
         </div>
 
