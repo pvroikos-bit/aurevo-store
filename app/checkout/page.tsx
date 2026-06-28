@@ -1,6 +1,7 @@
 "use client"
 
 import { useCart } from "@/components/cart-context"
+import { products } from "@/lib/store-data"
 
 export default function CheckoutPage() {
   const { cart } = useCart()
@@ -57,10 +58,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <span>
-                  €
-                  {(item.price * item.quantity).toFixed(
-                    2
-                  )}
+                  €{(item.price * item.quantity).toFixed(2)}
                 </span>
               </div>
             ))}
@@ -71,13 +69,32 @@ export default function CheckoutPage() {
             </div>
 
             <button
-  onClick={() => {
-    window.location.href = "/success"
-  }}
-  className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground"
->
-  Continue To Payment
-</button>
+              onClick={() => {
+                if (cart.length === 0) return
+
+                const product = products.find(
+                  (p) => p.id === cart[0].id
+                )
+
+                if (!product) {
+                  alert("Product not found.")
+                  return
+                }
+
+                if (
+                  !product.checkoutUrl ||
+                  product.checkoutUrl === "#"
+                ) {
+                  alert("This product is not connected yet.")
+                  return
+                }
+
+                window.location.href = product.checkoutUrl
+              }}
+              className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground"
+            >
+              Continue To Payment
+            </button>
           </>
         )}
       </div>

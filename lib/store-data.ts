@@ -6,11 +6,13 @@ export type Product = {
   price: number
   oldPrice?: number
   image: string
+  images?: string[]
   badge?: string
   stock: string
   rating: number
   sales: number
   featured?: boolean
+  checkoutUrl?: string
 }
 
 export const products: Product[] = [
@@ -28,6 +30,8 @@ export const products: Product[] = [
     rating: 5,
     sales: 4820,
     featured: true,
+    checkoutUrl:
+  "https://skrooj.mysellauth.com/product/all-in-one-products-pack",
   },
   {
     id: "reselling-blueprint",
@@ -43,6 +47,7 @@ export const products: Product[] = [
     rating: 5,
     sales: 2140,
     featured: true,
+    checkoutUrl: "#"
   },
   {
     id: "receipt-generator",
@@ -58,72 +63,139 @@ export const products: Product[] = [
     rating: 5,
     sales: 3675,
     featured: true,
+    checkoutUrl: "#"
   },
   {
-    id: "earphones",
-    name: "AirP0ds Pro 2",
-    category: "earphones",
-   description:"🎧 Premium AirPods Pro 2 supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
-    price: 19.99,
-   oldPrice: 29.99,
-    image: "/products/mentorship.png",
-    badge: "Limited",
-    stock: "12 left",
-    rating: 5,
-    sales: 612,
-  },
-  {
-    id: "cologne-supplier",
-    name: "All Cologne Designer Vendors",
-    category: "Suppliers",
-    description:
-  "💎 Luxury fragrance suppliers • Top designer brands 🔥 • Worldwide shipping 🌍 • High profits 💰",
-    price: 19.99,
-    oldPrice: 29.99,
-    image: "/products/cologne-supplier.png",
-    stock: "In Stock",
-    rating: 5,
-    sales: 1890,
-  },
-  {
-    id: "watch-supplier",
-    name: "R0$ex Vendor",
-    category: "Suppliers",
-    description:
-  "⌚ Premium watch supplier • Luxury models 💎 • Trusted vendor ✅ • Strong margins 💰",
-    price: 19.99,
-    oldPrice: 34.99,
-    image: "/products/watch-supplier.png",
-    stock: "In Stock",
-    rating: 5,
-    sales: 1340,
-  },
-  {
-    id: "apparel-supplier",
-    name: "N!KE Sh0x Vendor",
-    category: "Suppliers",
-    description:
-      "Trusted apparel and footwear suppliers with the best margins on premium streetwear and designer pieces.",
-    price: 14.99,
-    oldPrice: 24.99,
-    image: "/products/apparel-supplier.png",
-    stock: "In Stock",
-    rating: 5,
-    sales: 2510,
-  },
-  {
-    id: "tech-supplier",
-    name: "!ph0ne 17 pro",
-    category: "Suppliers",
-    description:
-      "Reliable electronics suppliers covering phones, audio, and accessories at unbeatable reseller pricing.",
-    price: 14.99,
-    oldPrice: 24.99,
-    image: "/products/tech-supplier.png",
-    stock: "In Stock",
-    rating: 4,
-    sales: 980,
-  },
+  id: "airpods-pro-2",
+  name: "AirPods Pro 2 ANC Vendor",
+  category: "Suppliers",
+  description:
+    "🎧 Premium AirPods Pro 2 supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
+  price: 19.99,
+  oldPrice: 29.99,
+  image: "/products/airpods-pro2.png",
+  badge: "Limited",
+  stock: "12 left",
+  rating: 5,
+  sales: 612,
+  checkoutUrl:
+    "https://skrooj.mysellauth.com/product/airp0ds-pro-2-vendor",
+},
+{
+  id: "airpods-pro-3",
+  name: "AirP0ds Pro 3 Vendor",
+  category: "Suppliers",
+  description:
+    "🎧 Premium AirPods Pro 3 supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
+  price: 19.99,
+  oldPrice: 29.99,
+  image: "/products/airpods-pro3.png",
+  badge: "Limited",
+  stock: "12 left",
+  rating: 5,
+  sales: 612,
+  checkoutUrl: "https://skrooj.mysellauth.com/product/airp0ds-pro-3-vendor",
+},
+{
+  id: "airpods-4-anc",
+  name: "AirP0ds 4 ANC Vendor",
+  category: "Suppliers",
+  description:
+    "🎧 Premium AirPods 4 supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
+  price: 19.99,
+  oldPrice: 29.99,
+  image: "/products/airpods4-anc.png",
+  badge: "Limited",
+  stock: "12 left",
+  rating: 5,
+  sales: 612,
+  checkoutUrl: "#",
+},
+{
+  id: "airpods-max",
+  name: "AirP0ds Max ANC Vendor",
+  category: "Suppliers",
+  description:
+    "🎧 Premium AirPods Max supplier • Verified contact ✅ • Fast shipping 🌍 • High margins 💰",
+  price: 19.99,
+  oldPrice: 29.99,
+  image: "/products/airpods-max.png",
+  badge: "Limited",
+  stock: "12 left",
+  rating: 5,
+  sales: 612,
+  checkoutUrl: "#",
+},
+{
+  id: "lv-imagination-vendor",
+  name: "Lv Imag!nat1on Cologne Vendors",
+  category: "Suppliers",
+  description:
+    "💎 Luxury fragrance suppliers • Top designer brands 🔥 • Worldwide shipping 🌍 • High profits 💰",
+  price: 19.99,
+  oldPrice: 29.99,
+  image: "/products/cologne-supplier.png",
+  stock: "In Stock",
+  rating: 5,
+  sales: 1890,
+  checkoutUrl: "#",
+},
+{
+  id: "rolex-vendor",
+  name: "R0$ex Vendor",
+  category: "Suppliers",
+  description:
+    "⌚ Premium watch supplier • Luxury models 💎 • Trusted vendor ✅ • Strong margins 💰",
+  price: 19.99,
+  oldPrice: 34.99,
+  image: "/products/watch-supplier.png",
+  stock: "In Stock",
+  rating: 5,
+  sales: 1340,
+  checkoutUrl: "#",
+},
+{
+  id: "nike-shox-vendor",
+  name: "N!KE Sh0x Vendor",
+  category: "Suppliers",
+  description:
+    "Trusted apparel and footwear suppliers with the best margins on premium streetwear and designer pieces.",
+  price: 14.99,
+  oldPrice: 24.99,
+  image: "/products/apparel-supplier.png",
+  stock: "In Stock",
+  rating: 5,
+  sales: 2510,
+  checkoutUrl: "#",
+},
+{
+  id: "iphone-17-pro",
+  name: "!ph0ne 17 Pro Vendor",
+  category: "Suppliers",
+  description:
+    "Reliable electronics suppliers covering phones, audio, and accessories at unbeatable reseller pricing.",
+  price: 14.99,
+  oldPrice: 24.99,
+  image: "/products/tech-supplier.png",
+  stock: "In Stock",
+  rating: 4,
+  sales: 980,
+  checkoutUrl: "#",
+},
+{
+  id: "prada-glasses",
+  name: "Pr@da Glasses Vendor",
+  category: "Suppliers",
+  description:
+    "Premium eyewear supplier • Verified contact ✅ • Worldwide shipping 🌍 • High margins 💰",
+  price: 14.99,
+  oldPrice: 24.99,
+  image: "/products/pr@da-glass.png",
+  stock: "In Stock",
+  rating: 4,
+  sales: 980,
+  checkoutUrl: "#",
+},
 ]
 
 export type Testimonial = {
