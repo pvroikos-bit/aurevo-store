@@ -1,31 +1,19 @@
+import { faqItems } from "@/lib/seo"
+
 export default function FAQPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="text-4xl font-bold mb-6">
+      <h1 className="mb-6 text-4xl font-bold">
         Frequently Asked Questions
       </h1>
 
       <div className="space-y-6">
-        <div>
-          <h2 className="font-bold">
-            How do I receive my products?
-          </h2>
-          <p>Instantly after purchase.</p>
-        </div>
-
-        <div>
-          <h2 className="font-bold">
-            Do I get lifetime access?
-          </h2>
-          <p>Yes.</p>
-        </div>
-
-        <div>
-          <h2 className="font-bold">
-            Do you offer refunds?
-          </h2>
-          <p>Please read our refund policy.</p>
-        </div>
+        {faqItems.map((item) => (
+          <section key={item.question}>
+            <h2 className="font-bold">{item.question}</h2>
+            <p>{item.answer}</p>
+          </section>
+        ))}
       </div>
     </main>
   )

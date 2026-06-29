@@ -1,8 +1,8 @@
 import { Analytics } from '@vercel/analytics/next'
-import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from "@/components/cart-context"
+import { rootMetadata } from "@/lib/seo"
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
@@ -14,29 +14,7 @@ const playfair = Playfair_Display({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: 'SkroojMoney — Premium Digital Products & Reselling Suppliers',
-  description:
-    'SkroojMoney is the premium marketplace for verified reselling suppliers, digital tools, and mentorship. Instant delivery, secure payments, trusted by 18,000+ resellers.',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
-  },
-}
+export const metadata = rootMetadata
 
 export default function RootLayout({
   children,

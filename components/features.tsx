@@ -1,4 +1,11 @@
-import { Zap, ShieldCheck, Clock, Boxes, BadgeCheck, Headphones } from "lucide-react"
+import {
+  Zap,
+  ShieldCheck,
+  Clock,
+  Boxes,
+  BadgeCheck,
+  Headphones,
+} from "lucide-react"
 
 const features = [
   {
@@ -35,32 +42,53 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="relative border-y border-border/60 bg-card/30">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+    <section
+      id="features"
+      className="relative"
+      aria-labelledby="features-heading"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
+      />
+
+      <div className="mx-auto max-w-7xl px-3 py-16 min-[360px]:px-4 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+          <span className="inline-flex rounded-md border border-border/50 bg-muted/20 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
             Why SkroojMoney
           </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+
+          <h2
+            id="features-heading"
+            className="mt-4 font-heading text-[1.625rem] font-semibold tracking-[-0.025em] text-balance text-foreground min-[360px]:text-3xl sm:text-4xl lg:text-[2.625rem] lg:leading-[1.12]"
+          >
             Why Resellers Choose SkroojMoney
           </h2>
-          <p className="mt-3 text-pretty text-muted-foreground">
-            Launch and scale your reselling business with verified suppliers, winning products, and proven strategies.
+
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty sm:text-base">
+            Launch and scale your reselling business with verified suppliers,
+            winning products, and proven strategies.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:mt-14 sm:grid-cols-2 sm:gap-5 lg:mt-16 lg:grid-cols-3 lg:gap-6">
           {features.map((feature) => (
-            <div
+            <article
               key={feature.title}
-              className="group rounded-2xl border border-border bg-card p-6 transition-colors hover:border-primary/40"
+              className="group rounded-2xl border border-border/35 bg-card/15 p-6 transition-[border-color,background-color,box-shadow] duration-300 hover:border-border/55 hover:bg-card/30 hover:shadow-[0_12px_40px_-28px_oklch(0_0_0/0.45)] motion-reduce:transition-none sm:p-7"
             >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-primary/15 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                <feature.icon className="size-5" />
+              <div className="flex size-10 items-center justify-center rounded-lg border border-border/40 bg-muted/25 text-muted-foreground transition-colors duration-300 group-hover:border-border/60 group-hover:text-foreground motion-reduce:transition-none">
+                <feature.icon className="size-[18px]" aria-hidden />
               </div>
-              <h3 className="mt-4 font-heading text-lg font-semibold">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{feature.desc}</p>
-            </div>
+
+              <h3 className="mt-5 font-heading text-base font-semibold leading-snug tracking-[-0.01em] text-foreground sm:text-lg">
+                {feature.title}
+              </h3>
+
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground/90 sm:text-sm">
+                {feature.desc}
+              </p>
+            </article>
           ))}
         </div>
       </div>
