@@ -2,6 +2,7 @@
 
 import { ArrowRight, Lock, ShieldCheck, Sparkles, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { scrollToSection } from "@/lib/utils"
 
 const assurances = [
   { icon: Zap, label: "Instant delivery" },
@@ -51,11 +52,7 @@ export function CtaSection() {
             <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-stretch gap-2.5 min-[360px]:mt-10 min-[360px]:gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center">
               <Button
                 className="group min-h-11 h-11 w-full gap-2 rounded-full px-6 text-sm font-semibold min-[360px]:px-8 min-[360px]:text-base sm:min-h-12 sm:h-12 sm:min-w-[16rem] sm:w-auto"
-                onClick={() => {
-                  document.getElementById("pricing")?.scrollIntoView({
-                    behavior: "smooth",
-                  })
-                }}
+                onClick={() => scrollToSection("pricing")}
               >
                 Unlock The Supplier Pack
                 <ArrowRight
@@ -67,7 +64,11 @@ export function CtaSection() {
                 variant="outline"
                 className="min-h-11 h-11 w-full rounded-full px-6 text-sm font-medium text-muted-foreground min-[360px]:px-7 sm:h-12 sm:w-auto"
                 onClick={() =>
-                  window.open("https://discord.gg/kAbCfrZ6rA", "_blank")
+                  window.open(
+                    "https://discord.gg/kAbCfrZ6rA",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
                 }
               >
                 Join Discord Community

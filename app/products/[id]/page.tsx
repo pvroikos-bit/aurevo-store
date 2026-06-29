@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import { products } from "@/lib/store-data"
 import { BuyNowButton } from "@/components/buy-now-button"
@@ -79,14 +80,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <JsonLd data={productSchema} />
 
-      <main className="mx-auto max-w-5xl px-6 py-16">
+      <main id="main-content" className="mx-auto max-w-5xl px-6 py-16">
         <div className="grid gap-16 md:grid-cols-2">
           <div>
-            <div className="flex justify-center">
-              <img
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border">
+              <Image
                 src={product.image}
                 alt={product.name}
-                className="w-full rounded-2xl border border-border object-cover"
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
           </div>
@@ -107,24 +111,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </p>
 
             <div className="mt-6 flex items-center gap-4">
-              <span className="text-4xl font-bold">
-                €{product.price}
+              <span className="text-4xl font-bold tabular-nums">
+                €{product.price.toFixed(2)}
               </span>
 
               {product.oldPrice && (
-                <span className="text-xl line-through opacity-60">
-                  €{product.oldPrice}
+                <span className="text-xl tabular-nums line-through opacity-60">
+                  €{product.oldPrice.toFixed(2)}
                 </span>
               )}
             </div>
 
-            <div className="mt-6 space-y-3">
-              <p>✅ Verified supplier contact</p>
-              <p>🌍 Fast international shipping</p>
-              <p>💰 High profit margins</p>
-              <p>⚡ Beginner-friendly setup</p>
-              <p>🚀 Instant digital delivery</p>
-            </div>
+            <ul className="mt-6 space-y-3" aria-label="Product highlights">
+              <li>✅ Verified supplier contact</li>
+              <li>🌍 Fast international shipping</li>
+              <li>💰 High profit margins</li>
+              <li>⚡ Beginner-friendly setup</li>
+              <li>🚀 Instant digital delivery</li>
+            </ul>
 
             <div className="mt-8 rounded-xl border border-border p-4">
               <p className="font-semibold">

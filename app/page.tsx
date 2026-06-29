@@ -69,7 +69,7 @@ export default function Page() {
 
         <SiteHeader />
 
-        <main>
+        <main id="main-content">
           <Hero />
           <TrustBar />
           <FeaturedProducts />

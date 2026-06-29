@@ -4,6 +4,7 @@ import { Suspense, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useCart } from "@/components/cart-context"
 import { env } from "@/lib/env"
+import { cn, primaryActionClass, secondaryActionClass } from "@/lib/utils"
 
 function SuccessContent() {
   const { clearCart } = useCart()
@@ -15,7 +16,7 @@ function SuccessContent() {
   }, [clearCart])
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24 text-center">
+    <main id="main-content" className="mx-auto max-w-3xl px-6 py-24 text-center">
       <h1 className="text-5xl font-bold">
         🎉 Payment Successful
       </h1>
@@ -43,7 +44,7 @@ function SuccessContent() {
           href={env.social.discord}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 block rounded-xl bg-primary px-8 py-3 font-semibold text-primary-foreground"
+          className={cn(primaryActionClass, "mt-6 w-full")}
         >
           Join Discord
         </a>
@@ -53,7 +54,7 @@ function SuccessContent() {
             href={env.social.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
+            className={cn(secondaryActionClass, "mt-4 w-full")}
           >
             Follow Instagram
           </a>
@@ -64,7 +65,7 @@ function SuccessContent() {
             href={env.social.tiktok}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
+            className={cn(secondaryActionClass, "mt-4 w-full")}
           >
             Follow TikTok
           </a>

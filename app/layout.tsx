@@ -27,6 +27,12 @@ export default function RootLayout({
     className={`dark ${geistSans.variable} ${geistMono.variable} ${playfair.variable} bg-background`}
   >
     <body className="font-sans antialiased">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring/60 focus:ring-offset-2 focus:ring-offset-background"
+      >
+        Skip to main content
+      </a>
       <CartProvider>
         {children}
       </CartProvider>

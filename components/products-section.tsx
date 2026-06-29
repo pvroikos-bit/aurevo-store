@@ -232,9 +232,15 @@ export function AllProducts() {
             aria-labelledby={`catalog-tab-${selected.toLowerCase()}`}
             className="mt-10 grid gap-4 min-[360px]:gap-5 sm:mt-14 sm:grid-cols-2 sm:gap-6 lg:mt-16 lg:grid-cols-4 lg:gap-7"
           >
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {filteredProducts.length === 0 ? (
+              <p className="col-span-full py-12 text-center text-sm text-muted-foreground">
+                No products in this category yet.
+              </p>
+            ) : (
+              filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </div>
         </div>
       </div>

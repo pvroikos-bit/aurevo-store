@@ -2,6 +2,7 @@
 
 import { ArrowRight, ShieldCheck, Star, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { scrollToSection } from "@/lib/utils"
 
 const stats = [
   { value: "500+", label: "Supplier Contacts" },
@@ -46,11 +47,7 @@ export function Hero() {
           <div className="mt-8 flex w-full flex-col items-stretch gap-2.5 min-[360px]:mt-10 min-[360px]:gap-3 sm:mt-12 sm:flex-row sm:items-center sm:justify-center">
             <Button
               className="group min-h-11 h-11 gap-2 rounded-full px-6 text-sm font-semibold shadow-[0_0_0_1px_oklch(0.62_0.19_256/0.28),0_10px_36px_-10px_oklch(0.62_0.19_256/0.45)] transition-[box-shadow,background-color] duration-300 hover:shadow-[0_0_0_1px_oklch(0.62_0.19_256/0.38),0_14px_44px_-10px_oklch(0.62_0.19_256/0.55)] motion-reduce:transition-none sm:h-14 sm:min-h-0 sm:px-10 sm:text-base"
-              onClick={() =>
-                document.getElementById("products")?.scrollIntoView({
-                  behavior: "smooth",
-                })
-              }
+              onClick={() => scrollToSection("products")}
             >
               <Zap className="size-4 shrink-0" />
               Browse Products
@@ -60,11 +57,7 @@ export function Hero() {
             <Button
               variant="outline"
               className="min-h-11 h-11 rounded-full border-border/50 bg-transparent px-6 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:border-foreground/15 hover:bg-card/45 hover:text-foreground motion-reduce:transition-none sm:h-12 sm:min-h-0 sm:px-8 sm:text-base"
-              onClick={() =>
-                document.getElementById("pricing")?.scrollIntoView({
-                  behavior: "smooth",
-                })
-              }
+              onClick={() => scrollToSection("pricing")}
             >
               Get Instant Access
             </Button>

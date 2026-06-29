@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import type { Product } from "@/lib/store-data"
 import { useCart } from "@/components/cart-context"
+import { formatInteger } from "@/lib/utils"
 
 function badgeStyles(badge: string) {
   switch (badge) {
@@ -48,6 +49,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
   return (
     <Link
       href={`/products/${product.id}`}
+      aria-label={`View ${product.name}`}
       className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/25 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] outline-none transition-[border-color,background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-border/60 hover:bg-card/45 hover:shadow-[0_12px_32px_-24px_oklch(0_0_0/0.5)] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none motion-reduce:transition-none ${
         highlighted
           ? "border-primary/30"
@@ -71,7 +73,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
 
         <Image
           src={product.image}
-          alt={product.name}
+          alt=""
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
@@ -103,7 +105,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
                 </span>
                 <span className="flex items-center gap-0.5 tabular-nums">
                   <TrendingUp className="size-3 shrink-0" aria-hidden />
-                  {product.sales.toLocaleString()}+ sold
+                  {formatInteger(product.sales)}+ sold
                 </span>
               </>
             )}

@@ -5,6 +5,7 @@ import Image from "next/image"
 import { Menu, Minus, Plus, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/components/cart-context"
+import { scrollToSection as scrollToId } from "@/lib/utils"
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -33,10 +34,8 @@ export function SiteHeader() {
     0
   )
 
-  const scrollToSection = (href: string) => {
-    document
-      .getElementById(href.replace("#", ""))
-      ?.scrollIntoView({ behavior: "smooth" })
+  const handleNavClick = (href: string) => {
+    scrollToId(href.replace("#", ""))
   }
 
   return (
@@ -52,6 +51,7 @@ export function SiteHeader() {
           <div
             className="fixed right-0 top-0 z-50 flex h-dvh w-full max-w-[420px] flex-col border-l border-border/50 bg-card shadow-[-24px_0_64px_-12px_oklch(0_0_0/0.45)]"
             role="dialog"
+            aria-modal="true"
             aria-label="Shopping cart"
           >
             <div className="flex items-center justify-between border-b border-border/50 px-4 py-4 min-[360px]:px-6 min-[360px]:py-5 sm:px-8">
@@ -67,7 +67,7 @@ export function SiteHeader() {
               <button
                 type="button"
                 onClick={() => setCartOpen(false)}
-                className="flex size-11 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground sm:size-9"
+                className="flex size-11 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-colors duration-300 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:size-9"
                 aria-label="Close cart"
               >
                 <X className="size-4" />
@@ -83,6 +83,12 @@ export function SiteHeader() {
                   <p className="mt-4 text-sm font-medium text-foreground">
                     Your cart is empty
                   </p>
+                  <a
+                    href="/#products"
+                    className="mt-3 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    Browse products
+                  </a>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -101,7 +107,7 @@ export function SiteHeader() {
                             <button
                               type="button"
                               onClick={() => decreaseQuantity(item.id)}
-                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground md:size-7"
+                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
                               aria-label="Decrease quantity"
                             >
                               <Minus className="size-3.5" />
@@ -114,7 +120,7 @@ export function SiteHeader() {
                             <button
                               type="button"
                               onClick={() => increaseQuantity(item.id)}
-                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground md:size-7"
+                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
                               aria-label="Increase quantity"
                             >
                               <Plus className="size-3.5" />
@@ -125,7 +131,8 @@ export function SiteHeader() {
                         <button
                           type="button"
                           onClick={() => removeFromCart(item.id)}
-                          className="flex min-h-11 shrink-0 items-center px-2 text-xs font-medium text-red-400/90 transition-colors duration-200 hover:text-red-400"
+                          className="flex min-h-11 shrink-0 items-center px-2 text-xs font-medium text-red-400/90 transition-colors duration-200 hover:text-red-400 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          aria-label={`Remove ${item.name} from cart`}
                         >
                           Remove
                         </button>
@@ -184,8 +191,8 @@ export function SiteHeader() {
             <button
               key={link.href}
               type="button"
-              onClick={() => scrollToSection(link.href)}
-              className="group relative rounded-lg px-3.5 py-2 text-[13px] font-medium tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground motion-reduce:transition-none"
+              onClick={() => handleNavClick(link.href)}
+              className="group relative rounded-lg px-3.5 py-2 text-[13px] font-medium tracking-wide text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
             >
               {link.label}
               <span className="absolute inset-x-3.5 bottom-1.5 h-px origin-left scale-x-0 bg-primary/70 transition-transform duration-300 group-hover:scale-x-100 motion-reduce:transition-none motion-reduce:transform-none" />
@@ -210,7 +217,7 @@ export function SiteHeader() {
 
           <button
             type="button"
-            className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border/50 text-foreground transition-colors duration-300 hover:border-border hover:bg-card/50 md:hidden"
+            className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border/50 text-foreground transition-colors duration-300 hover:border-border hover:bg-card/50 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
@@ -228,7 +235,7 @@ export function SiteHeader() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium tracking-wide text-muted-foreground transition-colors duration-300 hover:bg-card/60 hover:text-foreground"
+                className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium tracking-wide text-muted-foreground transition-colors duration-300 hover:bg-card/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {link.label}
               </a>

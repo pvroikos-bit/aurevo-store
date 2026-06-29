@@ -70,7 +70,7 @@ export function Testimonials() {
                   aria-label={`${t.rating} out of 5 stars`}
                 >
                   <div className="flex" aria-hidden>
-                    {Array.from({ length: t.rating }).map((_, i) => (
+                    {Array.from({ length: Math.round(t.rating) }).map((_, i) => (
                       <Star
                         key={i}
                         className="size-3.5 fill-primary/75 text-primary/75"

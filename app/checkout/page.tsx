@@ -1,8 +1,15 @@
 "use client"
 
+import Link from "next/link"
 import { useState } from "react"
 import { useCart } from "@/components/cart-context"
 import { getCartTotal } from "@/lib/payments/cart"
+import {
+  cn,
+  focusRingClass,
+  inputFieldClass,
+  primaryActionClass,
+} from "@/lib/utils"
 
 export default function CheckoutPage() {
   const { cart } = useCart()
@@ -57,61 +64,76 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-24">
-      <h1 className="mb-6 text-4xl font-bold">
-        Checkout
-      </h1>
+    <main id="main-content" className="mx-auto max-w-5xl px-6 py-24">
+      <h1 className="mb-6 text-4xl font-bold">Checkout</h1>
 
       <div className="rounded-xl border border-border p-6">
-        <h2 className="mb-4 text-xl font-semibold">
-          Order Summary
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold">Order Summary</h2>
 
         <div className="mb-6 space-y-4">
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="w-full rounded-lg border border-border bg-background p-3"
-            autoComplete="email"
-            required
-          />
+          <div>
+            <label htmlFor="checkout-email" className="sr-only">
+              Email Address
+            </label>
+            <input
+              id="checkout-email"
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className={inputFieldClass}
+              autoComplete="email"
+              required
+            />
+          </div>
 
-          <input
-            type="text"
-            placeholder="Discord Username"
-            value={discordUsername}
-            onChange={(event) =>
-              setDiscordUsername(event.target.value)
-            }
-            className="w-full rounded-lg border border-border bg-background p-3"
-            autoComplete="username"
-          />
+          <div>
+            <label htmlFor="checkout-discord" className="sr-only">
+              Discord Username
+            </label>
+            <input
+              id="checkout-discord"
+              type="text"
+              placeholder="Discord Username"
+              value={discordUsername}
+              onChange={(event) =>
+                setDiscordUsername(event.target.value)
+              }
+              className={inputFieldClass}
+              autoComplete="username"
+            />
+          </div>
         </div>
 
         {cart.length === 0 ? (
-          <p className="text-muted-foreground">
-            Your cart is empty.
-          </p>
+          <div className="py-6 text-center">
+            <p className="text-muted-foreground">Your cart is empty.</p>
+            <Link
+              href="/#products"
+              className={cn(
+                "mt-4 inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline",
+                focusRingClass
+              )}
+            >
+              Browse products
+            </Link>
+          </div>
         ) : (
           <>
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="mb-4 flex justify-between"
+                className="mb-4 flex justify-between gap-4"
               >
-                <div>
-                  <p className="font-medium">
-                    {item.name}
-                  </p>
+                <div className="min-w-0">
+                  <p className="font-medium">{item.name}</p>
 
                   <p className="text-sm text-muted-foreground">
                     Quantity: {item.quantity}
                   </p>
                 </div>
 
-                <span>
+                <span className="shrink-0 tabular-nums">
                   €{(item.price * item.quantity).toFixed(2)}
                 </span>
               </div>
@@ -119,20 +141,25 @@ export default function CheckoutPage() {
 
             <div className="mt-6 flex justify-between border-t pt-4 font-bold">
               <span>Total</span>
-              <span>€{total.toFixed(2)}</span>
+              <span className="tabular-nums">€{total.toFixed(2)}</span>
             </div>
 
-            {error && (
-              <p className="mt-4 text-sm text-destructive">
-                {error}
-              </p>
-            )}
+            <p
+              role="alert"
+              aria-live="polite"
+              className={cn(
+                "mt-4 text-sm text-destructive",
+                !error && "sr-only"
+              )}
+            >
+              {error ?? ""}
+            </p>
 
             <button
               type="button"
               onClick={handleContinueToPayment}
               disabled={isSubmitting}
-              className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              className={cn(primaryActionClass, "mt-6 w-full rounded-xl py-3")}
             >
               {isSubmitting
                 ? "Processing..."

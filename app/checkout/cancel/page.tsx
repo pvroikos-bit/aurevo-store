@@ -2,15 +2,14 @@
 
 import Link from "next/link"
 import { useCart } from "@/components/cart-context"
+import { cn, primaryActionClass, secondaryActionClass } from "@/lib/utils"
 
 export default function CheckoutCancelPage() {
   const { cart } = useCart()
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <h1 className="text-4xl font-bold">
-        Checkout Cancelled
-      </h1>
+    <main id="main-content" className="mx-auto max-w-3xl px-6 py-24 text-center">
+      <h1 className="text-4xl font-bold">Checkout Cancelled</h1>
 
       <p className="mt-6 text-lg text-muted-foreground">
         Your payment was not completed. Your cart is still saved.
@@ -24,16 +23,13 @@ export default function CheckoutCancelPage() {
       )}
 
       <div className="mt-10 flex flex-col gap-4">
-        <Link
-          href="/checkout"
-          className="rounded-xl bg-primary px-8 py-3 font-semibold text-primary-foreground"
-        >
+        <Link href="/checkout" className={cn(primaryActionClass, "w-full")}>
           Return to Checkout
         </Link>
 
         <Link
           href="/#products"
-          className="rounded-xl border border-border px-8 py-3 font-semibold"
+          className={cn(secondaryActionClass, "w-full")}
         >
           Continue Shopping
         </Link>

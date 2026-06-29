@@ -36,7 +36,7 @@ const features = [
   {
     icon: Clock,
     title: "⭐ Trusted by Resellers",
-    desc: "Used by hundreds of resellers to source products and scale their stores From 2022/2026.",
+    desc: "Used by hundreds of resellers to source products and scale their stores from 2022–2026.",
   },
 ]
 
