@@ -15,13 +15,13 @@ export function BuyNowButton({
   price,
 }: Props) {
   const router = useRouter()
-  const { addToCart } = useCart()
+  const { replaceCart } = useCart()
 
   return (
     <button
       type="button"
       onClick={() => {
-        addToCart({
+        replaceCart({
           id,
           name,
           price,

@@ -13,6 +13,7 @@ export type Product = {
   sales: number
   featured?: boolean
   checkoutUrl?: string
+  stripePriceId?: string
 }
 
 export const products: Product[] = [

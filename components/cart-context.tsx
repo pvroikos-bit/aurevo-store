@@ -1,17 +1,12 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
-
-type CartItem = {
-  id: string
-  name: string
-  price: number
-  quantity: number
-}
+import type { CartLineItem } from "@/lib/payments/types"
 
 type CartContextType = {
-  cart: CartItem[]
-  addToCart: (item: Omit<CartItem, "quantity">) => void
+  cart: CartLineItem[]
+  addToCart: (item: Omit<CartLineItem, "quantity">) => void
+  replaceCart: (item: Omit<CartLineItem, "quantity">) => void
   removeFromCart: (id: string) => void
   increaseQuantity: (id: string) => void
   decreaseQuantity: (id: string) => void
@@ -25,7 +20,7 @@ export function CartProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [cart, setCart] = useState<CartItem[]>([])
+  const [cart, setCart] = useState<CartLineItem[]>([])
 
   useEffect(() => {
     const savedCart = localStorage.getItem("cart")
@@ -40,7 +35,7 @@ export function CartProvider({
   }, [cart])
 
   const addToCart = (
-    item: Omit<CartItem, "quantity">
+    item: Omit<CartLineItem, "quantity">
   ) => {
     setCart((prev) => {
       const existing = prev.find(
@@ -66,6 +61,17 @@ export function CartProvider({
         },
       ]
     })
+  }
+
+  const replaceCart = (
+    item: Omit<CartLineItem, "quantity">
+  ) => {
+    setCart([
+      {
+        ...item,
+        quantity: 1,
+      },
+    ])
   }
 
   const increaseQuantity = (id: string) => {
@@ -111,6 +117,7 @@ export function CartProvider({
       value={{
         cart,
         addToCart,
+        replaceCart,
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,

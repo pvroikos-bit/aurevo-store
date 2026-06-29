@@ -1,15 +1,60 @@
 "use client"
 
+import { useState } from "react"
 import { useCart } from "@/components/cart-context"
-import { products } from "@/lib/store-data"
+import { getCartTotal } from "@/lib/payments/cart"
 
 export default function CheckoutPage() {
   const { cart } = useCart()
+  const [email, setEmail] = useState("")
+  const [discordUsername, setDiscordUsername] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const total = cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
+  const total = getCartTotal(cart)
+
+  async function handleContinueToPayment() {
+    if (cart.length === 0) {
+      return
+    }
+
+    setError(null)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: cart,
+          customer: {
+            email,
+            discordUsername,
+          },
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.message ?? "Checkout failed. Please try again.")
+        return
+      }
+
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl
+        return
+      }
+
+      setError("No payment redirect was returned.")
+    } catch {
+      setError("Checkout failed. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-24">
@@ -26,13 +71,22 @@ export default function CheckoutPage() {
           <input
             type="email"
             placeholder="Email Address"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             className="w-full rounded-lg border border-border bg-background p-3"
+            autoComplete="email"
+            required
           />
 
           <input
             type="text"
             placeholder="Discord Username"
+            value={discordUsername}
+            onChange={(event) =>
+              setDiscordUsername(event.target.value)
+            }
             className="w-full rounded-lg border border-border bg-background p-3"
+            autoComplete="username"
           />
         </div>
 
@@ -68,32 +122,21 @@ export default function CheckoutPage() {
               <span>€{total.toFixed(2)}</span>
             </div>
 
+            {error && (
+              <p className="mt-4 text-sm text-destructive">
+                {error}
+              </p>
+            )}
+
             <button
-              onClick={() => {
-                if (cart.length === 0) return
-
-                const product = products.find(
-                  (p) => p.id === cart[0].id
-                )
-
-                if (!product) {
-                  alert("Product not found.")
-                  return
-                }
-
-                if (
-                  !product.checkoutUrl ||
-                  product.checkoutUrl === "#"
-                ) {
-                  alert("This product is not connected yet.")
-                  return
-                }
-
-                window.location.href = product.checkoutUrl
-              }}
-              className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground"
+              type="button"
+              onClick={handleContinueToPayment}
+              disabled={isSubmitting}
+              className="mt-6 w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Continue To Payment
+              {isSubmitting
+                ? "Processing..."
+                : "Continue To Payment"}
             </button>
           </>
         )}

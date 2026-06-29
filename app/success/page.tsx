@@ -1,10 +1,14 @@
 "use client"
 
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { useCart } from "@/components/cart-context"
+import { env } from "@/lib/env"
 
-export default function SuccessPage() {
+function SuccessContent() {
   const { clearCart } = useCart()
+  const searchParams = useSearchParams()
+  const sessionId = searchParams.get("session_id")
 
   useEffect(() => {
     clearCart()
@@ -20,6 +24,12 @@ export default function SuccessPage() {
         Thank you for your purchase. Your order has been received.
       </p>
 
+      {sessionId && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Order reference: {sessionId}
+        </p>
+      )}
+
       <div className="mt-10 rounded-xl border border-border p-6">
         <h2 className="text-2xl font-semibold">
           Next Steps
@@ -30,7 +40,7 @@ export default function SuccessPage() {
         </p>
 
         <a
-          href="https://discord.gg/WvYNE5xrvr"
+          href={env.social.discord}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 block rounded-xl bg-primary px-8 py-3 font-semibold text-primary-foreground"
@@ -38,24 +48,36 @@ export default function SuccessPage() {
           Join Discord
         </a>
 
-        <a
-          href="https://instagram.com/YOUR_INSTAGRAM"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
-        >
-          Follow Instagram
-        </a>
+        {env.social.instagram && (
+          <a
+            href={env.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
+          >
+            Follow Instagram
+          </a>
+        )}
 
-        <a
-          href="https://tiktok.com/@YOUR_TIKTOK"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
-        >
-          Follow TikTok
-        </a>
+        {env.social.tiktok && (
+          <a
+            href={env.social.tiktok}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 block rounded-xl border border-border px-8 py-3 font-semibold"
+          >
+            Follow TikTok
+          </a>
+        )}
       </div>
     </main>
+  )
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense>
+      <SuccessContent />
+    </Suspense>
   )
 }
