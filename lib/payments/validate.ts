@@ -1,5 +1,6 @@
 import { products } from "@/lib/store-data"
 import { isValidEmail } from "@/lib/payments/cart"
+import { resolveStripePriceId } from "@/lib/payments/stripe-price-map"
 import type {
   CheckoutFailure,
   CheckoutRequest,
@@ -56,7 +57,10 @@ export function validateCheckoutRequest(
       name: product.name,
       price: product.price,
       quantity: Math.max(1, item.quantity),
-      stripePriceId: product.stripePriceId,
+      stripePriceId: resolveStripePriceId(
+        product.id,
+        product.stripePriceId
+      ),
       checkoutUrl: product.checkoutUrl,
     })
   }

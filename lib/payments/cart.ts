@@ -7,13 +7,6 @@ export function getCartTotal(items: CartLineItem[]): number {
   )
 }
 
-export function formatPrice(amount: number, currency = "EUR"): string {
-  return new Intl.NumberFormat("en-IE", {
-    style: "currency",
-    currency,
-  }).format(amount)
-}
-
 export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
 }

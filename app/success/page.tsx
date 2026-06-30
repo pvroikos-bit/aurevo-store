@@ -12,8 +12,40 @@ function SuccessContent() {
   const sessionId = searchParams.get("session_id")
 
   useEffect(() => {
-    clearCart()
-  }, [clearCart])
+    if (!sessionId) {
+      clearCart()
+      return
+    }
+
+    const verifiedSessionId = sessionId
+    let cancelled = false
+
+    async function verifyPayment() {
+      try {
+        const response = await fetch(
+          `/api/checkout/session?session_id=${encodeURIComponent(verifiedSessionId)}`
+        )
+
+        if (!response.ok) {
+          return
+        }
+
+        const data = (await response.json()) as { paid?: boolean }
+
+        if (!cancelled && data.paid) {
+          clearCart()
+        }
+      } catch {
+        // Keep cart if verification fails; webhook remains source of truth.
+      }
+    }
+
+    void verifyPayment()
+
+    return () => {
+      cancelled = true
+    }
+  }, [clearCart, sessionId])
 
   return (
     <main id="main-content" className="mx-auto max-w-3xl px-6 py-24 text-center">

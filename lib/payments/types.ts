@@ -33,7 +33,10 @@ export type CheckoutErrorCode =
   | "PRODUCT_UNAVAILABLE"
   | "MULTI_ITEM_UNSUPPORTED"
   | "PROVIDER_NOT_CONFIGURED"
-  | "STRIPE_NOT_INSTALLED"
+  | "STRIPE_ERROR"
+  | "INVALID_BODY"
+  | "INVALID_SESSION"
+  | "WEBHOOK_ERROR"
 
 export type CheckoutFailure = {
   ok: false

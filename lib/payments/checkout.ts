@@ -48,25 +48,6 @@ export function createExternalCheckout(
   }
 }
 
-export async function createStripeCheckout(
-  items: ValidatedLineItem[],
-  customer: CheckoutRequest["customer"]
-): Promise<CheckoutResult> {
-  const missingPriceIds = items.filter((item) => !item.stripePriceId)
-
-  if (missingPriceIds.length > 0) {
-    return {
-      ok: false,
-      status: 400,
-      code: "PRODUCT_UNAVAILABLE",
-      message:
-        "One or more products are missing Stripe price IDs. Add stripePriceId in store data before enabling Stripe.",
-    }
-  }
-
-  return createStripeCheckoutSession(items, customer)
-}
-
 export async function createCheckoutSession(
   input: CheckoutRequest
 ): Promise<CheckoutResult> {
@@ -77,7 +58,10 @@ export async function createCheckoutSession(
   }
 
   if (env.paymentProvider === "stripe") {
-    return createStripeCheckout(validation.items, validation.customer)
+    return createStripeCheckoutSession(
+      validation.items,
+      validation.customer
+    )
   }
 
   return createExternalCheckout(validation.items)
