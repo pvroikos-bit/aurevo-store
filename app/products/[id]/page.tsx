@@ -10,6 +10,21 @@ type ProductPageProps = {
   params: Promise<{ id: string }>
 }
 
+function badgeStyles(badge: string) {
+  switch (badge) {
+    case "Best Value":
+      return "border-primary/35 bg-primary/10 text-primary"
+    case "Popular":
+      return "border-border/60 bg-muted/30 text-foreground/80"
+    case "New":
+      return "border-border/60 bg-background/90 text-foreground/75"
+    case "Limited":
+      return "border-border/55 bg-muted/25 text-muted-foreground"
+    default:
+      return "border-border/50 bg-background/90 text-foreground/75"
+  }
+}
+
 export function generateStaticParams() {
   return products.map((product) => ({ id: product.id }))
 }
@@ -47,6 +62,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
+  const savings =
+    product.oldPrice && product.oldPrice > product.price
+      ? Math.round((1 - product.price / product.oldPrice) * 100)
+      : null
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -80,49 +100,74 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <JsonLd data={productSchema} />
 
-      <main id="main-content" className="mx-auto max-w-5xl px-6 py-16">
-        <div className="grid gap-16 md:grid-cols-2">
+      <main
+        id="main-content"
+        className="mx-auto max-w-5xl px-3 py-16 min-[360px]:px-4 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+      >
+        <div className="grid gap-10 md:grid-cols-2 md:gap-12 lg:gap-16">
           <div>
-            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-border/50 bg-muted/20">
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
+                className="object-cover object-center"
               />
             </div>
           </div>
 
-          <div>
-            {product.badge && (
-              <span className="inline-block rounded-full bg-blue-500 px-3 py-1 text-sm text-white">
-                {product.badge}
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground/80 sm:text-[11px]">
+                {product.category}
               </span>
-            )}
-
-            <h1 className="mt-4 text-5xl font-bold">
-              {product.name}
-            </h1>
-
-            <p className="mt-4 text-lg opacity-80">
-              {product.description}
-            </p>
-
-            <div className="mt-6 flex items-center gap-4">
-              <span className="text-4xl font-bold tabular-nums">
-                €{product.price.toFixed(2)}
-              </span>
-
-              {product.oldPrice && (
-                <span className="text-xl tabular-nums line-through opacity-60">
-                  €{product.oldPrice.toFixed(2)}
+              {product.badge && (
+                <span
+                  className={`rounded-md border px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] sm:text-[11px] ${badgeStyles(product.badge)}`}
+                >
+                  {product.badge}
                 </span>
               )}
             </div>
 
-            <ul className="mt-6 space-y-3" aria-label="Product highlights">
+            <h1 className="mt-3 font-heading text-[1.75rem] font-semibold leading-snug tracking-[-0.025em] text-balance min-[360px]:text-3xl sm:mt-4 sm:text-4xl lg:text-[2.625rem] lg:leading-[1.12]">
+              {product.name}
+            </h1>
+
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground text-pretty sm:mt-5 sm:text-base sm:leading-relaxed">
+              {product.description}
+            </p>
+
+            <div className="mt-6 sm:mt-8">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span className="font-heading text-3xl font-bold tracking-tight tabular-nums text-foreground sm:text-4xl">
+                  €{product.price.toFixed(2)}
+                </span>
+
+                {product.oldPrice && (
+                  <span className="text-base tabular-nums text-muted-foreground/70 line-through sm:text-lg">
+                    €{product.oldPrice.toFixed(2)}
+                  </span>
+                )}
+              </div>
+
+              {savings !== null && savings > 0 && (
+                <p className="mt-1.5 text-[11px] font-medium text-primary/90 sm:text-xs">
+                  Save {savings}% today
+                </p>
+              )}
+
+              <p className="mt-2 text-[11px] text-muted-foreground/70 sm:text-xs">
+                {product.stock}
+              </p>
+            </div>
+
+            <ul
+              className="mt-6 space-y-2.5 text-sm leading-relaxed text-foreground/85 sm:mt-8 sm:space-y-3 sm:text-[0.9375rem]"
+              aria-label="Product highlights"
+            >
               <li>✅ Verified supplier contact</li>
               <li>🌍 Fast international shipping</li>
               <li>💰 High profit margins</li>
@@ -130,12 +175,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <li>🚀 Instant digital delivery</li>
             </ul>
 
-            <div className="mt-8 rounded-xl border border-border p-4">
-              <p className="font-semibold">
+            <div className="mt-8 rounded-2xl border border-border/50 bg-card/20 p-5 sm:mt-10 sm:p-6">
+              <p className="font-heading text-base font-semibold tracking-[-0.01em] text-foreground sm:text-lg">
                 ⭐⭐⭐⭐⭐ 4.9/5 Rating
               </p>
 
-              <p className="mt-2 text-sm opacity-80">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Trusted by 18,000+ resellers worldwide.
               </p>
             </div>

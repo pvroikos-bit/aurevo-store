@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "stripe:verify": "node scripts/verify-stripe-config.mjs",
+    "stripe:setup-test-prices": "node scripts/setup-stripe-test-prices.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

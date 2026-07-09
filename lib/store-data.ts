@@ -48,7 +48,6 @@ export const products: Product[] = [
     rating: 5,
     sales: 2140,
     featured: true,
-    checkoutUrl: "#"
   },
   {
     id: "receipt-generator",

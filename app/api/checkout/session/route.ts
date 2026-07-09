@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
-import { env, validateStripeEnv } from "@/lib/env"
+import { env } from "@/lib/env"
 import { retrieveCheckoutSession } from "@/lib/payments/providers/stripe"
+import { validateStripeReadiness } from "@/lib/payments/stripe-config"
 import { isCheckoutSessionPaid } from "@/lib/payments/stripe-utils"
 
 export const runtime = "nodejs"
@@ -16,9 +17,9 @@ export async function GET(request: Request) {
     )
   }
 
-  const validation = validateStripeEnv()
+  const readiness = validateStripeReadiness()
 
-  if (!validation.ok) {
+  if (!readiness.ok) {
     return NextResponse.json(
       {
         code: "PROVIDER_NOT_CONFIGURED",

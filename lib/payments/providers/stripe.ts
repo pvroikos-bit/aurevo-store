@@ -1,6 +1,11 @@
-import { env, validateStripeEnv } from "@/lib/env"
+import Stripe from "stripe"
 import { getStripeClient } from "@/lib/stripe/client"
 import { paymentLog } from "@/lib/payments/logger"
+import {
+  getStripeCancelUrl,
+  getStripeSuccessUrl,
+  validateStripeReadiness,
+} from "@/lib/payments/stripe-config"
 import { toStripeLineItems, buildCheckoutMetadata } from "@/lib/payments/stripe-utils"
 import type {
   CheckoutRequest,
@@ -8,25 +13,56 @@ import type {
   ValidatedLineItem,
 } from "@/lib/payments/types"
 
-export function getStripeSuccessUrl(
-  sessionIdPlaceholder = "{CHECKOUT_SESSION_ID}"
-) {
-  return `${env.siteUrl}/success?session_id=${sessionIdPlaceholder}`
+function logStripeReadinessWarnings(): void {
+  const readiness = validateStripeReadiness()
+
+  if (readiness.warnings.length > 0) {
+    paymentLog("warn", "stripe_readiness_warnings", {
+      warnings: readiness.warnings.join("|"),
+    })
+  }
 }
 
-export function getStripeCancelUrl() {
-  return `${env.siteUrl}/checkout/cancel`
+// TEMP: verbose Stripe checkout error logging for debugging.
+function logStripeCheckoutError(error: unknown): void {
+  if (error instanceof Stripe.errors.StripeError) {
+    console.error("[stripe checkout] session create failed", {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      raw: error.raw,
+      stack: error.stack,
+    })
+    return
+  }
+
+  console.error("[stripe checkout] session create failed", {
+    message: error instanceof Error ? error.message : String(error),
+    type:
+      error && typeof error === "object" && "type" in error
+        ? (error as { type: unknown }).type
+        : undefined,
+    code:
+      error && typeof error === "object" && "code" in error
+        ? (error as { code: unknown }).code
+        : undefined,
+    raw:
+      error && typeof error === "object" && "raw" in error
+        ? (error as { raw: unknown }).raw
+        : undefined,
+    stack: error instanceof Error ? error.stack : undefined,
+  })
 }
 
 export async function createStripeCheckoutSession(
   items: ValidatedLineItem[],
   customer: CheckoutRequest["customer"]
 ): Promise<CheckoutResult> {
-  const validation = validateStripeEnv()
+  const readiness = validateStripeReadiness()
 
-  if (!validation.ok) {
-    paymentLog("error", "stripe_env_invalid", {
-      missing: validation.missing.join(","),
+  if (!readiness.ok) {
+    paymentLog("error", "stripe_readiness_invalid", {
+      errors: readiness.errors.join("|"),
     })
 
     return {
@@ -38,11 +74,7 @@ export async function createStripeCheckoutSession(
     }
   }
 
-  if (validation.warnings.length > 0) {
-    paymentLog("warn", "stripe_env_warnings", {
-      warnings: validation.warnings.join("|"),
-    })
-  }
+  logStripeReadinessWarnings()
 
   try {
     const stripe = getStripeClient()
@@ -87,6 +119,8 @@ export async function createStripeCheckoutSession(
       },
     }
   } catch (error) {
+    logStripeCheckoutError(error)
+
     paymentLog("error", "stripe_checkout_session_failed", {
       error_type:
         error instanceof Error ? error.constructor.name : "unknown",
@@ -102,9 +136,9 @@ export async function createStripeCheckoutSession(
 }
 
 export async function retrieveCheckoutSession(sessionId: string) {
-  const validation = validateStripeEnv()
+  const readiness = validateStripeReadiness()
 
-  if (!validation.ok) {
+  if (!readiness.ok) {
     return null
   }
 

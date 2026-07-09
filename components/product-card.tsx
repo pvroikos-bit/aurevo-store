@@ -62,7 +62,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
         </span>
       )}
 
-      <div className="relative aspect-[5/4] shrink-0 overflow-hidden bg-muted/20">
+      <div className="relative aspect-square shrink-0 overflow-hidden bg-muted/20">
         {product.badge && (
           <span
             className={`absolute left-2.5 top-2.5 z-10 max-w-[calc(100%-5rem)] truncate rounded-md border px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.08em] min-[360px]:left-3.5 min-[360px]:top-3.5 min-[360px]:max-w-none min-[360px]:text-[10px] min-[360px]:tracking-[0.1em] ${badgeStyles(product.badge)}`}
@@ -76,7 +76,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
           alt=""
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
+          className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
         />
 
         <div

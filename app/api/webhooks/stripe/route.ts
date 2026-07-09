@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { env, validateStripeEnv } from "@/lib/env"
+import { env } from "@/lib/env"
 import { getStripeClient } from "@/lib/stripe/client"
 import { paymentLog } from "@/lib/payments/logger"
+import { validateStripeReadiness } from "@/lib/payments/stripe-config"
 import { handleStripeWebhookEvent } from "@/lib/payments/webhooks/stripe"
 
 export const runtime = "nodejs"
@@ -18,11 +19,11 @@ export async function POST(request: Request) {
     )
   }
 
-  const validation = validateStripeEnv()
+  const readiness = validateStripeReadiness()
 
-  if (!validation.ok) {
-    paymentLog("error", "stripe_webhook_env_invalid", {
-      missing: validation.missing.join(","),
+  if (!readiness.ok) {
+    paymentLog("error", "stripe_webhook_readiness_invalid", {
+      errors: readiness.errors.join("|"),
     })
 
     return NextResponse.json(

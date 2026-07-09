@@ -15,7 +15,7 @@ export function getStripeClient(): Stripe {
 
   if (validation.warnings.length > 0) {
     paymentLog("warn", "stripe_env_warnings", {
-      warnings: validation.warnings,
+      warnings: validation.warnings.join("|"),
     })
   }
 
