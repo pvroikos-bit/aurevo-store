@@ -3,6 +3,7 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { products } from "@/lib/store-data"
 import { BuyNowButton } from "@/components/buy-now-button"
+import { WhatsIncluded } from "@/components/product/whats-included"
 import { JsonLd } from "@/components/seo/json-ld"
 import { absoluteUrl, createPageMetadata } from "@/lib/seo"
 
@@ -164,17 +165,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             </div>
 
-            <ul
-              className="mt-6 space-y-2.5 text-sm leading-relaxed text-foreground/85 sm:mt-8 sm:space-y-3 sm:text-[0.9375rem]"
-              aria-label="Product highlights"
-            >
-              <li>✅ Verified supplier contact</li>
-              <li>🌍 Fast international shipping</li>
-              <li>💰 High profit margins</li>
-              <li>⚡ Beginner-friendly setup</li>
-              <li>🚀 Instant digital delivery</li>
-            </ul>
-
             <div className="mt-8 rounded-2xl border border-border/50 bg-card/20 p-5 sm:mt-10 sm:p-6">
               <p className="font-heading text-base font-semibold tracking-[-0.01em] text-foreground sm:text-lg">
                 ⭐⭐⭐⭐⭐ 4.9/5 Rating
@@ -192,6 +182,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             />
           </div>
         </div>
+
+        <WhatsIncluded product={product} />
       </main>
     </>
   )

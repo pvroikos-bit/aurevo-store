@@ -14,6 +14,50 @@ export type Product = {
   featured?: boolean
   checkoutUrl?: string
   stripePriceId?: string
+  /** Product-specific deliverables shown on the product page. */
+  whatsIncluded?: string[]
+}
+
+const categoryWhatsIncluded: Record<string, string[]> = {
+  Bundles: [
+    "Verified suppliers, tools, and templates in one vault",
+    "Winning products list and reselling resources",
+    "Instant digital delivery after purchase",
+    "Lifetime updates included",
+  ],
+  Guides: [
+    "Premium digital playbook download",
+    "Sourcing, pricing, scaling, and automation strategies",
+    "Instant access after purchase",
+    "Lifetime access to your copy",
+  ],
+  Tools: [
+    "Full digital tool access",
+    "Lifetime updates and priority support",
+    "Instant activation after purchase",
+    "Beginner-friendly setup",
+  ],
+  Suppliers: [
+    "Verified supplier contact details",
+    "Sourcing and margin guidance",
+    "Worldwide shipping information",
+    "Instant digital delivery",
+    "Lifetime access to the listing",
+  ],
+}
+
+export function getProductWhatsIncluded(product: Product): string[] {
+  if (product.whatsIncluded?.length) {
+    return product.whatsIncluded
+  }
+
+  return (
+    categoryWhatsIncluded[product.category] ?? [
+      "Instant digital delivery after purchase",
+      "Lifetime access to your purchase",
+      "Secure checkout",
+    ]
+  )
 }
 
 export const products: Product[] = [
@@ -33,6 +77,14 @@ export const products: Product[] = [
     featured: true,
     checkoutUrl:
   "https://skrooj.mysellauth.com/product/all-in-one-products-pack",
+    whatsIncluded: [
+      "500+ verified supplier contacts",
+      "Winning products list",
+      "Reselling blueprint ebook",
+      "Receipt generator tool access",
+      "Instant digital delivery",
+      "Lifetime updates",
+    ],
   },
   {
     id: "reselling-blueprint",
@@ -48,6 +100,13 @@ export const products: Product[] = [
     rating: 5,
     sales: 2140,
     featured: true,
+    whatsIncluded: [
+      "120-page premium reselling playbook",
+      "Sourcing, pricing, scaling, and automation guides",
+      "Written by experienced resellers",
+      "Instant PDF download",
+      "Lifetime access",
+    ],
   },
   {
     id: "receipt-generator",
@@ -63,7 +122,13 @@ export const products: Product[] = [
     rating: 5,
     sales: 3675,
     featured: true,
-    checkoutUrl: "#"
+    checkoutUrl: "#",
+    whatsIncluded: [
+      "Receipt generator for 400+ brands",
+      "Lifetime updates",
+      "Priority support",
+      "Instant tool access after purchase",
+    ],
   },
   {
   id: "airpods-pro-2",
