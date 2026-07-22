@@ -1,7 +1,9 @@
+import { contentPageHeadingClass, contentPageMainClass } from "@/lib/utils"
+
 export default function TermsPage() {
   return (
-    <main id="main-content" className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="mb-6 text-4xl font-bold">Terms of Service</h1>
+    <main id="main-content" className={contentPageMainClass}>
+      <h1 className={contentPageHeadingClass}>Terms of Service</h1>
 
       <p className="leading-relaxed text-muted-foreground">
         By purchasing any product from SkroojMoney, you agree to these terms.

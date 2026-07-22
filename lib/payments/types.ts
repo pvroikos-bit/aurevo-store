@@ -5,9 +5,20 @@ export type CartLineItem = {
   quantity: number
 }
 
+export type CheckoutShipping = {
+  fullName: string
+  phone?: string
+  country: string
+  city: string
+  postalCode: string
+  streetAddress: string
+  apartment?: string
+}
+
 export type CheckoutCustomer = {
   email: string
   discordUsername?: string
+  shipping: CheckoutShipping
 }
 
 export type CheckoutRequest = {
@@ -29,6 +40,7 @@ export type CheckoutSession = {
 export type CheckoutErrorCode =
   | "EMPTY_CART"
   | "INVALID_EMAIL"
+  | "INVALID_SHIPPING"
   | "PRODUCT_NOT_FOUND"
   | "PRODUCT_UNAVAILABLE"
   | "MULTI_ITEM_UNSUPPORTED"

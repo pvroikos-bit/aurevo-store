@@ -6,7 +6,7 @@ import {
   getStripeSuccessUrl,
   validateStripeReadiness,
 } from "@/lib/payments/stripe-config"
-import { toStripeLineItems, buildCheckoutMetadata } from "@/lib/payments/stripe-utils"
+import { toStripeLineItems, buildCheckoutMetadata, toStripeShippingDetails } from "@/lib/payments/stripe-utils"
 import type {
   CheckoutRequest,
   CheckoutResult,
@@ -89,6 +89,7 @@ export async function createStripeCheckoutSession(
       metadata,
       payment_intent_data: {
         metadata,
+        shipping: toStripeShippingDetails(customer.shipping),
       },
     })
 

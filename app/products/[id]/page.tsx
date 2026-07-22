@@ -3,6 +3,10 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { products } from "@/lib/store-data"
 import { BuyNowButton } from "@/components/buy-now-button"
+import { CustomerReviews } from "@/components/product/customer-reviews"
+import { ProductFaq } from "@/components/product/product-faq"
+import { RelatedProducts } from "@/components/product/related-products"
+import { TrustBadges } from "@/components/product/trust-badges"
 import { WhatsIncluded } from "@/components/product/whats-included"
 import { JsonLd } from "@/components/seo/json-ld"
 import { absoluteUrl, createPageMetadata } from "@/lib/seo"
@@ -180,10 +184,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
               name={product.name}
               price={product.price}
             />
+
+            <TrustBadges />
           </div>
         </div>
 
         <WhatsIncluded product={product} />
+
+        <RelatedProducts product={product} />
+
+        <ProductFaq />
+
+        <CustomerReviews />
       </main>
     </>
   )

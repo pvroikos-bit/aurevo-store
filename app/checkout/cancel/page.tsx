@@ -2,23 +2,29 @@
 
 import Link from "next/link"
 import { useCart } from "@/components/cart-context"
-import { cn, primaryActionClass, secondaryActionClass } from "@/lib/utils"
+import {
+  centeredPageHeadingClass,
+  centeredPageMainClass,
+  cn,
+  primaryActionClass,
+  secondaryActionClass,
+} from "@/lib/utils"
 
 export default function CheckoutCancelPage() {
   const { cart } = useCart()
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
-    <main id="main-content" className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <h1 className="text-4xl font-bold">Checkout Cancelled</h1>
+    <main id="main-content" className={centeredPageMainClass}>
+      <h1 className={centeredPageHeadingClass}>Checkout Cancelled</h1>
 
-      <p className="mt-6 text-lg text-muted-foreground">
+      <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
         Your payment was not completed. Your cart is still saved.
       </p>
 
-      {cart.length > 0 && (
+      {cartCount > 0 && (
         <p className="mt-2 text-sm text-muted-foreground">
-          {cart.length}{" "}
-          {cart.length === 1 ? "item" : "items"} waiting in your cart.
+          {cartCount} {cartCount === 1 ? "item" : "items"} waiting in your cart.
         </p>
       )}
 

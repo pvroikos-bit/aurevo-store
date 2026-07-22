@@ -47,10 +47,8 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
       : null
 
   return (
-    <Link
-      href={`/products/${product.id}`}
-      aria-label={`View ${product.name}`}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/25 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] outline-none transition-[border-color,background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-border/60 hover:bg-card/45 hover:shadow-[0_12px_32px_-24px_oklch(0_0_0/0.5)] focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transform-none motion-reduce:transition-none ${
+    <article
+      className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card/25 shadow-[0_1px_0_0_oklch(1_0_0/0.03)] transition-[border-color,background-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-border/60 hover:bg-card/45 hover:shadow-[0_12px_32px_-24px_oklch(0_0_0/0.5)] motion-reduce:transform-none motion-reduce:transition-none ${
         highlighted
           ? "border-primary/30"
           : "border-border/35"
@@ -62,6 +60,11 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
         </span>
       )}
 
+      <Link
+        href={`/products/${product.id}`}
+        aria-label={`View ${product.name}`}
+        className="flex flex-1 flex-col outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
       <div className="relative aspect-square shrink-0 overflow-hidden bg-muted/20">
         {product.badge && (
           <span
@@ -85,7 +88,7 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
         />
       </div>
 
-      <div className="flex min-h-[15rem] flex-1 flex-col px-4 pb-4 pt-3.5 min-[360px]:min-h-[14rem] min-[360px]:px-5 min-[360px]:pb-5 min-[360px]:pt-4 sm:min-h-[14.5rem] sm:px-6 sm:pb-6 sm:pt-5">
+      <div className="flex min-h-[15rem] flex-1 flex-col px-4 pt-3.5 min-[360px]:min-h-[14rem] min-[360px]:px-5 min-[360px]:pt-4 sm:min-h-[14.5rem] sm:px-6 sm:pt-5">
         <div className="mb-2 flex flex-col items-start gap-1 min-[390px]:mb-2.5 min-[390px]:flex-row min-[390px]:items-center min-[390px]:justify-between min-[390px]:gap-2">
           <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground/80">
             {product.category}
@@ -160,24 +163,25 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
             <ShieldCheck className="size-3 shrink-0" aria-hidden />
             Instant digital delivery
           </p>
-
-          <Button
-            className="mt-3 min-h-11 h-11 w-full justify-center gap-1.5 rounded-full text-[13px] font-semibold sm:mt-4 sm:h-11 sm:text-sm"
-            onClick={(e) => {
-              e.preventDefault()
-
-              addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-              })
-            }}
-          >
-            <Plus className="size-3.5 shrink-0" aria-hidden />
-            Add to Cart
-          </Button>
         </div>
       </div>
-    </Link>
+      </Link>
+
+      <div className="px-4 pb-4 min-[360px]:px-5 min-[360px]:pb-5 sm:px-6 sm:pb-6">
+        <Button
+          className="min-h-11 h-11 w-full justify-center gap-1.5 rounded-full text-[13px] font-semibold sm:h-11 sm:text-sm"
+          onClick={() => {
+            addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+            })
+          }}
+        >
+          <Plus className="size-3.5 shrink-0" aria-hidden />
+          Add to Cart
+        </Button>
+      </div>
+    </article>
   )
 }

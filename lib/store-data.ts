@@ -38,11 +38,11 @@ const categoryWhatsIncluded: Record<string, string[]> = {
     "Beginner-friendly setup",
   ],
   Suppliers: [
-    "Verified supplier contact details",
-    "Sourcing and margin guidance",
-    "Worldwide shipping information",
-    "Instant digital delivery",
-    "Lifetime access to the listing",
+    "✅ 1:1 Premium Vendors",
+    "🚚 Fast EU Shipping (4–9 Days)",
+    "🧾 Receipt Included",
+    "🌍 Worldwide Shipping",
+    "💬 Step-by-Step Support from Our Team",
   ],
 }
 
@@ -58,6 +58,21 @@ export function getProductWhatsIncluded(product: Product): string[] {
       "Secure checkout",
     ]
   )
+}
+
+export function getRelatedProducts(
+  currentProduct: Product,
+  limit = 3
+): Product[] {
+  const others = products.filter((product) => product.id !== currentProduct.id)
+  const sameCategory = others.filter(
+    (product) => product.category === currentProduct.category
+  )
+  const otherCategories = others.filter(
+    (product) => product.category !== currentProduct.category
+  )
+
+  return [...sameCategory, ...otherCategories].slice(0, limit)
 }
 
 export const products: Product[] = [

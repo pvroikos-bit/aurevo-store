@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useRef, useState, type KeyboardEvent } from "react"
+import { useRef, useState, type KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/product-card"
 import { products } from "@/lib/store-data"
@@ -112,14 +112,13 @@ export function AllProducts() {
     ),
   ]
 
-  const filteredProducts = useMemo(() => {
-    if (selected === "All") return products
-
-    return products.filter(
-      (product) =>
-        product.category.toLowerCase() === selected.toLowerCase()
-    )
-  }, [selected])
+  const filteredProducts =
+    selected === "All"
+      ? products
+      : products.filter(
+          (product) =>
+            product.category.toLowerCase() === selected.toLowerCase()
+        )
 
   const focusTab = (index: number) => {
     const tab = tabRefs.current[index]
@@ -174,7 +173,7 @@ export function AllProducts() {
           />
 
           <div
-            className="mx-auto -mx-3 mt-8 flex max-w-4xl gap-1.5 overflow-x-auto overscroll-x-contain rounded-full border border-border/40 bg-muted/15 p-1.5 min-[360px]:-mx-0 min-[360px]:mt-10 min-[360px]:flex-wrap min-[360px]:justify-center sm:mt-12 [&::-webkit-scrollbar]:hidden"
+            className="mx-auto mt-8 flex w-full max-w-4xl gap-1.5 overflow-x-auto overscroll-x-contain rounded-full border border-border/40 bg-muted/15 p-1.5 min-[360px]:mt-10 min-[360px]:flex-wrap min-[360px]:justify-center sm:mt-12 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: "none" }}
             role="tablist"
             aria-label="Product categories"

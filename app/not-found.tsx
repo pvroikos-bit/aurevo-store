@@ -1,6 +1,11 @@
 import Link from "next/link"
 import { createPageMetadata } from "@/lib/seo"
-import { cn, primaryActionClass } from "@/lib/utils"
+import {
+  centeredPageHeadingClass,
+  centeredPageMainClass,
+  cn,
+  primaryActionClass,
+} from "@/lib/utils"
 
 export const metadata = createPageMetadata({
   title: "Page Not Found",
@@ -11,8 +16,8 @@ export const metadata = createPageMetadata({
 
 export default function NotFound() {
   return (
-    <main id="main-content" className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <h1 className="text-4xl font-bold">Page not found</h1>
+    <main id="main-content" className={centeredPageMainClass}>
+      <h1 className={centeredPageHeadingClass}>Page not found</h1>
       <p className="mt-4 text-muted-foreground">
         The page you requested could not be found.
       </p>

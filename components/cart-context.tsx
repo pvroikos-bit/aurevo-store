@@ -14,6 +14,55 @@ type CartContextType = {
 }
 
 const CartContext = createContext<CartContextType | null>(null)
+const CART_STORAGE_KEY = "cart"
+const MAX_QUANTITY = 99
+
+function normalizeQuantity(value: unknown): number {
+  const quantity = Math.floor(Number(value))
+
+  if (!Number.isFinite(quantity) || quantity < 1) {
+    return 1
+  }
+
+  return Math.min(quantity, MAX_QUANTITY)
+}
+
+function parseStoredCart(raw: string | null): CartLineItem[] {
+  if (!raw) {
+    return []
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as unknown
+
+    if (!Array.isArray(parsed)) {
+      return []
+    }
+
+    return parsed.flatMap((item) => {
+      if (
+        !item ||
+        typeof item !== "object" ||
+        typeof (item as CartLineItem).id !== "string" ||
+        typeof (item as CartLineItem).name !== "string" ||
+        typeof (item as CartLineItem).price !== "number"
+      ) {
+        return []
+      }
+
+      return [
+        {
+          id: (item as CartLineItem).id,
+          name: (item as CartLineItem).name,
+          price: (item as CartLineItem).price,
+          quantity: normalizeQuantity((item as CartLineItem).quantity),
+        },
+      ]
+    })
+  } catch {
+    return []
+  }
+}
 
 export function CartProvider({
   children,
@@ -21,18 +70,22 @@ export function CartProvider({
   children: React.ReactNode
 }) {
   const [cart, setCart] = useState<CartLineItem[]>([])
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart")
-
-    if (savedCart) {
-      setCart(JSON.parse(savedCart))
-    }
+    queueMicrotask(() => {
+      setCart(parseStoredCart(localStorage.getItem(CART_STORAGE_KEY)))
+      setHydrated(true)
+    })
   }, [])
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart))
-  }, [cart])
+    if (!hydrated) {
+      return
+    }
+
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
+  }, [cart, hydrated])
 
   const addToCart = (
     item: Omit<CartLineItem, "quantity">
@@ -47,7 +100,7 @@ export function CartProvider({
           p.id === item.id
             ? {
                 ...p,
-                quantity: p.quantity + 1,
+                quantity: normalizeQuantity(p.quantity + 1),
               }
             : p
         )
@@ -80,7 +133,7 @@ export function CartProvider({
         item.id === id
           ? {
               ...item,
-              quantity: item.quantity + 1,
+              quantity: normalizeQuantity(item.quantity + 1),
             }
           : item
       )

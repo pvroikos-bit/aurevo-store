@@ -1,9 +1,10 @@
+import { contentPageHeadingClass, contentPageMainClass } from "@/lib/utils"
 import { faqItems } from "@/lib/seo"
 
 export default function FAQPage() {
   return (
-    <main id="main-content" className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="mb-6 text-4xl font-bold">
+    <main id="main-content" className={contentPageMainClass}>
+      <h1 className={contentPageHeadingClass}>
         Frequently Asked Questions
       </h1>
 

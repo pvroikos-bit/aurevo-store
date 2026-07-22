@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Menu, Minus, Plus, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/components/cart-context"
+import { products } from "@/lib/store-data"
 import { scrollToSection as scrollToId } from "@/lib/utils"
 
 const navLinks = [
@@ -14,6 +16,10 @@ const navLinks = [
   { label: "Reviews", href: "#reviews" },
   { label: "Pricing", href: "#pricing" },
 ]
+
+function getProductImage(productId: string): string | undefined {
+  return products.find((product) => product.id === productId)?.image
+}
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
@@ -83,66 +89,99 @@ export function SiteHeader() {
                   <p className="mt-4 text-sm font-medium text-foreground">
                     Your cart is empty
                   </p>
-                  <a
+                  <Link
                     href="/#products"
                     className="mt-3 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     Browse products
-                  </a>
+                  </Link>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {cart.map((item) => (
-                    <div
-                      key={item.id}
-                      className="rounded-xl border border-border/50 bg-background/40 p-4"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium leading-snug break-words">
-                            {item.name}
-                          </p>
+                <div className="space-y-3.5">
+                  {cart.map((item) => {
+                    const image = getProductImage(item.id)
+                    const lineTotal = item.price * item.quantity
 
-                          <div className="mt-3 inline-flex items-center gap-1 rounded-full border border-border/60 bg-card/50 p-0.5">
-                            <button
-                              type="button"
-                              onClick={() => decreaseQuantity(item.id)}
-                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
-                              aria-label="Decrease quantity"
-                            >
-                              <Minus className="size-3.5" />
-                            </button>
+                    return (
+                      <div
+                        key={item.id}
+                        className="rounded-xl border border-border/50 bg-background/40 p-3.5 min-[360px]:p-4"
+                      >
+                        <div className="flex gap-3 min-[360px]:gap-3.5">
+                          <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-border/40 bg-muted/20 min-[360px]:size-[4.5rem] sm:size-20">
+                            {image ? (
+                              <Image
+                                src={image}
+                                alt=""
+                                fill
+                                sizes="80px"
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div
+                                className="flex size-full items-center justify-center"
+                                aria-hidden
+                              >
+                                <ShoppingBag className="size-5 text-muted-foreground/60" />
+                              </div>
+                            )}
+                          </div>
 
-                            <span className="min-w-6 text-center text-sm font-medium tabular-nums">
-                              {item.quantity}
-                            </span>
+                          <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="min-w-0">
+                                <p className="text-sm font-medium leading-snug tracking-[-0.01em] text-foreground break-words">
+                                  {item.name}
+                                </p>
+                                <p className="mt-1 text-xs tabular-nums text-muted-foreground">
+                                  €{item.price.toFixed(2)} each
+                                </p>
+                              </div>
 
-                            <button
-                              type="button"
-                              onClick={() => increaseQuantity(item.id)}
-                              className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
-                              aria-label="Increase quantity"
-                            >
-                              <Plus className="size-3.5" />
-                            </button>
+                              <button
+                                type="button"
+                                onClick={() => removeFromCart(item.id)}
+                                className="flex min-h-9 shrink-0 items-center rounded-md px-1.5 text-xs font-medium text-red-400/90 transition-colors duration-200 hover:text-red-400 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                                aria-label={`Remove ${item.name} from cart`}
+                              >
+                                Remove
+                              </button>
+                            </div>
+
+                            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                              <div className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-card/50 p-0.5">
+                                <button
+                                  type="button"
+                                  onClick={() => decreaseQuantity(item.id)}
+                                  className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
+                                  aria-label="Decrease quantity"
+                                >
+                                  <Minus className="size-3.5" />
+                                </button>
+
+                                <span className="min-w-6 text-center text-sm font-medium tabular-nums">
+                                  {item.quantity}
+                                </span>
+
+                                <button
+                                  type="button"
+                                  onClick={() => increaseQuantity(item.id)}
+                                  className="flex size-11 items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 md:size-7"
+                                  aria-label="Increase quantity"
+                                >
+                                  <Plus className="size-3.5" />
+                                </button>
+                              </div>
+
+                              <p className="text-sm font-semibold tabular-nums text-foreground">
+                                €{lineTotal.toFixed(2)}
+                              </p>
+                            </div>
                           </div>
                         </div>
-
-                        <button
-                          type="button"
-                          onClick={() => removeFromCart(item.id)}
-                          className="flex min-h-11 shrink-0 items-center px-2 text-xs font-medium text-red-400/90 transition-colors duration-200 hover:text-red-400 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                          aria-label={`Remove ${item.name} from cart`}
-                        >
-                          Remove
-                        </button>
                       </div>
-
-                      <div className="mt-3 text-sm font-medium tabular-nums text-muted-foreground">
-                        €{(item.price * item.quantity).toFixed(2)}
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>

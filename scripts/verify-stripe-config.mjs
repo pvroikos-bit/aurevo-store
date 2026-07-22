@@ -179,6 +179,42 @@ if (stripeMode === "test") {
   }
 }
 
+if (stripeMode === "live") {
+  if (secretKey && !secretKey.startsWith("sk_live_")) {
+    errors.push("STRIPE_MODE=live requires STRIPE_SECRET_KEY to start with sk_live_.")
+  }
+  if (publishableKey && !publishableKey.startsWith("pk_live_")) {
+    errors.push(
+      "STRIPE_MODE=live requires NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY to start with pk_live_."
+    )
+  }
+  if (siteUrl && siteUrl.startsWith("http://")) {
+    errors.push(
+      "STRIPE_MODE=live requires NEXT_PUBLIC_SITE_URL to use https:// (not http://)."
+    )
+  }
+  if (siteUrl && (siteUrl.includes("localhost") || siteUrl.includes("127.0.0.1"))) {
+    errors.push(
+      "STRIPE_MODE=live requires NEXT_PUBLIC_SITE_URL to be your public production domain."
+    )
+  }
+  if (Object.keys(priceMapStatus.map).length === 0) {
+    errors.push(
+      "STRIPE_MODE=live requires STRIPE_PRICE_MAP with live Price IDs for every catalog product."
+    )
+  } else {
+    const unmapped = products
+      .map((product) => product.id)
+      .filter((productId) => !priceMapStatus.map[productId])
+
+    if (unmapped.length > 0) {
+      errors.push(
+        `STRIPE_MODE=live requires STRIPE_PRICE_MAP entries for: ${unmapped.join(", ")}`
+      )
+    }
+  }
+}
+
 if (priceMapStatus.parseError) {
   errors.push(`STRIPE_PRICE_MAP: ${priceMapStatus.parseError}`)
 }
@@ -251,4 +287,20 @@ if (errors.length > 0) {
   process.exit(1)
 }
 
-console.log("\nStripe configuration looks ready for sandbox/test mode.")
+if (stripeMode === "live") {
+  console.log("\nStripe configuration looks ready for live/production mode.")
+  console.log("\nBefore accepting real payments, confirm manually in Stripe Dashboard:")
+  console.log(`- Webhook endpoint registered: ${webhookUrl}`)
+  console.log("- Webhook events enabled: checkout.session.completed, checkout.session.expired")
+  console.log("- Live Products and Prices match your catalog (EUR amounts)")
+  console.log("- Business details, payout bank account, and tax settings are complete")
+  console.log("- Checkout branding and customer support email are configured")
+} else {
+  console.log("\nStripe configuration looks ready for sandbox/test mode.")
+  console.log("\nTo go live later:")
+  console.log("- Set STRIPE_MODE=live")
+  console.log("- Replace keys with sk_live_..., pk_live_..., and a live whsec_... webhook secret")
+  console.log("- Set NEXT_PUBLIC_SITE_URL to your HTTPS production domain")
+  console.log("- Create live Products/Prices and populate STRIPE_PRICE_MAP")
+  console.log(`- Register webhook: ${webhookUrl}`)
+}
