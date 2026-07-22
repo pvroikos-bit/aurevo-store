@@ -1,6 +1,7 @@
 import type Stripe from "stripe"
 import type {
   CheckoutCustomer,
+  CheckoutShipping,
   ValidatedLineItem,
 } from "@/lib/payments/types"
 
@@ -10,10 +11,18 @@ export function buildCheckoutMetadata(
   items: ValidatedLineItem[],
   customer: CheckoutCustomer
 ): Stripe.MetadataParam {
+  const { shipping } = customer
+
   const metadata: Record<string, string> = {
     product_id: items.map((item) => item.id).join(","),
     product_name: items.map((item) => item.name).join(METADATA_SEPARATOR),
     price: items.map((item) => item.price.toFixed(2)).join(","),
+    quantity: items.map((item) => String(item.quantity)).join(","),
+    shipping_full_name: shipping.fullName,
+    shipping_country: shipping.country,
+    shipping_city: shipping.city,
+    shipping_postal_code: shipping.postalCode,
+    shipping_street: shipping.streetAddress,
   }
 
   if (customer.email) {
@@ -24,7 +33,31 @@ export function buildCheckoutMetadata(
     metadata.discord_username = customer.discordUsername
   }
 
+  if (shipping.phone) {
+    metadata.shipping_phone = shipping.phone
+  }
+
+  if (shipping.apartment) {
+    metadata.shipping_apartment = shipping.apartment
+  }
+
   return metadata
+}
+
+export function toStripeShippingDetails(
+  shipping: CheckoutShipping
+): Stripe.Checkout.SessionCreateParams.PaymentIntentData.Shipping {
+  return {
+    name: shipping.fullName,
+    ...(shipping.phone ? { phone: shipping.phone } : {}),
+    address: {
+      line1: shipping.streetAddress,
+      ...(shipping.apartment ? { line2: shipping.apartment } : {}),
+      city: shipping.city,
+      postal_code: shipping.postalCode,
+      country: shipping.country,
+    },
+  }
 }
 
 export function toStripeLineItems(

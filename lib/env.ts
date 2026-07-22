@@ -68,10 +68,12 @@ export const env: EnvConfig = {
   },
   social: {
     discord:
-      process.env.NEXT_PUBLIC_DISCORD_URL ??
-      "https://discord.gg/WvYNE5xrvr",
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL,
-    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL,
+      process.env.NEXT_PUBLIC_DISCORD_URL?.trim() ||
+      "https://discord.gg/kAbCfrZ6rA",
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL?.trim() || undefined,
+    tiktok:
+      process.env.NEXT_PUBLIC_TIKTOK_URL?.trim() ||
+      "https://www.tiktok.com/@skroojmoneyy?_r=1&_t=ZN-97S73YDVv1S",
   },
 }
 

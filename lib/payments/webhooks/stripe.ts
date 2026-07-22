@@ -1,16 +1,7 @@
 import type Stripe from "stripe"
-import { paymentLog } from "@/lib/payments/logger"
 
-export async function fulfillCheckoutSession(
-  session: Stripe.Checkout.Session
-): Promise<void> {
-  paymentLog("info", "checkout_session_fulfilled", {
-    session_id: session.id,
-    product_id: session.metadata?.product_id,
-    amount_total: session.amount_total ?? undefined,
-    currency: session.currency ?? undefined,
-  })
-}
+import { fulfillCheckoutSession } from "@/lib/delivery/fulfillment"
+import { paymentLog } from "@/lib/payments/logger"
 
 export async function handleStripeWebhookEvent(
   event: Stripe.Event
@@ -27,7 +18,7 @@ export async function handleStripeWebhookEvent(
         return
       }
 
-      await fulfillCheckoutSession(session)
+      await fulfillCheckoutSession(session, event.id)
       return
     }
 

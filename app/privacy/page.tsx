@@ -1,7 +1,9 @@
+import { contentPageHeadingClass, contentPageMainClass } from "@/lib/utils"
+
 export default function PrivacyPage() {
   return (
-    <main id="main-content" className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="mb-6 text-4xl font-bold">Privacy Policy</h1>
+    <main id="main-content" className={contentPageMainClass}>
+      <h1 className={contentPageHeadingClass}>Privacy Policy</h1>
 
       <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
         <p>

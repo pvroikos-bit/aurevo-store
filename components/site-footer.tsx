@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+import { env } from "@/lib/env"
 import { cn, focusRingClass } from "@/lib/utils"
 
 const linkClassName = cn(
@@ -13,7 +14,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-3 py-12 min-[360px]:px-4 sm:px-6 sm:py-14 lg:px-8">
         <div className="grid grid-cols-2 gap-8 min-[360px]:gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div className="col-span-2 lg:col-span-2">
-            <a href="/" className={cn("flex items-center gap-2", focusRingClass)}>
+            <Link href="/" className={cn("flex items-center gap-2", focusRingClass)}>
               <Image
                 src="/LOGO777.png"
                 alt="SkroojMoney"
@@ -25,7 +26,7 @@ export function SiteFooter() {
               <span className="font-heading text-lg font-bold tracking-tight">
                 SkroojMoney
               </span>
-            </a>
+            </Link>
 
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Verified supplier lists, private agents, digital tools and
@@ -34,7 +35,7 @@ export function SiteFooter() {
 
             <div className="mt-5 flex flex-wrap gap-4 min-[360px]:mt-6">
               <a
-                href="https://discord.gg/kAbCfrZ6rA"
+                href={env.social.discord}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={linkClassName}
@@ -43,7 +44,7 @@ export function SiteFooter() {
               </a>
 
               <a
-                href="https://www.tiktok.com/@skroojmoneyy?_r=1&_t=ZN-97S73YDVv1S"
+                href={env.social.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={linkClassName}
@@ -120,9 +121,9 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="#" className={linkClassName}>
+                <Link href="/faq" className={linkClassName}>
                   Instant Delivery
-                </a>
+                </Link>
               </li>
               <li>
                 <Link href="/terms" className={linkClassName}>

@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Check, Lock, Zap } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 const plans = [
   {
@@ -126,15 +127,16 @@ export function Pricing() {
 
               <Link
                 href="/products/all-in-one-supplier-vault"
-                className="mt-5 block"
+                className={cn(
+                  buttonVariants({ variant: "default" }),
+                  "group mt-5 min-h-11 h-11 w-full justify-center gap-2 rounded-full text-sm font-semibold sm:h-12 sm:text-base"
+                )}
               >
-                <Button className="group min-h-11 h-11 w-full justify-center gap-2 rounded-full text-sm font-semibold sm:h-12 sm:text-base">
-                  {plan.buttonText}
-                  <ArrowRight
-                    className="size-4 opacity-70 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
-                    aria-hidden
-                  />
-                </Button>
+                {plan.buttonText}
+                <ArrowRight
+                  className="size-4 opacity-70 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+                  aria-hidden
+                />
               </Link>
 
               <p className="mt-3 text-center text-[11px] text-muted-foreground/65">
