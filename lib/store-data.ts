@@ -82,7 +82,7 @@ export const products: Product[] = [
     category: "Bundles",
     description:
       "Every verified supplier, tool, and template we offer — bundled into one premium vault. The fastest way to launch your reselling business.",
-    price: 49.99,
+    price: 1.99,
     oldPrice: 89.99,
     image: "/products/supplier-bundle.png",
     badge: "Best Value",
