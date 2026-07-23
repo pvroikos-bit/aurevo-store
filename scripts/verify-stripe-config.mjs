@@ -261,6 +261,33 @@ if (!isAbsoluteHttpUrl(webhookUrl)) {
   errors.push("Webhook URL is invalid.")
 }
 
+const resendApiKey = process.env.RESEND_API_KEY?.trim()
+const resendFromEmail = process.env.RESEND_FROM_EMAIL?.trim()
+
+if (!resendApiKey) {
+  errors.push(
+    "Missing RESEND_API_KEY. Order confirmation emails will fail and the Stripe webhook will return 500."
+  )
+}
+
+if (!resendFromEmail) {
+  errors.push(
+    "Missing RESEND_FROM_EMAIL. Order confirmation emails will fail and the Stripe webhook will return 500."
+  )
+}
+
+if (!process.env.DELIVERY_TOKEN_SECRET?.trim()) {
+  warnings.push(
+    "DELIVERY_TOKEN_SECRET is unset. Download tokens will fall back to STRIPE_SECRET_KEY-derived secret."
+  )
+}
+
+if (!process.env.PRODUCT_ACCESS_LINKS?.trim()) {
+  warnings.push(
+    "PRODUCT_ACCESS_LINKS is empty. Emails will still send, but secure download links will be omitted until product URLs are configured."
+  )
+}
+
 console.log("Stripe configuration verification")
 console.log("--------------------------------")
 console.log(`Payment provider: ${paymentProvider}`)
@@ -271,6 +298,8 @@ console.log(`Cancel URL: ${cancelUrl}`)
 console.log(`Webhook URL: ${webhookUrl}`)
 console.log(`Catalog products: ${products.length}`)
 console.log(`Mapped prices: ${Object.keys(priceMapStatus.map).length}`)
+console.log(`Resend API key: ${resendApiKey ? "set" : "(missing)"}`)
+console.log(`Resend from email: ${resendFromEmail || "(missing)"}`)
 
 if (warnings.length > 0) {
   console.log("\nWarnings:")

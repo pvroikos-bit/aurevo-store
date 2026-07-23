@@ -8,10 +8,35 @@ import {
 import { paymentLog } from "@/lib/payments/logger"
 import { sendOrderReadyEmailOnce } from "@/lib/email/send-order-ready-email"
 
+function errorDetails(error: unknown): {
+  error_type: string
+  error_message: string
+  error_stack?: string
+} {
+  if (error instanceof Error) {
+    return {
+      error_type: error.constructor.name,
+      error_message: error.message,
+      error_stack: error.stack,
+    }
+  }
+
+  return {
+    error_type: "unknown",
+    error_message: String(error),
+  }
+}
+
 export async function fulfillCheckoutSession(
   session: Stripe.Checkout.Session,
   webhookEventId: string
 ): Promise<void> {
+  paymentLog("info", "fulfillment_start", {
+    session_id: session.id,
+    webhook_event_id: webhookEventId,
+    payment_status: session.payment_status,
+  })
+
   const products = uniqueSessionProducts(parseSessionProducts(session))
   const missingLinks = products
     .filter((product) => !getProductAccessLink(product.id))
@@ -27,16 +52,30 @@ export async function fulfillCheckoutSession(
     })
   }
 
-  paymentLog("info", "checkout_session_fulfilled", {
+  paymentLog("info", "payment_processed", {
     session_id: session.id,
+    webhook_event_id: webhookEventId,
     product_ids: products.map((product) => product.id).join(","),
     delivered_product_ids: deliveredProducts.join(","),
-    customer_email: session.metadata?.customer_email,
     amount_total: session.amount_total ?? undefined,
     currency: session.currency ?? undefined,
   })
 
-  // Send the order confirmation email only after Stripe confirms the payment.
-  // Idempotency is handled inside `sendOrderReadyEmailOnce`.
-  await sendOrderReadyEmailOnce({ session, webhookEventId })
+  try {
+    await sendOrderReadyEmailOnce({ session, webhookEventId })
+  } catch (error) {
+    paymentLog("error", "fulfillment_email_failed", {
+      session_id: session.id,
+      webhook_event_id: webhookEventId,
+      ...errorDetails(error),
+    })
+    throw error
+  }
+
+  paymentLog("info", "delivery_completed", {
+    session_id: session.id,
+    webhook_event_id: webhookEventId,
+    product_count: products.length,
+    delivered_product_count: deliveredProducts.length,
+  })
 }

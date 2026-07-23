@@ -1,5 +1,6 @@
 import type Stripe from "stripe"
 
+import { env } from "@/lib/env"
 import { getProductAccessLink } from "@/lib/delivery/product-access"
 import {
   parseSessionProducts,
@@ -11,12 +12,19 @@ import type { DeliveryItem } from "@/lib/delivery/types"
 import { retrieveCheckoutSession } from "@/lib/payments/providers/stripe"
 import { isCheckoutSessionPaid } from "@/lib/payments/stripe-utils"
 
-function buildDownloadUrl(token: string): string {
-  return `/api/delivery/download?token=${encodeURIComponent(token)}`
+function buildDownloadUrl(token: string, absolute = false): string {
+  const path = `/api/delivery/download?token=${encodeURIComponent(token)}`
+
+  if (!absolute) {
+    return path
+  }
+
+  return `${env.siteUrl}${path}`
 }
 
 export function buildDeliveryItemsForSession(
-  session: Stripe.Checkout.Session
+  session: Stripe.Checkout.Session,
+  options?: { absoluteUrls?: boolean }
 ): DeliveryItem[] {
   if (!isCheckoutSessionPaid(session)) {
     return []
@@ -24,6 +32,7 @@ export function buildDeliveryItemsForSession(
 
   const uniqueProducts = uniqueSessionProducts(parseSessionProducts(session))
   const items: DeliveryItem[] = []
+  const absoluteUrls = options?.absoluteUrls === true
 
   for (const product of uniqueProducts) {
     const access = getProductAccessLink(product.id)
@@ -38,7 +47,7 @@ export function buildDeliveryItemsForSession(
       productId: product.id,
       name: product.name,
       label: access.label,
-      downloadUrl: buildDownloadUrl(token),
+      downloadUrl: buildDownloadUrl(token, absoluteUrls),
     })
   }
 

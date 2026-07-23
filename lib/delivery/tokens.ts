@@ -11,8 +11,18 @@ function getDeliveryTokenSecret(): string {
     return secret
   }
 
+  // Fall back to Stripe secret so download tokens still work if the dedicated
+  // delivery secret was not set yet. Prefer setting DELIVERY_TOKEN_SECRET.
+  const stripeSecret = process.env.STRIPE_SECRET_KEY?.trim()
+
+  if (stripeSecret) {
+    return `delivery:${stripeSecret}`
+  }
+
   if (process.env.NODE_ENV === "production") {
-    throw new Error("DELIVERY_TOKEN_SECRET is required in production.")
+    throw new Error(
+      "DELIVERY_TOKEN_SECRET (or STRIPE_SECRET_KEY) is required in production."
+    )
   }
 
   return "dev-only-delivery-token-secret"

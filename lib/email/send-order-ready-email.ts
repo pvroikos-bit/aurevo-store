@@ -1,7 +1,9 @@
 import type Stripe from "stripe"
 
+import { validateResendEnv } from "@/lib/email/env"
 import { getResendClient } from "@/lib/email/resend"
-import { orderReadyEmailTemplate } from "@/lib/email/templates/order-ready"
+import { buildOrderReadyEmail } from "@/lib/email/templates/order-ready"
+import { buildDeliveryItemsForSession } from "@/lib/delivery/grants"
 import { paymentLog } from "@/lib/payments/logger"
 import { getStripeClient } from "@/lib/stripe/client"
 
@@ -14,7 +16,6 @@ const EMAIL_SENT_AT_META_KEY = "order_ready_email_sent_at"
 const SENDING_TTL_MS = 10 * 60 * 1000 // 10 minutes
 
 function getSessionEmail(session: Stripe.Checkout.Session): string | null {
-  // Prefer the email confirmed on the Stripe Checkout session.
   const emailFromDetails = session.customer_details?.email
   if (typeof emailFromDetails === "string" && emailFromDetails.trim()) {
     return emailFromDetails.trim()
@@ -76,42 +77,75 @@ function isLockActive(meta: Record<string, string>): boolean {
   )
 }
 
+function errorDetails(error: unknown): {
+  error_type: string
+  error_message: string
+  error_stack?: string
+} {
+  if (error instanceof Error) {
+    return {
+      error_type: error.constructor.name,
+      error_message: error.message,
+      error_stack: error.stack,
+    }
+  }
+
+  return {
+    error_type: "unknown",
+    error_message: String(error),
+  }
+}
+
 export async function sendOrderReadyEmailOnce(params: {
   session: Stripe.Checkout.Session
   webhookEventId: string
 }): Promise<void> {
   const { session, webhookEventId } = params
+
+  paymentLog("info", "order_ready_email_start", {
+    session_id: session.id,
+    webhook_event_id: webhookEventId,
+    payment_status: session.payment_status,
+  })
+
   const toEmail = getSessionEmail(session)
 
   if (!toEmail) {
-    paymentLog("warn", "order_ready_email_missing_customer_email", {
+    paymentLog("error", "order_ready_email_missing_customer_email", {
       session_id: session.id,
       webhook_event_id: webhookEventId,
+      has_customer_details_email: Boolean(session.customer_details?.email),
+      has_customer_email: Boolean(session.customer_email),
+      has_metadata_email: Boolean(session.metadata?.customer_email),
     })
-    return
+    throw new Error(
+      "Cannot send order email: Stripe Checkout session has no customer email."
+    )
   }
 
   const paymentIntentId = getPaymentIntentId(session)
 
   if (!paymentIntentId) {
-    // Refuse to send without a PaymentIntent — needed for durable dedupe.
     paymentLog("error", "order_ready_email_missing_payment_intent", {
       session_id: session.id,
       webhook_event_id: webhookEventId,
     })
-    return
+    throw new Error(
+      "Cannot send order email: Checkout session has no payment_intent for idempotency."
+    )
   }
 
-  const resendFromEmail = process.env.RESEND_FROM_EMAIL?.trim()
+  const resendEnv = validateResendEnv()
 
-  if (!resendFromEmail) {
-    paymentLog("error", "order_ready_email_missing_resend_from_email", {})
-    throw new Error("Missing RESEND_FROM_EMAIL.")
-  }
-
-  if (!process.env.RESEND_API_KEY?.trim()) {
-    paymentLog("error", "order_ready_email_missing_resend_api_key", {})
-    throw new Error("Missing RESEND_API_KEY.")
+  if (!resendEnv.ok) {
+    paymentLog("error", "order_ready_email_missing_resend_config", {
+      session_id: session.id,
+      webhook_event_id: webhookEventId,
+      missing: resendEnv.missing.join(","),
+    })
+    throw new Error(
+      `Missing Resend configuration: ${resendEnv.missing.join(", ")}. Set these in Vercel Environment Variables.`
+    )
   }
 
   const stripe = getStripeClient()
@@ -127,9 +161,6 @@ export async function sendOrderReadyEmailOnce(params: {
     return
   }
 
-  // Skip only when another concurrent attempt holds the lock.
-  // Same-event Stripe retries must continue so we can finish marking "sent"
-  // after a prior Resend success + failed metadata write.
   if (
     isLockActive(meta) &&
     meta[EMAIL_LOCK_EVENT_META_KEY] !== webhookEventId
@@ -144,12 +175,17 @@ export async function sendOrderReadyEmailOnce(params: {
 
   const lockAtMs = String(Date.now())
 
-  // Acquire / refresh a short-lived send lock before calling Resend.
+  paymentLog("info", "order_ready_email_acquiring_lock", {
+    session_id: session.id,
+    webhook_event_id: webhookEventId,
+    payment_intent_id: paymentIntentId,
+  })
+
+  // Only patch email lock keys — Stripe merges metadata; do not rewrite all keys.
   await stripe.paymentIntents.update(
     paymentIntentId,
     {
       metadata: {
-        ...meta,
         [EMAIL_LOCK_EVENT_META_KEY]: webhookEventId,
         [EMAIL_LOCK_AT_META_KEY]: lockAtMs,
       },
@@ -158,21 +194,62 @@ export async function sendOrderReadyEmailOnce(params: {
   )
 
   try {
+    let deliveryItems: ReturnType<typeof buildDeliveryItemsForSession> = []
+
+    try {
+      deliveryItems = buildDeliveryItemsForSession(session, {
+        absoluteUrls: true,
+      })
+    } catch (deliveryError) {
+      // Missing DELIVERY_TOKEN_SECRET / PRODUCT_ACCESS_LINKS must not block confirmation email.
+      paymentLog("warn", "order_ready_email_delivery_links_failed", {
+        session_id: session.id,
+        webhook_event_id: webhookEventId,
+        ...errorDetails(deliveryError),
+      })
+      deliveryItems = []
+    }
+
+    paymentLog("info", "order_ready_email_delivery_items_ready", {
+      session_id: session.id,
+      webhook_event_id: webhookEventId,
+      delivery_item_count: deliveryItems.length,
+    })
+
+    const emailContent = buildOrderReadyEmail({
+      orderReference: session.id,
+      deliveryItems: deliveryItems.map((item) => ({
+        name: item.name,
+        label: item.label,
+        downloadUrl: item.downloadUrl,
+      })),
+    })
+
     const resend = getResendClient()
 
-    // Stable per PaymentIntent so Stripe webhook retries never create a second email.
+    paymentLog("info", "order_ready_email_sending", {
+      session_id: session.id,
+      webhook_event_id: webhookEventId,
+      payment_intent_id: paymentIntentId,
+      from_email_configured: true,
+      recipient_domain: toEmail.includes("@")
+        ? toEmail.split("@")[1]
+        : "unknown",
+    })
+
     const { data, error } = await resend.emails.send(
       {
-        from: resendFromEmail,
+        from: resendEnv.fromEmail,
         to: toEmail,
-        subject: orderReadyEmailTemplate.subject,
-        text: orderReadyEmailTemplate.body,
+        subject: emailContent.subject,
+        text: emailContent.text,
+        html: emailContent.html,
       },
       { idempotencyKey: `order-ready-email-${paymentIntentId}` }
     )
 
     if (error || !data) {
-      paymentLog("error", "order_ready_email_resend_error", {
+      paymentLog("error", "order_ready_email_failed", {
         session_id: session.id,
         webhook_event_id: webhookEventId,
         payment_intent_id: paymentIntentId,
@@ -182,14 +259,10 @@ export async function sendOrderReadyEmailOnce(params: {
       throw new Error(error?.message || "Resend failed to send order email.")
     }
 
-    const latest = await stripe.paymentIntents.retrieve(paymentIntentId)
-    const latestMeta = readPaymentIntentMeta(latest.metadata)
-
     await stripe.paymentIntents.update(
       paymentIntentId,
       {
         metadata: {
-          ...latestMeta,
           [EMAIL_SENT_META_KEY]: "1",
           [EMAIL_SENT_AT_META_KEY]: String(Date.now()),
           [EMAIL_LOCK_EVENT_META_KEY]: webhookEventId,
@@ -204,14 +277,14 @@ export async function sendOrderReadyEmailOnce(params: {
       webhook_event_id: webhookEventId,
       payment_intent_id: paymentIntentId,
       resend_email_id: data.id,
-      to_email: toEmail,
+      delivery_item_count: deliveryItems.length,
     })
   } catch (error) {
     paymentLog("error", "order_ready_email_send_failed", {
       session_id: session.id,
       webhook_event_id: webhookEventId,
       payment_intent_id: paymentIntentId,
-      error_type: error instanceof Error ? error.constructor.name : "unknown",
+      ...errorDetails(error),
     })
 
     throw error
