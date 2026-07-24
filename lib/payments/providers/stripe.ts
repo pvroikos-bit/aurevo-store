@@ -1,4 +1,5 @@
 import Stripe from "stripe"
+import { env } from "@/lib/env"
 import { getStripeClient } from "@/lib/stripe/client"
 import { paymentLog } from "@/lib/payments/logger"
 import {
@@ -12,6 +13,42 @@ import type {
   CheckoutResult,
   ValidatedLineItem,
 } from "@/lib/payments/types"
+
+function keyPrefix(
+  value: string | undefined,
+  live: string,
+  test: string
+): string | null {
+  if (!value) return null
+  if (value.startsWith(`${live}_`)) return live
+  if (value.startsWith(`${test}_`)) return test
+  return null
+}
+
+function logStripeModeDiagnostic(sessionId: string): void {
+  // Prefix-only diagnostics — never log full secrets.
+  const secretFromProcess = process.env.STRIPE_SECRET_KEY?.trim()
+  const secretFromEnvModule = env.stripe.secretKey?.trim()
+  const publishableFromProcess =
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?.trim()
+
+  paymentLog("info", "stripe_checkout_mode_diagnostic", {
+    secretPrefix: keyPrefix(secretFromProcess, "sk_live", "sk_test"),
+    secretPrefixFromEnvModule: keyPrefix(
+      secretFromEnvModule,
+      "sk_live",
+      "sk_test"
+    ),
+    publishablePrefix: keyPrefix(publishableFromProcess, "pk_live", "pk_test"),
+    sessionPrefix: sessionId.startsWith("cs_live_")
+      ? "cs_live"
+      : sessionId.startsWith("cs_test_")
+        ? "cs_test"
+        : null,
+    vercelEnv: process.env.VERCEL_ENV ?? null,
+    vercelUrl: process.env.VERCEL_URL ?? null,
+  })
+}
 
 function logStripeReadinessWarnings(): void {
   const readiness = validateStripeReadiness()
@@ -110,6 +147,8 @@ export async function createStripeCheckoutSession(
       session_id: session.id,
       item_count: items.length,
     })
+
+    logStripeModeDiagnostic(session.id)
 
     return {
       ok: true,
