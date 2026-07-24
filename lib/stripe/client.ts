@@ -20,7 +20,19 @@ export function getStripeClient(): Stripe {
   }
 
   if (!stripeClient) {
-    stripeClient = new Stripe(env.stripe.secretKey!, {
+    const secret = env.stripe.secretKey!
+    const secretPrefix = secret.startsWith("sk_live_")
+      ? "sk_live"
+      : secret.startsWith("sk_test_")
+        ? "sk_test"
+        : "unknown"
+
+    paymentLog("info", "stripe_client_initialized", {
+      secretPrefix,
+      vercelEnv: process.env.VERCEL_ENV ?? null,
+    })
+
+    stripeClient = new Stripe(secret, {
       apiVersion: "2026-06-24.dahlia",
       typescript: true,
     })
