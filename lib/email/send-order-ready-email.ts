@@ -1,7 +1,11 @@
 import type Stripe from "stripe"
 
 import { getResendClient } from "@/lib/email/resend"
-import { orderReadyEmailTemplate } from "@/lib/email/templates/order-ready"
+import { buildOrderReadyEmail } from "@/lib/email/templates/order-ready"
+import {
+  parseSessionProducts,
+  uniqueSessionProducts,
+} from "@/lib/delivery/parse-session"
 import { paymentLog } from "@/lib/payments/logger"
 import { getStripeClient } from "@/lib/stripe/client"
 
@@ -11,6 +15,7 @@ const EMAIL_LOCK_EVENT_META_KEY = "order_ready_email_lock_evt"
 const EMAIL_LOCK_AT_META_KEY = "order_ready_email_lock_at"
 const EMAIL_SENT_AT_META_KEY = "order_ready_email_sent_at"
 
+const DEFAULT_RESEND_FROM_EMAIL = "SkroojMoney <orders@skrooj.com>"
 const SENDING_TTL_MS = 10 * 60 * 1000 // 10 minutes
 
 function getSessionEmail(session: Stripe.Checkout.Session): string | null {
@@ -76,6 +81,10 @@ function isLockActive(meta: Record<string, string>): boolean {
   )
 }
 
+function getResendFromEmail(): string {
+  return process.env.RESEND_FROM_EMAIL?.trim() || DEFAULT_RESEND_FROM_EMAIL
+}
+
 export async function sendOrderReadyEmailOnce(params: {
   session: Stripe.Checkout.Session
   webhookEventId: string
@@ -102,12 +111,7 @@ export async function sendOrderReadyEmailOnce(params: {
     return
   }
 
-  const resendFromEmail = process.env.RESEND_FROM_EMAIL?.trim()
-
-  if (!resendFromEmail) {
-    paymentLog("error", "order_ready_email_missing_resend_from_email", {})
-    throw new Error("Missing RESEND_FROM_EMAIL.")
-  }
+  const resendFromEmail = getResendFromEmail()
 
   if (!process.env.RESEND_API_KEY?.trim()) {
     paymentLog("error", "order_ready_email_missing_resend_api_key", {})
@@ -159,15 +163,23 @@ export async function sendOrderReadyEmailOnce(params: {
 
   try {
     const resend = getResendClient()
+    const products = uniqueSessionProducts(parseSessionProducts(session)).map(
+      (product) => ({
+        name: product.name,
+        quantity: product.quantity,
+      })
+    )
+    const email = buildOrderReadyEmail(products)
 
     // Stable per PaymentIntent so Stripe webhook retries never create a second email.
     const { data, error } = await resend.emails.send(
       {
         from: resendFromEmail,
         to: toEmail,
-        subject: orderReadyEmailTemplate.subject,
-        html: orderReadyEmailTemplate.html,
-        text: orderReadyEmailTemplate.text,
+        replyTo: "orders@skrooj.com",
+        subject: email.subject,
+        html: email.html,
+        text: email.text,
       },
       { idempotencyKey: `order-ready-email-${paymentIntentId}` }
     )
