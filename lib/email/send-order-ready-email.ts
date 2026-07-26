@@ -166,7 +166,8 @@ export async function sendOrderReadyEmailOnce(params: {
         from: resendFromEmail,
         to: toEmail,
         subject: orderReadyEmailTemplate.subject,
-        text: orderReadyEmailTemplate.body,
+        html: orderReadyEmailTemplate.html,
+        text: orderReadyEmailTemplate.text,
       },
       { idempotencyKey: `order-ready-email-${paymentIntentId}` }
     )
