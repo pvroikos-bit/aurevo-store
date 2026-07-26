@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 const plans = [
   {
     name: "All-In-One Products Pack",
-    price: 49.99,
+    price: 1.99,
     period: "one-time",
     popular: true,
     description:
