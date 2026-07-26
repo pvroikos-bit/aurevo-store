@@ -5,11 +5,11 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { CheckCircle2 } from "lucide-react"
 import { useCart } from "@/components/cart-context"
+import { buttonVariants } from "@/components/ui/button"
 import {
   centeredPageHeadingClass,
   centeredPageMainClass,
   cn,
-  focusRingClass,
   primaryActionClass,
   secondaryActionClass,
 } from "@/lib/utils"
@@ -21,13 +21,13 @@ const WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
 const DISCORD_SERVER_URL = "https://discord.gg/2VTNdBy8ez"
 
 const whatsappButtonClass = cn(
-  "inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(37,211,102,0.85)] transition-[background-color,transform,box-shadow,opacity] duration-200 ease-out hover:bg-[#1ebe57] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(37,211,102,0.95)] active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none",
-  focusRingClass
+  buttonVariants({ variant: "default" }),
+  "mt-5 h-auto min-h-12 w-full justify-center rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(37,211,102,0.85)] hover:bg-[#1ebe57] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(37,211,102,0.95)] hover:text-white active:translate-y-0 motion-reduce:transform-none"
 )
 
 const discordButtonClass = cn(
-  "inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[#5865F2] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(88,101,242,0.85)] transition-[background-color,transform,box-shadow,opacity] duration-200 ease-out hover:bg-[#4752c4] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(88,101,242,0.95)] active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none",
-  focusRingClass
+  buttonVariants({ variant: "default" }),
+  "mt-5 h-auto min-h-12 w-full justify-center rounded-xl bg-[#5865F2] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(88,101,242,0.85)] hover:bg-[#4752c4] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(88,101,242,0.95)] hover:text-white active:translate-y-0 motion-reduce:transform-none"
 )
 
 type PaymentStatus = "verifying" | "paid" | "unpaid" | "missing"
@@ -164,7 +164,7 @@ function SuccessContent() {
             href={WHATSAPP_COMMUNITY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(whatsappButtonClass, "mt-5")}
+            className={whatsappButtonClass}
           >
             Join WhatsApp Community
           </a>
@@ -182,7 +182,7 @@ function SuccessContent() {
             href={DISCORD_SERVER_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={cn(discordButtonClass, "mt-5")}
+            className={discordButtonClass}
           >
             Join Discord Server
           </a>
