@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 import { env } from "@/lib/env"
+import { validateResendEnv } from "@/lib/email/env"
 import { getStripeClient } from "@/lib/stripe/client"
 import { paymentLog } from "@/lib/payments/logger"
 import { validateStripeReadiness } from "@/lib/payments/stripe-config"
@@ -8,7 +9,28 @@ import { handleStripeWebhookEvent } from "@/lib/payments/webhooks/stripe"
 
 export const runtime = "nodejs"
 
+function errorDetails(error: unknown): {
+  error_type: string
+  error_message: string
+} {
+  if (error instanceof Error) {
+    return {
+      error_type: error.constructor.name,
+      error_message: error.message,
+    }
+  }
+
+  return {
+    error_type: "unknown",
+    error_message: String(error),
+  }
+}
+
 export async function POST(request: Request) {
+  paymentLog("info", "stripe_webhook_received", {
+    path: "/api/webhooks/stripe",
+  })
+
   if (env.paymentProvider !== "stripe") {
     return NextResponse.json(
       {
@@ -35,6 +57,19 @@ export async function POST(request: Request) {
     )
   }
 
+  const resendEnv = validateResendEnv()
+
+  if (!resendEnv.ok) {
+    paymentLog("error", "stripe_webhook_resend_not_configured", {
+      missing: resendEnv.missing.join(","),
+    })
+  } else {
+    paymentLog("info", "stripe_webhook_resend_configured", {
+      from_email_source: resendEnv.fromEmailSource,
+      resend_api_key_present: true,
+    })
+  }
+
   const signature = request.headers.get("stripe-signature")
 
   if (!signature) {
@@ -58,10 +93,15 @@ export async function POST(request: Request) {
       signature,
       env.stripe.webhookSecret!
     )
+
+    paymentLog("info", "stripe_webhook_signature_verified", {
+      event_id: event.id,
+      event_type: event.type,
+      livemode: event.livemode,
+    })
   } catch (error) {
     paymentLog("error", "stripe_webhook_signature_invalid", {
-      error_type:
-        error instanceof Error ? error.constructor.name : "unknown",
+      ...errorDetails(error),
     })
 
     return NextResponse.json(
@@ -79,8 +119,7 @@ export async function POST(request: Request) {
     paymentLog("error", "stripe_webhook_handler_failed", {
       event_type: event.type,
       event_id: event.id,
-      error_type:
-        error instanceof Error ? error.constructor.name : "unknown",
+      ...errorDetails(error),
     })
 
     return NextResponse.json(

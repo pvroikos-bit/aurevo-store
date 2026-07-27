@@ -6,9 +6,21 @@ import { paymentLog } from "@/lib/payments/logger"
 export async function handleStripeWebhookEvent(
   event: Stripe.Event
 ): Promise<void> {
+  paymentLog("info", "stripe_webhook_event_received", {
+    event_id: event.id,
+    event_type: event.type,
+    livemode: event.livemode,
+  })
+
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session
+
+      paymentLog("info", "checkout_session_completed_received", {
+        event_id: event.id,
+        session_id: session.id,
+        payment_status: session.payment_status,
+      })
 
       if (session.payment_status !== "paid") {
         paymentLog("warn", "checkout_session_not_paid", {
@@ -33,6 +45,7 @@ export async function handleStripeWebhookEvent(
     default:
       paymentLog("info", "stripe_webhook_ignored", {
         event_type: event.type,
+        event_id: event.id,
       })
   }
 }
