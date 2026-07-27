@@ -61,9 +61,9 @@ export default function Page() {
       <JsonLd data={[organizationSchema, websiteSchema, itemListSchema]} />
 
       <div className="min-h-screen bg-background">
-        <div className="bg-primary text-primary-foreground">
-          <p className="mx-auto max-w-7xl px-3 py-2.5 text-center text-[10px] font-medium leading-snug text-balance min-[360px]:text-xs sm:px-4 sm:py-2 sm:text-sm">
-            🔥 Access 500+ Verified Suppliers & Winning Products
+        <div className="border-b border-primary/20 bg-gradient-to-r from-primary via-primary to-primary/90 text-primary-foreground">
+          <p className="mx-auto max-w-7xl px-3 py-2.5 text-center text-[10px] font-semibold leading-snug tracking-wide text-balance min-[360px]:text-xs sm:px-4 sm:py-2.5 sm:text-sm">
+            🔥 Limited launch pricing — All-In-One Pack from €1.99 · Instant access after checkout
           </p>
         </div>
 

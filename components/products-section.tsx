@@ -3,45 +3,13 @@
 import { useRef, useState, type KeyboardEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { ProductCard } from "@/components/product-card"
+import {
+  homeSectionClass,
+  homeSectionDividerClass,
+  homeSectionPaddingClass,
+  SectionHeader,
+} from "@/components/section-header"
 import { products } from "@/lib/store-data"
-
-function SectionHeader({
-  eyebrow,
-  title,
-  description,
-  align = "center",
-  headingId,
-}: {
-  eyebrow: string
-  title: string
-  description: string
-  align?: "center" | "left"
-  headingId?: string
-}) {
-  const alignClass =
-    align === "center"
-      ? "mx-auto max-w-2xl text-center"
-      : "max-w-xl text-left"
-
-  return (
-    <div className={alignClass}>
-      <span className="inline-flex rounded-md border border-border/50 bg-muted/20 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-        {eyebrow}
-      </span>
-
-      <h2
-        id={headingId}
-        className="mt-4 font-heading text-[1.625rem] font-semibold tracking-[-0.025em] text-balance text-foreground min-[360px]:text-3xl sm:text-4xl lg:text-[2.625rem] lg:leading-[1.12]"
-      >
-        {title}
-      </h2>
-
-      <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground text-pretty sm:text-base sm:leading-relaxed">
-        {description}
-      </p>
-    </div>
-  )
-}
 
 export function FeaturedProducts() {
   const featured = products.filter((p) => p.featured)
@@ -53,35 +21,35 @@ export function FeaturedProducts() {
 
   return (
     <section className="relative" aria-labelledby="featured-heading">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
-      />
+      <div aria-hidden className={homeSectionDividerClass} />
 
-      <div className="relative mx-auto max-w-7xl px-3 py-16 min-[360px]:px-4 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+      <div className={`${homeSectionClass} ${homeSectionPaddingClass}`}>
         <div className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Featured"
-            title="This Week Best Seller 🔥"
-            description="Over 500+ purchases this week — verified picks with the highest reseller demand."
+            title="This Week's Best Sellers"
+            description="Hand-picked products with the highest reseller demand — verified suppliers, instant access, and proven margins."
             align="left"
             headingId="featured-heading"
           />
 
-          <p className="mt-4 flex flex-col gap-1.5 text-xs text-muted-foreground min-[390px]:flex-row min-[390px]:flex-wrap min-[390px]:items-center min-[390px]:gap-x-4 min-[390px]:gap-y-1">
-            <span>Verified suppliers</span>
-            <span className="text-muted-foreground/35" aria-hidden>
-              ·
-            </span>
-            <span>Instant access after purchase</span>
-            <span className="text-muted-foreground/35" aria-hidden>
-              ·
-            </span>
-            <span>4.9★ average rating</span>
-          </p>
+          <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground sm:text-sm">
+            <li className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-primary" aria-hidden />
+              Verified suppliers
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-primary" aria-hidden />
+              Instant access after purchase
+            </li>
+            <li className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-primary" aria-hidden />
+              4.9★ average rating
+            </li>
+          </ul>
 
-          <div className="mt-8 sm:mt-12 lg:mt-14">
-            <div className="rounded-2xl border border-border/35 bg-card/15 p-3 min-[360px]:p-4 sm:p-6 lg:p-8">
+          <div className="mt-8 sm:mt-10 lg:mt-12">
+            <div className="rounded-3xl border border-border/40 bg-gradient-to-b from-card/25 to-card/10 p-3 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.04)] min-[360px]:p-4 sm:p-6 lg:p-8">
               <div className="grid gap-4 min-[360px]:gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
                 {featured.map((product) => (
                   <ProductCard
@@ -158,22 +126,19 @@ export function AllProducts() {
 
   return (
     <section id="products" className="relative" aria-labelledby="catalog-heading">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent"
-      />
+      <div aria-hidden className={homeSectionDividerClass} />
 
-      <div className="mx-auto max-w-7xl px-3 pb-16 min-[360px]:px-4 sm:px-6 sm:pb-28 lg:px-8 lg:pb-32">
-        <div className="pt-12 sm:pt-20 lg:pt-24">
+      <div className={`${homeSectionClass} pb-16 sm:pb-24 lg:pb-28`}>
+        <div className="pt-4 sm:pt-8">
           <SectionHeader
             eyebrow="Catalog"
-            title="The Full Catalog"
-            description="Browse verified vendors, premium tools and digital resources — every listing includes instant delivery."
+            title="Browse the Full Catalog"
+            description="Verified vendors, premium tools, and digital resources — every listing includes instant delivery."
             headingId="catalog-heading"
           />
 
           <div
-            className="mx-auto mt-8 flex w-full max-w-4xl gap-1.5 overflow-x-auto overscroll-x-contain rounded-full border border-border/40 bg-muted/15 p-1.5 min-[360px]:mt-10 min-[360px]:flex-wrap min-[360px]:justify-center sm:mt-12 [&::-webkit-scrollbar]:hidden"
+            className="mx-auto mt-8 flex w-full max-w-4xl gap-1.5 overflow-x-auto overscroll-x-contain rounded-full border border-border/40 bg-muted/10 p-1.5 min-[360px]:mt-10 min-[360px]:flex-wrap min-[360px]:justify-center sm:mt-12 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: "none" }}
             role="tablist"
             aria-label="Product categories"
@@ -200,10 +165,10 @@ export function AllProducts() {
                   aria-controls="catalog-product-grid"
                   tabIndex={isActive ? 0 : -1}
                   variant={isActive ? "default" : "ghost"}
-                  className={`h-11 min-h-11 shrink-0 rounded-full px-4 text-[13px] font-medium sm:h-10 sm:min-h-0 sm:px-5 ${
+                  className={`h-11 min-h-11 shrink-0 rounded-full px-4 text-[13px] font-semibold sm:h-10 sm:min-h-0 sm:px-5 ${
                     isActive
-                      ? "bg-primary text-primary-foreground shadow-none"
-                      : "text-muted-foreground"
+                      ? "bg-primary text-primary-foreground shadow-[0_8px_24px_-12px_oklch(0.62_0.19_256/0.55)]"
+                      : "text-muted-foreground hover:text-foreground"
                   }`}
                   onClick={() => setSelected(category)}
                   onKeyDown={(event) => handleTabKeyDown(event, index)}
@@ -229,7 +194,7 @@ export function AllProducts() {
             id="catalog-product-grid"
             role="tabpanel"
             aria-labelledby={`catalog-tab-${selected.toLowerCase()}`}
-            className="mt-10 grid gap-4 min-[360px]:gap-5 sm:mt-14 sm:grid-cols-2 sm:gap-6 lg:mt-16 lg:grid-cols-4 lg:gap-7"
+            className="mt-10 grid gap-4 min-[360px]:gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:mt-14 lg:grid-cols-4 lg:gap-7"
           >
             {filteredProducts.length === 0 ? (
               <p className="col-span-full py-12 text-center text-sm text-muted-foreground">
