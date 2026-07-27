@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { env } from "@/lib/env"
+import { buildPurchasePayloadFromSession } from "@/lib/analytics/purchase-from-session"
 import { fulfillCheckoutSession } from "@/lib/delivery/fulfillment"
 import { paymentLog } from "@/lib/payments/logger"
 import { retrieveCheckoutSession } from "@/lib/payments/providers/stripe"
@@ -91,5 +92,6 @@ export async function GET(request: Request) {
     paid,
     status: session.status,
     sessionId: session.id,
+    purchase: paid ? buildPurchasePayloadFromSession(session) : null,
   })
 }

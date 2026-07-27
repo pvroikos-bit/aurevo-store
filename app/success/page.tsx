@@ -7,6 +7,10 @@ import { CheckCircle2 } from "lucide-react"
 import { useCart } from "@/components/cart-context"
 import { buttonVariants } from "@/components/ui/button"
 import {
+  trackPurchaseOnce,
+  type Ga4PurchasePayload,
+} from "@/lib/analytics/ga4"
+import {
   centeredPageHeadingClass,
   centeredPageMainClass,
   cn,
@@ -61,13 +65,19 @@ function SuccessContent() {
           return
         }
 
-        const data = (await response.json()) as { paid?: boolean }
+        const data = (await response.json()) as {
+          paid?: boolean
+          purchase?: Ga4PurchasePayload | null
+        }
 
         if (cancelled) {
           return
         }
 
         if (data.paid) {
+          if (data.purchase) {
+            trackPurchaseOnce(data.purchase)
+          }
           clearCart()
           setStatus("paid")
           return

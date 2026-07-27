@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import type { Product } from "@/lib/store-data"
 import { useCart } from "@/components/cart-context"
+import { toGa4Item, trackAddToCart } from "@/lib/analytics/ga4"
 import { formatInteger } from "@/lib/utils"
 
 function badgeStyles(badge: string) {
@@ -176,6 +177,14 @@ export function ProductCard({ product, highlighted = false }: ProductCardProps) 
               name: product.name,
               price: product.price,
             })
+            trackAddToCart(
+              toGa4Item({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+              })
+            )
           }}
         >
           <Plus className="size-3.5 shrink-0" aria-hidden />

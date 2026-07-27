@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useCart } from "@/components/cart-context"
+import { toGa4Item, trackAddToCart } from "@/lib/analytics/ga4"
 
 type Props = {
   id: string
@@ -26,6 +27,7 @@ export function BuyNowButton({
           name,
           price,
         })
+        trackAddToCart(toGa4Item({ id, name, price, quantity: 1 }))
 
         router.push("/checkout")
       }}

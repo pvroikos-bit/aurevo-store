@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { products } from "@/lib/store-data"
+import { ViewItemTracker } from "@/components/analytics/view-item-tracker"
 import { BuyNowButton } from "@/components/buy-now-button"
 import { CustomerReviews } from "@/components/product/customer-reviews"
 import { ProductFaq } from "@/components/product/product-faq"
@@ -104,6 +105,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <>
       <JsonLd data={productSchema} />
+      <ViewItemTracker
+        id={product.id}
+        name={product.name}
+        price={product.price}
+      />
 
       <main
         id="main-content"

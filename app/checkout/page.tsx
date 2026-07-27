@@ -5,6 +5,10 @@ import Link from "next/link"
 import { useState } from "react"
 import { ShoppingBag } from "lucide-react"
 import { useCart } from "@/components/cart-context"
+import {
+  cartToGa4Items,
+  trackBeginCheckout,
+} from "@/lib/analytics/ga4"
 import { getCartTotal, isValidEmail } from "@/lib/payments/cart"
 import { products } from "@/lib/store-data"
 import {
@@ -150,6 +154,7 @@ export default function CheckoutPage() {
       }
 
       if (data.redirectUrl) {
+        trackBeginCheckout(cartToGa4Items(cart))
         window.location.href = data.redirectUrl
         return
       }
