@@ -5,7 +5,7 @@ export const siteConfig = {
   legalName: "SkroojMoney",
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-    "https://skroojmoney.com",
+    "https://skrooj.com",
   defaultTitle:
     "SkroojMoney — Premium Digital Products & Reselling Suppliers",
   defaultDescription:
