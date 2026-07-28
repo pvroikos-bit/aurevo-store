@@ -10,6 +10,7 @@ import {
   trackPurchaseOnce,
   type Ga4PurchasePayload,
 } from "@/lib/analytics/ga4"
+import { env } from "@/lib/env"
 import { siteConfig } from "@/lib/seo"
 import {
   centeredPageHeadingClass,
@@ -23,15 +24,21 @@ const statusBodyClass =
   "mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg"
 
 const WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
+const DISCORD_INVITE_URL = env.social.discord
+
+const communityButtonClass = cn(
+  buttonVariants({ variant: "default" }),
+  "h-auto min-h-12 w-full justify-center rounded-xl px-6 py-3.5 text-base font-semibold text-white hover:-translate-y-0.5 hover:text-white active:translate-y-0 motion-reduce:transform-none"
+)
 
 const whatsappButtonClass = cn(
-  buttonVariants({ variant: "default" }),
-  "mt-5 h-auto min-h-12 w-full justify-center rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(37,211,102,0.85)] hover:bg-[#1ebe57] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(37,211,102,0.95)] hover:text-white active:translate-y-0 motion-reduce:transform-none"
+  communityButtonClass,
+  "bg-[#25D366] shadow-[0_10px_28px_-16px_rgba(37,211,102,0.85)] hover:bg-[#1ebe57] hover:shadow-[0_14px_32px_-14px_rgba(37,211,102,0.95)]"
 )
 
 const discordButtonClass = cn(
-  buttonVariants({ variant: "default" }),
-  "mt-5 h-auto min-h-12 w-full justify-center rounded-xl bg-[#5865F2] px-6 py-3.5 text-base font-semibold text-white shadow-[0_10px_28px_-16px_rgba(88,101,242,0.85)] hover:bg-[#4752c4] hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-14px_rgba(88,101,242,0.95)] hover:text-white active:translate-y-0 motion-reduce:transform-none"
+  communityButtonClass,
+  "bg-[#5865F2] shadow-[0_10px_28px_-16px_rgba(88,101,242,0.85)] hover:bg-[#4752c4] hover:shadow-[0_14px_32px_-14px_rgba(88,101,242,0.95)]"
 )
 
 type PaymentStatus = "verifying" | "paid" | "unpaid" | "missing"
@@ -43,10 +50,6 @@ function SuccessContent() {
   const [status, setStatus] = useState<PaymentStatus>(
     sessionId ? "verifying" : "missing"
   )
-  const [deliveryDiscordUrl, setDeliveryDiscordUrl] = useState<string | null>(
-    null
-  )
-
   useEffect(() => {
     if (!sessionId) {
       return
@@ -71,7 +74,6 @@ function SuccessContent() {
         const data = (await response.json()) as {
           paid?: boolean
           purchase?: Ga4PurchasePayload | null
-          deliveryDiscordUrl?: string | null
         }
 
         if (cancelled) {
@@ -83,7 +85,6 @@ function SuccessContent() {
             trackPurchaseOnce(data.purchase)
           }
           clearCart()
-          setDeliveryDiscordUrl(data.deliveryDiscordUrl ?? null)
           setStatus("paid")
           return
         }
@@ -179,31 +180,29 @@ function SuccessContent() {
             href={WHATSAPP_COMMUNITY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={whatsappButtonClass}
+            className={cn(whatsappButtonClass, "mt-5")}
           >
             Join WhatsApp Community
           </a>
         </section>
 
-        {deliveryDiscordUrl ? (
-          <section className="mt-4 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-5 sm:p-5">
-            <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
-              💬 Private Discord Server
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Click the button below to join our private Discord server and gain
-              full access to your digital product and future updates.
-            </p>
-            <a
-              href={deliveryDiscordUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={discordButtonClass}
-            >
-              Join Discord Server
-            </a>
-          </section>
-        ) : null}
+        <section className="mt-4 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-5 sm:p-5">
+          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+            💬 Discord Server
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Click the button below to join our Discord server and gain full
+            access to your digital product and future updates.
+          </p>
+          <a
+            href={DISCORD_INVITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(discordButtonClass, "mt-5")}
+          >
+            Join Discord Server
+          </a>
+        </section>
 
         <p className="mt-8 text-center text-sm leading-relaxed text-muted-foreground sm:mt-10 sm:text-base">
           If you experience any issues accessing your purchase, email{" "}
