@@ -13,6 +13,11 @@ import {
 
 type CookieConsentProps = {
   gaMeasurementId?: string
+  clarityProjectId?: string
+}
+
+type ClarityFn = ((...args: unknown[]) => void) & {
+  q?: unknown[][]
 }
 
 declare global {
@@ -21,6 +26,9 @@ declare global {
     gtag?: (...args: unknown[]) => void
     __ga4Loaded?: boolean
     __ga4InitPromise?: Promise<void>
+    clarity?: ClarityFn
+    __clarityLoaded?: boolean
+    __clarityInitPromise?: Promise<void>
   }
 }
 
@@ -105,6 +113,89 @@ async function ensureGa4Loaded(measurementId: string): Promise<void> {
   }
 }
 
+async function ensureClarityLoaded(projectId: string): Promise<void> {
+  if (typeof window === "undefined" || !projectId) {
+    return
+  }
+
+  if (window.__clarityLoaded) {
+    return
+  }
+
+  if (window.__clarityInitPromise) {
+    await window.__clarityInitPromise
+    return
+  }
+
+  const initializeQueue = () => {
+    if (typeof window.clarity !== "function") {
+      const queueFn: ClarityFn = (...args: unknown[]) => {
+        queueFn.q = queueFn.q || []
+        queueFn.q.push(args)
+      }
+      queueFn.q = queueFn.q || []
+      window.clarity = queueFn
+      return
+    }
+
+    window.clarity.q = window.clarity.q || []
+  }
+
+  window.__clarityInitPromise = new Promise<void>((resolve, reject) => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[data-clarity-id="${projectId}"]`
+    )
+
+    const initialize = () => {
+      initializeQueue()
+      window.__clarityLoaded = true
+      resolve()
+    }
+
+    if (existingScript?.dataset.loaded === "true") {
+      initialize()
+      return
+    }
+
+    if (existingScript) {
+      existingScript.addEventListener("load", initialize, { once: true })
+      existingScript.addEventListener(
+        "error",
+        () => reject(new Error("Failed to load Microsoft Clarity.")),
+        { once: true }
+      )
+      return
+    }
+
+    initializeQueue()
+
+    const script = document.createElement("script")
+    script.async = true
+    script.src = `https://www.clarity.ms/tag/${projectId}`
+    script.dataset.clarityId = projectId
+    script.addEventListener(
+      "load",
+      () => {
+        script.dataset.loaded = "true"
+        initialize()
+      },
+      { once: true }
+    )
+    script.addEventListener(
+      "error",
+      () => reject(new Error("Failed to load Microsoft Clarity.")),
+      { once: true }
+    )
+    document.head.appendChild(script)
+  })
+
+  try {
+    await window.__clarityInitPromise
+  } finally {
+    window.__clarityInitPromise = undefined
+  }
+}
+
 function updateGa4ConsentState(
   measurementId: string,
   preferences: CookieConsentPreferences
@@ -125,7 +216,10 @@ function updateGa4ConsentState(
   }
 }
 
-export function CookieConsent({ gaMeasurementId }: CookieConsentProps) {
+export function CookieConsent({
+  gaMeasurementId,
+  clarityProjectId,
+}: CookieConsentProps) {
   const defaultPreferences = useMemo(() => getDefaultCookiePreferences(), [])
   const [draftPreferences, setDraftPreferences] =
     useState<CookieConsentPreferences | null>(null)
@@ -159,18 +253,26 @@ export function CookieConsent({ gaMeasurementId }: CookieConsentProps) {
   }, [])
 
   useEffect(() => {
-    if (!isClient || !gaMeasurementId) {
+    if (!isClient) {
       return
     }
 
-    updateGa4ConsentState(gaMeasurementId, preferences)
+    if (gaMeasurementId) {
+      updateGa4ConsentState(gaMeasurementId, preferences)
+    }
 
     if (!preferences.analytics) {
       return
     }
 
-    void ensureGa4Loaded(gaMeasurementId)
-  }, [gaMeasurementId, isClient, preferences])
+    if (gaMeasurementId) {
+      void ensureGa4Loaded(gaMeasurementId)
+    }
+
+    if (clarityProjectId) {
+      void ensureClarityLoaded(clarityProjectId)
+    }
+  }, [clarityProjectId, gaMeasurementId, isClient, preferences])
 
   const savePreferences = (next: CookieConsentPreferences) => {
     setDraftPreferences(next)
@@ -213,7 +315,8 @@ export function CookieConsent({ gaMeasurementId }: CookieConsentProps) {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
                   Essential cookies keep your cart and checkout working. Analytics
                   cookies help us understand store performance and are only enabled
-                  if you allow them.
+                  if you allow them. This includes Google Analytics and Microsoft
+                  Clarity.
                 </p>
               </div>
 
@@ -259,7 +362,7 @@ export function CookieConsent({ gaMeasurementId }: CookieConsentProps) {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   Essential cookies are always on because they keep the cart and
                   checkout working. Analytics is optional and only enables Google
-                  Analytics 4 after you allow it.
+                  Analytics 4 and Microsoft Clarity after you allow it.
                 </p>
               </div>
 
@@ -297,8 +400,9 @@ export function CookieConsent({ gaMeasurementId }: CookieConsentProps) {
                     Analytics cookies
                   </p>
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                    Enables Google Analytics 4 page and ecommerce events to help us
-                    improve the store experience.
+                    Enables Google Analytics 4, Microsoft Clarity, and ecommerce
+                    events to help us understand page views and improve the store
+                    experience.
                   </p>
                 </div>
                 <button

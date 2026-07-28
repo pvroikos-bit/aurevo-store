@@ -7,6 +7,8 @@ import { rootMetadata } from "@/lib/seo"
 
 const gaMeasurementId =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || "G-YSNSEPW5PK"
+const clarityProjectId =
+  process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_ID?.trim() || "xtfz57vdzx"
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
@@ -43,7 +45,10 @@ export default function RootLayout({
 
       {process.env.NODE_ENV === "production" && <Analytics />}
       {process.env.NODE_ENV === "production" ? (
-        <CookieConsent gaMeasurementId={gaMeasurementId} />
+        <CookieConsent
+          gaMeasurementId={gaMeasurementId}
+          clarityProjectId={clarityProjectId}
+        />
       ) : null}
     </body>
   </html>
