@@ -2,6 +2,7 @@
 
 import { ArrowRight, Lock, ShieldCheck, Sparkles, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { env } from "@/lib/env"
 import { scrollToSection } from "@/lib/utils"
 
 const assurances = [
@@ -67,7 +68,7 @@ export function CtaSection() {
                 className="min-h-12 h-12 w-full rounded-full border-border/55 bg-background/20 px-7 text-sm font-semibold sm:w-auto"
                 onClick={() =>
                   window.open(
-                    "https://discord.gg/kAbCfrZ6rA",
+                    env.social.discord,
                     "_blank",
                     "noopener,noreferrer"
                   )
@@ -78,7 +79,7 @@ export function CtaSection() {
             </div>
 
             <p className="mx-auto mt-5 max-w-sm text-sm font-semibold text-foreground/90 min-[360px]:mt-6">
-              Rated 4.9/5 by 18,000+ resellers
+              Secure Stripe checkout · Lifetime access after purchase
             </p>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               One-time payment · Lifetime access · No hidden fees

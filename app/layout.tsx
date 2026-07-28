@@ -1,8 +1,8 @@
-import { Analytics } from '@vercel/analytics/next'
-import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google'
-import Script from 'next/script'
-import './globals.css'
+import { Analytics } from "@vercel/analytics/next"
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google"
+import "./globals.css"
 import { CartProvider } from "@/components/cart-context"
+import { CookieConsent } from "@/components/cookie-consent"
 import { rootMetadata } from "@/lib/seo"
 
 const gaMeasurementId =
@@ -42,21 +42,8 @@ export default function RootLayout({
       </CartProvider>
 
       {process.env.NODE_ENV === "production" && <Analytics />}
-      {process.env.NODE_ENV === "production" && gaMeasurementId ? (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-            strategy="afterInteractive"
-          />
-          <Script id="ga4-init" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${gaMeasurementId}');
-            `}
-          </Script>
-        </>
+      {process.env.NODE_ENV === "production" ? (
+        <CookieConsent gaMeasurementId={gaMeasurementId} />
       ) : null}
     </body>
   </html>

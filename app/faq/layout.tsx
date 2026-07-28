@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/page-shell"
 import { JsonLd } from "@/components/seo/json-ld"
 import { createPageMetadata, faqItems } from "@/lib/seo"
 
@@ -27,9 +28,9 @@ export default function FaqLayout({
   }
 
   return (
-    <>
+    <PageShell>
       <JsonLd data={faqSchema} />
       {children}
-    </>
+    </PageShell>
   )
 }

@@ -1,0 +1,81 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="70" x2="1120" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08080C"/>
+      <stop offset="0.5" stop-color="#0B0B10"/>
+      <stop offset="1" stop-color="#12070A"/>
+    </linearGradient>
+    <radialGradient id="glowLeft" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 305) rotate(90) scale(280 280)">
+      <stop stop-color="#EF4444" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#EF4444" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(910 130) rotate(90) scale(260 430)">
+      <stop stop-color="#B91C1C" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#B91C1C" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="158" y1="124" x2="466" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16161E"/>
+      <stop offset="1" stop-color="#0A0A0F"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="184" y1="130" x2="1014" y2="498" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F87171" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#7F1D1D" stop-opacity="0.18"/>
+    </linearGradient>
+    <filter id="shadow" x="88" y="92" width="404" height="446" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="14"/>
+      <feGaussianBlur stdDeviation="24"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.858824 0 0 0 0 0.117647 0 0 0 0 0.117647 0 0 0 0.2 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_og"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_og" result="shape"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1120" height="550" rx="32" fill="none" stroke="url(#stroke)" stroke-opacity="0.7"/>
+  <circle cx="260" cy="305" r="280" fill="url(#glowLeft)"/>
+  <circle cx="910" cy="130" r="260" fill="url(#glowRight)"/>
+
+  <g opacity="0.16">
+    <path d="M650 92H1060" stroke="#FCA5A5"/>
+    <path d="M650 538H1060" stroke="#7F1D1D"/>
+    <path d="M650 185H1120" stroke="#7F1D1D"/>
+    <path d="M650 445H1120" stroke="#7F1D1D"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="136" y="116" width="308" height="350" rx="36" fill="url(#panel)"/>
+    <rect x="136.75" y="116.75" width="306.5" height="348.5" rx="35.25" stroke="#F87171" stroke-opacity="0.22" stroke-width="1.5"/>
+    <rect x="191" y="171" width="198" height="198" rx="44" fill="#09090B"/>
+    <rect x="191.75" y="171.75" width="196.5" height="196.5" rx="43.25" stroke="#F87171" stroke-opacity="0.24" stroke-width="1.5"/>
+
+    <g transform="translate(208 188) scale(0.96)">
+      <rect width="180" height="180" rx="37" fill="white"/>
+      <g transform="translate(0 0)">
+        <g transform="translate(4.5 4.5) scale(0.95)">
+          <path d="M101.141 53H136.632C151.023 53 162.689 64.6662 162.689 79.0573V112.904H148.112V79.0573C148.112 78.7105 148.098 78.3662 148.072 78.0251L112.581 112.898C112.701 112.902 112.821 112.904 112.941 112.904H148.112V126.672H112.941C98.5504 126.672 86.5638 114.891 86.5638 100.5V66.7434H101.141V100.5C101.141 101.15 101.191 101.792 101.289 102.422L137.56 66.7816C137.255 66.7563 136.945 66.7434 136.632 66.7434H101.141V53Z" fill="black"/>
+          <path d="M65.2926 124.136L14 66.7372H34.6355L64.7495 100.436V66.7372H80.1365V118.47C80.1365 126.278 70.4953 129.958 65.2926 124.136Z" fill="black"/>
+        </g>
+      </g>
+    </g>
+
+    <text x="290" y="418" text-anchor="middle" fill="#FAFAFA" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="0.32em">SKROOJMONEY</text>
+  </g>
+
+  <text x="522" y="188" fill="#F87171" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="0.24em">PREMIUM DIGITAL STORE</text>
+  <text x="522" y="286" fill="#FFFFFF" font-family="'Playfair Display', Georgia, serif" font-size="74" font-weight="700" letter-spacing="-0.04em">SkroojMoney</text>
+  <text x="522" y="350" fill="#D4D4D8" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="500">Premium Digital Products &amp; Reselling Suppliers</text>
+
+  <g opacity="0.92">
+    <rect x="522" y="398" width="188" height="46" rx="23" fill="#1A0E11" stroke="#7F1D1D"/>
+    <rect x="728" y="398" width="176" height="46" rx="23" fill="#121217" stroke="#3F3F46"/>
+    <rect x="922" y="398" width="176" height="46" rx="23" fill="#121217" stroke="#3F3F46"/>
+    <text x="616" y="427" text-anchor="middle" fill="#FDE68A" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Instant Delivery</text>
+    <text x="816" y="427" text-anchor="middle" fill="#FAFAFA" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Secure Stripe Checkout</text>
+    <text x="1010" y="427" text-anchor="middle" fill="#FAFAFA" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Lifetime Access</text>
+  </g>
+
+  <text x="522" y="500" fill="#A1A1AA" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500">Built for high-trust social previews on Discord, WhatsApp, X, and TikTok.</text>
+</svg>

@@ -178,8 +178,12 @@ export default function CheckoutPage() {
 
       <div className="rounded-2xl border border-border/50 bg-card/20 p-4 min-[360px]:p-5 sm:p-6 lg:p-8">
         <h2 className="mb-5 font-heading text-lg font-semibold tracking-[-0.01em] sm:text-xl">
-          Contact & Shipping
+          Contact & Billing
         </h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          We use your email for order delivery. Billing details help Stripe
+          process payment securely.
+        </p>
 
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">

@@ -25,20 +25,28 @@ export function CustomerReviews() {
   return (
     <section
       aria-labelledby="customer-reviews-heading"
-      className="mt-12 sm:mt-16"
+      className="mt-14 sm:mt-16 lg:mt-20"
     >
+      <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary/90">
+        Social proof
+      </span>
+
       <h2
         id="customer-reviews-heading"
-        className="font-heading text-[1.625rem] font-semibold tracking-[-0.025em] text-balance text-foreground min-[360px]:text-2xl sm:text-3xl"
+        className="mt-3 font-heading text-[1.75rem] font-bold tracking-[-0.03em] text-balance text-foreground min-[360px]:text-2xl sm:text-3xl"
       >
         Customer Reviews
       </h2>
 
-      <div className="mt-5 grid gap-4 min-[360px]:gap-5 sm:mt-6 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+      <p className="mt-2 text-sm text-muted-foreground">
+        Verified buyers sharing real results after purchase.
+      </p>
+
+      <div className="mt-6 grid gap-4 min-[360px]:gap-5 sm:mt-7 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         {reviews.map((review) => (
           <figure
             key={`${review.name}-${review.country}`}
-            className="flex flex-col rounded-2xl border border-border/50 bg-card/20 p-5 min-[360px]:p-5 sm:p-6"
+            className="flex flex-col rounded-2xl border border-border/40 bg-card/15 p-5 shadow-[inset_0_1px_0_0_oklch(1_0_0/0.03)] transition-[border-color,background-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:border-border/55 hover:bg-card/25 hover:shadow-[0_16px_40px_-28px_oklch(0_0_0/0.45)] motion-reduce:transform-none motion-reduce:transition-none min-[360px]:p-5 sm:p-6"
           >
             <div
               className="flex items-center gap-1"
@@ -47,33 +55,39 @@ export function CustomerReviews() {
               {Array.from({ length: 5 }).map((_, index) => (
                 <Star
                   key={index}
-                  className="size-3.5 fill-primary/80 text-primary/80"
+                  className="size-3.5 fill-primary text-primary"
                   aria-hidden
                 />
               ))}
             </div>
 
-            <figcaption className="mt-3.5 flex flex-wrap items-center gap-x-2 gap-y-1.5">
-              <span className="text-sm font-medium tracking-[-0.01em] text-foreground">
-                {review.name}
-              </span>
-              <span className="text-muted-foreground/40" aria-hidden>
-                ·
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {review.country}{" "}
-                <span aria-hidden>{review.flag}</span>
-              </span>
-            </figcaption>
-
-            <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-md border border-border/50 bg-muted/20 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
-              <BadgeCheck className="size-3 text-primary/80" aria-hidden />
-              Verified Purchase
-            </span>
-
-            <blockquote className="mt-3.5 text-sm leading-relaxed text-muted-foreground">
+            <blockquote className="mt-3.5 flex-1 text-sm leading-relaxed text-foreground/90">
               &ldquo;{review.text}&rdquo;
             </blockquote>
+
+            <figcaption className="mt-4 flex items-center gap-3 border-t border-border/40 pt-4">
+              <div
+                className="flex size-9 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10 font-heading text-sm font-semibold text-primary"
+                aria-hidden
+              >
+                {review.name.charAt(0)}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-semibold tracking-[-0.01em] text-foreground">
+                    {review.name}
+                  </span>
+                  <span className="inline-flex items-center gap-0.5 rounded-full border border-primary/20 bg-primary/10 px-1.5 py-px text-[9px] font-semibold uppercase tracking-[0.08em] text-primary">
+                    <BadgeCheck className="size-2.5" aria-hidden />
+                    Verified
+                  </span>
+                </div>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  {review.country}{" "}
+                  <span aria-hidden>{review.flag}</span>
+                </span>
+              </div>
+            </figcaption>
           </figure>
         ))}
       </div>

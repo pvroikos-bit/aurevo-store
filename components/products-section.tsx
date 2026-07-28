@@ -20,7 +20,7 @@ export function FeaturedProducts() {
   )
 
   return (
-    <section className="relative" aria-labelledby="featured-heading">
+    <section className="relative" id="featured" aria-labelledby="featured-heading">
       <div aria-hidden className={homeSectionDividerClass} />
 
       <div className={`${homeSectionClass} ${homeSectionPaddingClass}`}>

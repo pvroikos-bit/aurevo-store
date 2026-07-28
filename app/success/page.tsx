@@ -10,6 +10,8 @@ import {
   trackPurchaseOnce,
   type Ga4PurchasePayload,
 } from "@/lib/analytics/ga4"
+import { env } from "@/lib/env"
+import { siteConfig } from "@/lib/seo"
 import {
   centeredPageHeadingClass,
   centeredPageMainClass,
@@ -22,7 +24,6 @@ const statusBodyClass =
   "mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg"
 
 const WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
-const DISCORD_SERVER_URL = "https://discord.gg/2VTNdBy8ez"
 
 const whatsappButtonClass = cn(
   buttonVariants({ variant: "default" }),
@@ -189,7 +190,7 @@ function SuccessContent() {
             full access to your digital product and future updates.
           </p>
           <a
-            href={DISCORD_SERVER_URL}
+            href={env.social.deliveryDiscord}
             target="_blank"
             rel="noopener noreferrer"
             className={discordButtonClass}
@@ -199,8 +200,21 @@ function SuccessContent() {
         </section>
 
         <p className="mt-8 text-center text-sm leading-relaxed text-muted-foreground sm:mt-10 sm:text-base">
-          If you experience any issues accessing your purchase, please contact us
-          and we&apos;ll be happy to help.
+          If you experience any issues accessing your purchase, email{" "}
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            {siteConfig.email}
+          </a>{" "}
+          or visit our{" "}
+          <Link
+            href="/contact"
+            className="font-medium text-primary underline-offset-4 hover:underline"
+          >
+            Contact
+          </Link>{" "}
+          page.
         </p>
 
         <p className="mt-4 text-center text-sm leading-relaxed text-foreground/90 sm:text-base">
@@ -214,7 +228,16 @@ function SuccessContent() {
 
 export default function SuccessPage() {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <main id="main-content" className={centeredPageMainClass}>
+          <h1 className={centeredPageHeadingClass}>Confirming Payment</h1>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
+            Please wait while we verify your order.
+          </p>
+        </main>
+      }
+    >
       <SuccessContent />
     </Suspense>
   )

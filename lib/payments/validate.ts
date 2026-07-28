@@ -69,7 +69,7 @@ function validateShipping(
       ok: false,
       status: 400,
       code: "INVALID_SHIPPING",
-      message: "Enter your shipping details.",
+      message: "Enter your billing details.",
     }
   }
 

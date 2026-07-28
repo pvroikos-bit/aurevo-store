@@ -6,7 +6,7 @@ import {
   Zap,
 } from "lucide-react"
 
-const logos = ["VISA", "Mastercard", "PayPal", "Crypto", "Apple Pay", "Stripe"]
+const logos = ["VISA", "Mastercard", "Apple Pay", "Google Pay", "Link", "Stripe"]
 
 const trustItems = [
   {
@@ -26,8 +26,8 @@ const trustItems = [
   },
   {
     icon: Headphones,
-    label: "24/7 Support",
-    desc: "Help when you need it",
+    label: "Email Support",
+    desc: "Reply within 1–2 days",
   },
 ]
 
@@ -60,20 +60,24 @@ export function TrustBar() {
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-3 border-t border-border/40 pt-8">
-          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/80">
+          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             <CreditCard className="size-3.5" aria-hidden />
-            Accepted payment methods
+            Payments powered by Stripe
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 min-[360px]:gap-x-9 sm:gap-x-11">
             {logos.map((logo) => (
               <span
                 key={logo}
-                className="font-heading text-base font-bold tracking-tight text-muted-foreground/60 transition-colors duration-200 ease-out hover:text-foreground/80 motion-reduce:transition-none min-[360px]:text-lg sm:text-xl"
+                className="font-heading text-base font-bold tracking-tight text-muted-foreground/70 transition-colors duration-200 ease-out hover:text-foreground/85 motion-reduce:transition-none min-[360px]:text-lg sm:text-xl"
               >
                 {logo}
               </span>
             ))}
           </div>
+          <p className="max-w-md text-center text-[11px] leading-relaxed text-muted-foreground">
+            Exact payment methods shown at checkout depend on your location and
+            Stripe availability.
+          </p>
         </div>
       </div>
     </section>

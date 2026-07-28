@@ -1,6 +1,12 @@
 const WHATSAPP_URL = "https://wa.link/yzvwzk"
-const DISCORD_URL = "https://discord.gg/2VTNdBy8ez"
 const SUPPORT_EMAIL = "orders@skrooj.com"
+
+function getDeliveryDiscordUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_DELIVERY_DISCORD_URL?.trim() ||
+    "https://discord.gg/2VTNdBy8ez"
+  )
+}
 
 export type OrderReadyProduct = {
   name: string
@@ -53,6 +59,7 @@ export function buildOrderReadyEmail(
 ): OrderReadyEmailContent {
   const productListText = buildProductListText(products)
   const productListHtml = buildProductListHtml(products)
+  const discordUrl = getDeliveryDiscordUrl()
 
   return {
     subject: "Your SkroojMoney Order",
@@ -71,7 +78,7 @@ ${WHATSAPP_URL}
 
 Private Discord Server
 Join here for full product access and future updates:
-${DISCORD_URL}
+${discordUrl}
 
 Need help? Reply to this email or contact ${SUPPORT_EMAIL} and we'll be happy to help.
 
@@ -176,7 +183,7 @@ Thank you for choosing SkroojMoney.`,
                       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;width:100%;">
                         <tr>
                           <td align="center" bgcolor="#5865F2" style="border-radius:12px;background-color:#5865F2;">
-                            <a href="${DISCORD_URL}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
+                            <a href="${discordUrl}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
                               Join Discord Server
                             </a>
                           </td>

@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/components/site-header"
+import { PageShell } from "@/components/page-shell"
 import { Hero } from "@/components/hero"
 import { TrustBar } from "@/components/trust-bar"
 import { FeaturedProducts, AllProducts } from "@/components/products-section"
@@ -6,8 +6,8 @@ import { Features } from "@/components/features"
 import { Testimonials } from "@/components/testimonials"
 import { Pricing } from "@/components/pricing"
 import { CtaSection } from "@/components/cta-section"
-import { SiteFooter } from "@/components/site-footer"
 import { JsonLd } from "@/components/seo/json-ld"
+import { env } from "@/lib/env"
 import { createPageMetadata, siteConfig, absoluteUrl } from "@/lib/seo"
 import { products } from "@/lib/store-data"
 
@@ -24,12 +24,9 @@ export default function Page() {
     "@type": "Organization",
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: absoluteUrl("/apple-icon.png"),
+    logo: absoluteUrl("/LOGO777.png"),
     email: siteConfig.email,
-    sameAs: [
-      "https://discord.gg/kAbCfrZ6rA",
-      "https://www.tiktok.com/@skroojmoneyy",
-    ],
+    sameAs: [env.social.discord, env.social.tiktok].filter(Boolean),
   }
 
   const websiteSchema = {
@@ -60,15 +57,16 @@ export default function Page() {
     <>
       <JsonLd data={[organizationSchema, websiteSchema, itemListSchema]} />
 
-      <div className="min-h-screen bg-background">
-        <div className="border-b border-primary/20 bg-gradient-to-r from-primary via-primary to-primary/90 text-primary-foreground">
-          <p className="mx-auto max-w-7xl px-3 py-2.5 text-center text-[10px] font-semibold leading-snug tracking-wide text-balance min-[360px]:text-xs sm:px-4 sm:py-2.5 sm:text-sm">
-            🔥 Limited launch pricing — All-In-One Pack from €1.99 · Instant access after checkout
-          </p>
-        </div>
-
-        <SiteHeader />
-
+      <PageShell
+        announcement={
+          <div className="border-b border-primary/20 bg-gradient-to-r from-primary via-primary to-primary/90 text-primary-foreground">
+            <p className="mx-auto max-w-7xl px-3 py-2.5 text-center text-[10px] font-semibold leading-snug tracking-wide text-balance min-[360px]:text-xs sm:px-4 sm:py-2.5 sm:text-sm">
+              Limited launch pricing — All-In-One Pack from €1.99 · Instant access
+              after checkout
+            </p>
+          </div>
+        }
+      >
         <main id="main-content">
           <Hero />
           <TrustBar />
@@ -79,9 +77,7 @@ export default function Page() {
           <Pricing />
           <CtaSection />
         </main>
-
-        <SiteFooter />
-      </div>
+      </PageShell>
     </>
   )
 }

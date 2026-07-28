@@ -46,9 +46,7 @@ export function Testimonials() {
           </div>
           <div className="hidden h-8 w-px bg-border/50 sm:block" aria-hidden />
           <p className="text-center text-sm text-muted-foreground sm:text-left">
-            <span className="font-semibold text-foreground">6,200+</span> verified
-            reviews ·{" "}
-            <span className="font-semibold text-foreground">18,000+</span> resellers
+            Based on customer feedback shared on SkroojMoney
           </p>
         </div>
 

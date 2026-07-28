@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { Menu, Minus, Plus, ShoppingBag, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/components/cart-context"
@@ -22,6 +23,8 @@ function getProductImage(productId: string): string | undefined {
 }
 
 export function SiteHeader() {
+  const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const {
@@ -41,8 +44,31 @@ export function SiteHeader() {
   )
 
   const handleNavClick = (href: string) => {
-    scrollToId(href.replace("#", ""))
+    const sectionId = href.replace("#", "")
+
+    if (pathname !== "/") {
+      router.push(`/#${sectionId}`)
+      return
+    }
+
+    scrollToId(sectionId)
   }
+
+  useEffect(() => {
+    if (!cartOpen && !open) {
+      return
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setCartOpen(false)
+        setOpen(false)
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [cartOpen, open])
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/40 bg-background/85 supports-[backdrop-filter]:bg-background/70 supports-[backdrop-filter]:backdrop-blur-md">
@@ -197,7 +223,7 @@ export function SiteHeader() {
 
                 <Button
                   className="mt-4 min-h-11 h-11 w-full rounded-full text-sm font-semibold shadow-[0_8px_28px_-8px_oklch(0.62_0.19_256/0.55)] sm:mt-5 sm:h-12"
-                  onClick={() => (window.location.href = "/checkout")}
+                  onClick={() => router.push("/checkout")}
                 >
                   Checkout
                 </Button>
@@ -208,9 +234,9 @@ export function SiteHeader() {
       )}
 
       <div className="mx-auto flex h-[4.25rem] max-w-7xl items-center justify-between gap-2 px-3 min-[360px]:px-4 sm:h-[4.5rem] sm:gap-0 sm:px-6 lg:px-8">
-        <a
-          href="#home"
-          className="flex min-w-0 items-center gap-2 transition-opacity duration-300 hover:opacity-90 min-[360px]:gap-2.5"
+        <Link
+          href="/"
+          className="flex min-w-0 items-center gap-2 transition-opacity duration-300 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background min-[360px]:gap-2.5"
         >
           <Image
             src="/LOGO777.png"
@@ -221,9 +247,9 @@ export function SiteHeader() {
             className="size-9 shrink-0 rounded-lg"
           />
           <span className="truncate font-heading text-base font-bold tracking-[-0.02em] min-[360px]:text-lg">
-            Skroojmoney
+            SkroojMoney
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
           {navLinks.map((link) => (
@@ -258,7 +284,7 @@ export function SiteHeader() {
             type="button"
             className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border/50 text-foreground transition-colors duration-300 hover:border-border hover:bg-card/50 focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -272,7 +298,7 @@ export function SiteHeader() {
             {navLinks.map((link) => (
               <a
                 key={link.href}
-                href={link.href}
+                href={`/${link.href}`}
                 onClick={() => setOpen(false)}
                 className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium tracking-wide text-muted-foreground transition-colors duration-300 hover:bg-card/60 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >

@@ -6,9 +6,9 @@ import { scrollToSection } from "@/lib/utils"
 
 const stats = [
   { value: "500+", label: "Verified Suppliers" },
-  { value: "18K+", label: "Happy Resellers" },
-  { value: "4.9★", label: "Average Rating" },
   { value: "Instant", label: "Digital Delivery" },
+  { value: "4.9★", label: "Customer Rating" },
+  { value: "Lifetime", label: "Product Access" },
 ]
 
 export function Hero() {
@@ -28,7 +28,7 @@ export function Hero() {
           <div className="mx-auto mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary min-[360px]:mb-8 min-[360px]:px-4 sm:text-xs">
             <ShieldCheck className="size-3.5 shrink-0" aria-hidden />
             <span className="text-balance">
-              Trusted by 18,000+ resellers · Secure Stripe checkout
+              Secure Stripe checkout · Instant digital delivery
             </span>
           </div>
 
@@ -84,7 +84,7 @@ export function Hero() {
               </span>
             </div>
             <span className="max-w-[18rem] text-center text-xs leading-relaxed text-muted-foreground min-[360px]:max-w-none min-[360px]:text-sm sm:text-left">
-              6,200+ verified reviews from active resellers
+              Rated highly by customers who buy digital reseller tools
             </span>
           </div>
         </div>

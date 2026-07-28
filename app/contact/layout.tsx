@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/page-shell"
 import { createPageMetadata } from "@/lib/seo"
 
 export const metadata = createPageMetadata({
@@ -12,5 +13,5 @@ export default function ContactLayout({
 }: {
   children: React.ReactNode
 }) {
-  return children
+  return <PageShell>{children}</PageShell>
 }

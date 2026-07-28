@@ -1,3 +1,4 @@
+import { hasAnalyticsConsent } from "@/lib/cookie-consent"
 import type { CartLineItem } from "@/lib/payments/types"
 
 export const GA_CURRENCY = "EUR"
@@ -27,6 +28,10 @@ declare global {
 
 function getGtag(): GtagFn | null {
   if (typeof window === "undefined") {
+    return null
+  }
+
+  if (!hasAnalyticsConsent()) {
     return null
   }
 
