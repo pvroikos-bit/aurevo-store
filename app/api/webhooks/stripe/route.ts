@@ -65,6 +65,7 @@ export async function POST(request: Request) {
     })
   } else {
     paymentLog("info", "stripe_webhook_resend_configured", {
+      from_email: resendEnv.fromEmail,
       from_email_source: resendEnv.fromEmailSource,
       resend_api_key_present: true,
     })

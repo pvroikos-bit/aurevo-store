@@ -203,6 +203,7 @@ export async function sendOrderReadyEmailOnce(params: {
       session_id: session.id,
       webhook_event_id: webhookEventId,
       payment_intent_id: paymentIntentId,
+      from_email: resendFromEmail,
       from_email_source: resendEnv.fromEmailSource,
       resend_api_key_present: true,
     })
