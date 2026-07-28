@@ -10,7 +10,6 @@ import {
   trackPurchaseOnce,
   type Ga4PurchasePayload,
 } from "@/lib/analytics/ga4"
-import { env } from "@/lib/env"
 import { siteConfig } from "@/lib/seo"
 import {
   centeredPageHeadingClass,
@@ -44,6 +43,9 @@ function SuccessContent() {
   const [status, setStatus] = useState<PaymentStatus>(
     sessionId ? "verifying" : "missing"
   )
+  const [deliveryDiscordUrl, setDeliveryDiscordUrl] = useState<string | null>(
+    null
+  )
 
   useEffect(() => {
     if (!sessionId) {
@@ -69,6 +71,7 @@ function SuccessContent() {
         const data = (await response.json()) as {
           paid?: boolean
           purchase?: Ga4PurchasePayload | null
+          deliveryDiscordUrl?: string | null
         }
 
         if (cancelled) {
@@ -80,6 +83,7 @@ function SuccessContent() {
             trackPurchaseOnce(data.purchase)
           }
           clearCart()
+          setDeliveryDiscordUrl(data.deliveryDiscordUrl ?? null)
           setStatus("paid")
           return
         }
@@ -181,23 +185,25 @@ function SuccessContent() {
           </a>
         </section>
 
-        <section className="mt-4 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-5 sm:p-5">
-          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
-            💬 Private Discord Server
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Click the button below to join our private Discord server and gain
-            full access to your digital product and future updates.
-          </p>
-          <a
-            href={env.social.deliveryDiscord}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={discordButtonClass}
-          >
-            Join Discord Server
-          </a>
-        </section>
+        {deliveryDiscordUrl ? (
+          <section className="mt-4 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-5 sm:p-5">
+            <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+              💬 Private Discord Server
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Click the button below to join our private Discord server and gain
+              full access to your digital product and future updates.
+            </p>
+            <a
+              href={deliveryDiscordUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={discordButtonClass}
+            >
+              Join Discord Server
+            </a>
+          </section>
+        ) : null}
 
         <p className="mt-8 text-center text-sm leading-relaxed text-muted-foreground sm:mt-10 sm:text-base">
           If you experience any issues accessing your purchase, email{" "}

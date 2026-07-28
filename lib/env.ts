@@ -16,8 +16,6 @@ export type EnvConfig = {
   stripe: StripeEnv
   social: {
     discord: string
-    /** Private delivery / product-access Discord (post-purchase). */
-    deliveryDiscord: string
     instagram: string | undefined
     tiktok: string | undefined
   }
@@ -72,9 +70,6 @@ export const env: EnvConfig = {
     discord:
       process.env.NEXT_PUBLIC_DISCORD_URL?.trim() ||
       "https://discord.gg/kAbCfrZ6rA",
-    deliveryDiscord:
-      process.env.NEXT_PUBLIC_DELIVERY_DISCORD_URL?.trim() ||
-      "https://discord.gg/2VTNdBy8ez",
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL?.trim() || undefined,
     tiktok:
       process.env.NEXT_PUBLIC_TIKTOK_URL?.trim() ||

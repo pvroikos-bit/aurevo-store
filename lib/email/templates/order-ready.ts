@@ -1,12 +1,7 @@
+import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
+
 const WHATSAPP_URL = "https://wa.link/yzvwzk"
 const SUPPORT_EMAIL = "orders@skrooj.com"
-
-function getDeliveryDiscordUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_DELIVERY_DISCORD_URL?.trim() ||
-    "https://discord.gg/2VTNdBy8ez"
-  )
-}
 
 export type OrderReadyProduct = {
   name: string
@@ -60,6 +55,39 @@ export function buildOrderReadyEmail(
   const productListText = buildProductListText(products)
   const productListHtml = buildProductListHtml(products)
   const discordUrl = getDeliveryDiscordUrl()
+  const discordTextBlock = discordUrl
+    ? `Private Discord Server
+Join here for full product access and future updates:
+${discordUrl}
+`
+    : ""
+  const discordHtmlBlock = discordUrl
+    ? `<tr>
+              <td style="padding:16px 28px 0 28px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#0a0a0a;border:1px solid #1f1f1f;border-radius:14px;">
+                  <tr>
+                    <td style="padding:20px;">
+                      <h2 style="margin:0;font-size:18px;line-height:1.4;font-weight:700;color:#ffffff;">
+                        Private Discord Server
+                      </h2>
+                      <p style="margin:10px 0 0 0;font-size:14px;line-height:1.6;color:#a3a3a3;">
+                        Join our private Discord server for full product access and future updates.
+                      </p>
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;width:100%;">
+                        <tr>
+                          <td align="center" bgcolor="#5865F2" style="border-radius:12px;background-color:#5865F2;">
+                            <a href="${discordUrl}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
+                              Join Discord Server
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>`
+    : ""
 
   return {
     subject: "Your SkroojMoney Order",
@@ -76,9 +104,7 @@ WhatsApp Community
 Join here to access your digital product:
 ${WHATSAPP_URL}
 
-Private Discord Server
-Join here for full product access and future updates:
-${discordUrl}
+${discordTextBlock}
 
 Need help? Reply to this email or contact ${SUPPORT_EMAIL} and we'll be happy to help.
 
@@ -169,31 +195,7 @@ Thank you for choosing SkroojMoney.`,
                 </table>
               </td>
             </tr>
-            <tr>
-              <td style="padding:16px 28px 0 28px;">
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%;background-color:#0a0a0a;border:1px solid #1f1f1f;border-radius:14px;">
-                  <tr>
-                    <td style="padding:20px;">
-                      <h2 style="margin:0;font-size:18px;line-height:1.4;font-weight:700;color:#ffffff;">
-                        Private Discord Server
-                      </h2>
-                      <p style="margin:10px 0 0 0;font-size:14px;line-height:1.6;color:#a3a3a3;">
-                        Join our private Discord server for full product access and future updates.
-                      </p>
-                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;width:100%;">
-                        <tr>
-                          <td align="center" bgcolor="#5865F2" style="border-radius:12px;background-color:#5865F2;">
-                            <a href="${discordUrl}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
-                              Join Discord Server
-                            </a>
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
+            ${discordHtmlBlock}
             <tr>
               <td align="center" style="padding:28px 28px 0 28px;">
                 <p style="margin:0;font-size:14px;line-height:1.6;color:#a3a3a3;">

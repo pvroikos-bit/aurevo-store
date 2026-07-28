@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
+import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
 import { env } from "@/lib/env"
+import { checkRateLimit } from "@/lib/security/rate-limit"
 import { buildPurchasePayloadFromSession } from "@/lib/analytics/purchase-from-session"
 import { fulfillCheckoutSession } from "@/lib/delivery/fulfillment"
 import { paymentLog } from "@/lib/payments/logger"
@@ -27,6 +29,27 @@ function errorDetails(error: unknown): {
 }
 
 export async function GET(request: Request) {
+  const rateLimit = checkRateLimit(request, {
+    keyPrefix: "checkout-session",
+    limit: 60,
+    windowMs: 5 * 60 * 1000,
+  })
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      {
+        code: "RATE_LIMITED",
+        message: "Too many verification requests. Please try again shortly.",
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+        },
+      }
+    )
+  }
+
   if (env.paymentProvider !== "stripe") {
     return NextResponse.json(
       {
@@ -93,5 +116,6 @@ export async function GET(request: Request) {
     status: session.status,
     sessionId: session.id,
     purchase: paid ? buildPurchasePayloadFromSession(session) : null,
+    deliveryDiscordUrl: paid ? getDeliveryDiscordUrl() : null,
   })
 }

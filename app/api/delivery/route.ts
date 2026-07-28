@@ -3,10 +3,32 @@ import { NextResponse } from "next/server"
 import { getDeliveryItemsForSessionId } from "@/lib/delivery/grants"
 import { env } from "@/lib/env"
 import { validateStripeReadiness } from "@/lib/payments/stripe-config"
+import { checkRateLimit } from "@/lib/security/rate-limit"
 
 export const runtime = "nodejs"
 
 export async function GET(request: Request) {
+  const rateLimit = checkRateLimit(request, {
+    keyPrefix: "delivery-items",
+    limit: 60,
+    windowMs: 5 * 60 * 1000,
+  })
+
+  if (!rateLimit.ok) {
+    return NextResponse.json(
+      {
+        code: "RATE_LIMITED",
+        message: "Too many delivery requests. Please try again shortly.",
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.retryAfterSeconds),
+        },
+      }
+    )
+  }
+
   if (env.paymentProvider !== "stripe") {
     return NextResponse.json(
       {
