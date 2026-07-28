@@ -26,6 +26,7 @@ declare global {
     gtag?: (...args: unknown[]) => void
     __ga4Loaded?: boolean
     __ga4InitPromise?: Promise<void>
+    __ga4ConsentDefaultSet?: boolean
     clarity?: ClarityFn
     __clarityLoaded?: boolean
     __clarityInitPromise?: Promise<void>
@@ -36,7 +37,40 @@ function getGaDisableKey(measurementId: string): string {
   return `ga-disable-${measurementId}`
 }
 
-async function ensureGa4Loaded(measurementId: string): Promise<void> {
+function ensureGtagStub(): void {
+  if (typeof window === "undefined") {
+    return
+  }
+
+  window.dataLayer = window.dataLayer || []
+  window.gtag =
+    window.gtag ||
+    function gtag(...args: unknown[]) {
+      window.dataLayer?.push(args)
+    }
+}
+
+function setGa4ConsentDefaults(): void {
+  ensureGtagStub()
+
+  if (window.__ga4ConsentDefaultSet) {
+    return
+  }
+
+  window.gtag?.("consent", "default", {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    wait_for_update: 500,
+  })
+  window.__ga4ConsentDefaultSet = true
+}
+
+async function ensureGa4Loaded(
+  measurementId: string,
+  preferences: CookieConsentPreferences
+): Promise<void> {
   if (typeof window === "undefined" || !measurementId) {
     return
   }
@@ -56,16 +90,13 @@ async function ensureGa4Loaded(measurementId: string): Promise<void> {
     )
 
     const initialize = () => {
-      window.dataLayer = window.dataLayer || []
-      window.gtag =
-        window.gtag ||
-        function gtag(...args: unknown[]) {
-          window.dataLayer?.push(args)
-        }
+      ensureGtagStub()
+      updateGa4ConsentState(measurementId, preferences)
 
-      window.gtag("js", new Date())
-      window.gtag("config", measurementId, {
+      window.gtag?.("js", new Date())
+      window.gtag?.("config", measurementId, {
         anonymize_ip: true,
+        send_page_view: true,
       })
       window.__ga4Loaded = true
       resolve()
@@ -204,16 +235,19 @@ function updateGa4ConsentState(
     return
   }
 
+  setGa4ConsentDefaults()
+
   ;(window as unknown as Record<string, unknown>)[
     getGaDisableKey(measurementId)
   ] =
     !preferences.analytics
 
-  if (typeof window.gtag === "function") {
-    window.gtag("consent", "update", {
-      analytics_storage: preferences.analytics ? "granted" : "denied",
-    })
-  }
+  window.gtag?.("consent", "update", {
+    analytics_storage: preferences.analytics ? "granted" : "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  })
 }
 
 export function CookieConsent({
@@ -266,7 +300,7 @@ export function CookieConsent({
     }
 
     if (gaMeasurementId) {
-      void ensureGa4Loaded(gaMeasurementId)
+      void ensureGa4Loaded(gaMeasurementId, preferences)
     }
 
     if (clarityProjectId) {
