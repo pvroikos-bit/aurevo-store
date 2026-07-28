@@ -212,7 +212,7 @@ export async function sendOrderReadyEmailOnce(params: {
       {
         from: resendFromEmail,
         to: toEmail,
-        replyTo: "orders@skrooj.com",
+        replyTo: "skroojmoney@gmail.com",
         subject: email.subject,
         html: email.html,
         text: email.text,

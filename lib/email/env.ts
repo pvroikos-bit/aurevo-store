@@ -1,4 +1,4 @@
-const DEFAULT_RESEND_FROM_EMAIL = "SkroojMoney <orders@skrooj.com>"
+const DEFAULT_RESEND_FROM_EMAIL = "SkroojMoney <skroojmoney@gmail.com>"
 
 export type ResendEnvValidation =
   | {

@@ -11,7 +11,7 @@ export const siteConfig = {
   defaultDescription:
     "SkroojMoney is the premium marketplace for verified reselling suppliers, digital tools, and resources. Instant digital delivery and secure Stripe checkout.",
   locale: "en_US",
-  email: "orders@skrooj.com",
+  email: "skroojmoney@gmail.com",
   supportHours: "Typically within 1–2 business days",
   twitterHandle: "@skroojmoneyy",
   ogImage: "/og-image.png",
@@ -184,7 +184,7 @@ export const faqItems = [
   {
     question: "How fast is delivery?",
     answer:
-      "Digital delivery is designed to be instant. Most customers receive access within minutes of a successful payment. If nothing arrives, check spam and contact orders@skrooj.com with your receipt.",
+      "Digital delivery is designed to be instant. Most customers receive access within minutes of a successful payment. If nothing arrives, check spam and contact skroojmoney@gmail.com with your receipt.",
   },
   {
     question: "Do I get lifetime access?",
@@ -204,6 +204,6 @@ export const faqItems = [
   {
     question: "How can I contact support?",
     answer:
-      "Email orders@skrooj.com with your order email and receipt ID. You can also use the Contact page. We typically reply within 1–2 business days.",
+      "Email skroojmoney@gmail.com with your order email and receipt ID. You can also use the Contact page. We typically reply within 1–2 business days.",
   },
 ] as const
