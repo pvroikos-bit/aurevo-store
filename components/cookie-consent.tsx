@@ -62,7 +62,7 @@ function setGa4ConsentDefaults(): void {
     ad_storage: "denied",
     ad_user_data: "denied",
     ad_personalization: "denied",
-    wait_for_update: 500,
+    wait_for_update: 2000,
   })
   window.__ga4ConsentDefaultSet = true
 }
@@ -96,7 +96,11 @@ async function ensureGa4Loaded(
       window.gtag?.("js", new Date())
       window.gtag?.("config", measurementId, {
         anonymize_ip: true,
-        send_page_view: true,
+        send_page_view: false,
+      })
+      window.gtag?.("event", "page_view", {
+        page_location: window.location.href,
+        page_title: document.title,
       })
       window.__ga4Loaded = true
       resolve()
@@ -286,8 +290,17 @@ export function CookieConsent({
     return () => window.removeEventListener(COOKIE_CONSENT_OPEN_EVENT, open)
   }, [])
 
+  const hasUserChoice =
+    storedPreferences !== null || draftPreferences !== null
+
   useEffect(() => {
     if (!isClient) {
+      return
+    }
+
+    setGa4ConsentDefaults()
+
+    if (!hasUserChoice) {
       return
     }
 
@@ -306,7 +319,15 @@ export function CookieConsent({
     if (clarityProjectId) {
       void ensureClarityLoaded(clarityProjectId)
     }
-  }, [clarityProjectId, gaMeasurementId, isClient, preferences])
+  }, [
+    clarityProjectId,
+    draftPreferences,
+    gaMeasurementId,
+    hasUserChoice,
+    isClient,
+    preferences,
+    storedPreferences,
+  ])
 
   const savePreferences = (next: CookieConsentPreferences) => {
     setDraftPreferences(next)

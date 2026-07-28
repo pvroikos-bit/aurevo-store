@@ -22,6 +22,20 @@ const playfair = Playfair_Display({
 
 export const metadata = rootMetadata
 
+const gaConsentBootstrapScript = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = window.gtag || gtag;
+gtag('consent', 'default', {
+  analytics_storage: 'denied',
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  wait_for_update: 2000
+});
+window.__ga4ConsentDefaultSet = true;
+`.trim()
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +46,11 @@ export default function RootLayout({
     lang="en"
     className={`dark ${geistSans.variable} ${geistMono.variable} ${playfair.variable} bg-background`}
   >
+    <head>
+      {process.env.NODE_ENV === "production" ? (
+        <script dangerouslySetInnerHTML={{ __html: gaConsentBootstrapScript }} />
+      ) : null}
+    </head>
     <body className="font-sans antialiased">
       <a
         href="#main-content"
