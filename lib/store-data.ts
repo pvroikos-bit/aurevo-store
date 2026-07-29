@@ -26,7 +26,7 @@ const categoryWhatsIncluded: Record<string, string[]> = {
     "Lifetime updates included",
   ],
   Guides: [
-    "Premium digital playbook download",
+    "Premium digital playbook access",
     "Sourcing, pricing, scaling, and automation strategies",
     "Instant access after purchase",
     "Lifetime access to your copy",
@@ -119,7 +119,7 @@ export const products: Product[] = [
       "120-page premium reselling playbook",
       "Sourcing, pricing, scaling, and automation guides",
       "Written by experienced resellers",
-      "Instant PDF download",
+      "Instant playbook access",
       "Lifetime access",
     ],
   },
