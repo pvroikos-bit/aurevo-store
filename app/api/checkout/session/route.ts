@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
-import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
+import {
+  getDeliveryDiscordUrl,
+  getDeliveryWhatsAppUrl,
+} from "@/lib/delivery/community-links"
 import { env } from "@/lib/env"
 import { checkRateLimit } from "@/lib/security/rate-limit"
 import { buildPurchasePayloadFromSession } from "@/lib/analytics/purchase-from-session"
@@ -117,5 +120,6 @@ export async function GET(request: Request) {
     sessionId: session.id,
     purchase: paid ? buildPurchasePayloadFromSession(session) : null,
     deliveryDiscordUrl: paid ? getDeliveryDiscordUrl() : null,
+    deliveryWhatsAppUrl: paid ? getDeliveryWhatsAppUrl() : null,
   })
 }

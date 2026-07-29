@@ -1,6 +1,9 @@
-import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
+import {
+  getDeliveryDiscordUrl,
+  getDeliveryWhatsAppUrl,
+} from "@/lib/delivery/community-links"
 
-const WHATSAPP_URL = "https://wa.link/yzvwzk"
+const WHATSAPP_URL = getDeliveryWhatsAppUrl()
 const SUPPORT_EMAIL = "skroojmoney@gmail.com"
 
 export type OrderReadyProduct = {

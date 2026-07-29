@@ -22,7 +22,7 @@ import {
 const statusBodyClass =
   "mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg"
 
-const WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
+const FALLBACK_WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
 
 const whatsappButtonClass = cn(
   buttonVariants({ variant: "default" }),
@@ -46,6 +46,9 @@ function SuccessContent() {
   const [deliveryDiscordUrl, setDeliveryDiscordUrl] = useState<string | null>(
     null
   )
+  const [deliveryWhatsAppUrl, setDeliveryWhatsAppUrl] = useState<
+    string | null
+  >(null)
 
   useEffect(() => {
     if (!sessionId) {
@@ -72,6 +75,7 @@ function SuccessContent() {
           paid?: boolean
           purchase?: Ga4PurchasePayload | null
           deliveryDiscordUrl?: string | null
+          deliveryWhatsAppUrl?: string | null
         }
 
         if (cancelled) {
@@ -84,6 +88,7 @@ function SuccessContent() {
           }
           clearCart()
           setDeliveryDiscordUrl(data.deliveryDiscordUrl ?? null)
+          setDeliveryWhatsAppUrl(data.deliveryWhatsAppUrl ?? null)
           setStatus("paid")
           return
         }
@@ -176,7 +181,7 @@ function SuccessContent() {
             access your digital product.
           </p>
           <a
-            href={WHATSAPP_COMMUNITY_URL}
+            href={deliveryWhatsAppUrl ?? FALLBACK_WHATSAPP_COMMUNITY_URL}
             target="_blank"
             rel="noopener noreferrer"
             className={whatsappButtonClass}
