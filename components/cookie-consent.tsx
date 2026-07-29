@@ -370,8 +370,9 @@ export function CookieConsent({
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
                   Essential cookies keep your cart and checkout working. Analytics
                   cookies help us understand store performance and are only enabled
-                  if you allow them. This includes Google Analytics and Microsoft
-                  Clarity.
+                  if you allow them. This includes Google Analytics 4 and Microsoft
+                  Clarity. Hosting performance telemetry may also be collected via
+                  Vercel Analytics in production.
                 </p>
               </div>
 
@@ -417,7 +418,9 @@ export function CookieConsent({
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                   Essential cookies are always on because they keep the cart and
                   checkout working. Analytics is optional and only enables Google
-                  Analytics 4 and Microsoft Clarity after you allow it.
+                  Analytics 4 and Microsoft Clarity after you allow it. Hosting
+                  performance telemetry may also be collected via Vercel
+                  Analytics in production.
                 </p>
               </div>
 
@@ -457,7 +460,8 @@ export function CookieConsent({
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     Enables Google Analytics 4, Microsoft Clarity, and ecommerce
                     events to help us understand page views and improve the store
-                    experience.
+                    experience. Hosting performance telemetry may also be
+                    collected via Vercel Analytics in production.
                   </p>
                 </div>
                 <button

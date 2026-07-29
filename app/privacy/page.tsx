@@ -15,7 +15,7 @@ export default function PrivacyPage() {
             "Account and order details you provide at checkout (name, email, billing address, optional phone and Discord username).",
             "Payment information processed by Stripe — we do not store full card numbers on our servers.",
             "Technical data such as browser type, device, and approximate location derived from IP address for security and analytics.",
-            "Usage analytics via Google Analytics 4 (page views and ecommerce events) when you visit the site in production.",
+            "Usage analytics via Google Analytics 4 (page views and ecommerce events) and Microsoft Clarity when you accept analytics cookies via our Cookie Preferences. Hosting performance telemetry may also be collected in production via Vercel Analytics.",
           ],
         },
         {
@@ -35,20 +35,21 @@ export default function PrivacyPage() {
           bullets: [
             "Stripe — payment processing and fraud prevention.",
             "Resend — transactional order emails.",
-            "Vercel — website hosting and infrastructure.",
-            "Google Analytics — aggregated traffic and conversion analytics.",
+            "Vercel — website hosting, infrastructure, and hosting performance telemetry.",
+            "Google Analytics 4 — aggregated traffic and conversion analytics (when enabled via consent).",
+            "Microsoft Clarity — session analytics and heatmaps (when enabled via consent).",
           ],
         },
         {
           title: "Cookies and analytics",
           paragraphs: [
-            "We use essential cookies required for the site to function (for example, cart state in your browser). Google Analytics may set cookies or similar identifiers to measure visits. You can block analytics cookies in your browser settings; essential checkout features will still work.",
+            "We use essential cookies required for the site to function (for example, cart state in your browser). When you accept analytics cookies via our cookie banner (Cookie Preferences), we enable Google Analytics 4 and Microsoft Clarity to measure usage and improve the store experience. If you reject analytics cookies, these analytics scripts are not loaded. You can change your choice at any time using Cookie Preferences. Hosting performance telemetry via Vercel Analytics may still be collected for performance metrics in production.",
           ],
         },
         {
           title: "Data retention",
           paragraphs: [
-            "Order and support records are kept as long as needed for delivery, chargeback defense, tax, and legal compliance. Analytics data is retained according to Google Analytics settings for our property.",
+            "Order and support records are kept as long as needed for delivery, chargeback defense, tax, and legal compliance. Analytics data is retained according to Google Analytics 4 and Microsoft Clarity settings, while hosting performance telemetry follows Vercel’s policies.",
           ],
         },
         {
