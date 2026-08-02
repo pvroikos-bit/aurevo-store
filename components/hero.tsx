@@ -66,7 +66,7 @@ export function Hero() {
           </div>
 
           <p className="mt-4 text-xs text-muted-foreground/80 sm:text-sm">
-            One-time payment · Instant delivery · From €1.99
+            One-time payment · Instant delivery · From €49.99
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-2.5 min-[360px]:mt-10 min-[360px]:gap-3 sm:flex-row sm:gap-5">

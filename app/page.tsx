@@ -61,7 +61,7 @@ export default function Page() {
         announcement={
           <div className="border-b border-primary/20 bg-gradient-to-r from-primary via-primary to-primary/90 text-primary-foreground">
             <p className="mx-auto max-w-7xl px-3 py-2.5 text-center text-[10px] font-semibold leading-snug tracking-wide text-balance min-[360px]:text-xs sm:px-4 sm:py-2.5 sm:text-sm">
-              Limited launch pricing — All-In-One Pack from €1.99 · Instant access
+              Limited launch pricing — All-In-One Pack from €49.99 · Instant access
               after checkout
             </p>
           </div>
