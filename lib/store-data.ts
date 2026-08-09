@@ -146,6 +146,20 @@ export const products: Product[] = [
     ],
   },
   {
+  id: "iphone-17-pro",
+  name: "!ph0ne 17 Pro Vendor",
+  category: "Suppliers",
+  description:
+    "Reliable electronics suppliers covering phones, audio, and accessories at unbeatable reseller pricing.",
+  price: 29.99,
+  oldPrice: 299.99,
+  image: "/products/tech-supplier.png",
+  stock: "In Stock",
+  rating: 4,
+  sales: 980,
+  checkoutUrl: "#",
+},
+  {
   id: "airpods-pro-2",
   name: "AirPods Pro 2 ANC Vendor",
   category: "Suppliers",
@@ -246,20 +260,6 @@ export const products: Product[] = [
   stock: "In Stock",
   rating: 5,
   sales: 2510,
-  checkoutUrl: "#",
-},
-{
-  id: "iphone-17-pro",
-  name: "!ph0ne 17 Pro Vendor",
-  category: "Suppliers",
-  description:
-    "Reliable electronics suppliers covering phones, audio, and accessories at unbeatable reseller pricing.",
-  price: 14.99,
-  oldPrice: 24.99,
-  image: "/products/tech-supplier.png",
-  stock: "In Stock",
-  rating: 4,
-  sales: 980,
   checkoutUrl: "#",
 },
 {
