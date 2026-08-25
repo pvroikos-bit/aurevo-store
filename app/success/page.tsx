@@ -167,24 +167,93 @@ function SuccessContent() {
           them instantly.
         </p>
 
-        <section className="mt-8 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-10 sm:p-5">
-          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
-            📲 Telegram Community
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Click the button below to join our exclusive WhatsApp community and
-            access your digital product.
-          </p>
-          <a
-            href={WHATSAPP_COMMUNITY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={whatsappButtonClass}
-          >
-            Join Telegram Community
-          </a>
-        </section>
+        <section className="mt-8 rounded-xl border border-border/45 bg-background/30 p-4 sm:p-5">
+  <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+    Community Access
+  </h2>
 
+  {/* WhatsApp Community */}
+  <div className="mt-4 rounded-lg border border-border/30 bg-green-500/10 p-4 sm:p-5">
+    <div className="flex items-center gap-3">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/20">
+        <svg
+          className="h-5 w-5 text-green-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+
+      <div>
+        <h3 className="text-base font-medium text-white">
+          WhatsApp Community
+        </h3>
+
+        <p className="mt-1 text-sm text-muted-foreground">
+          Click the button below to join our exclusive WhatsApp community and
+          access your digital product.
+        </p>
+      </div>
+    </div>
+
+    <a
+      href="https://wa.link/lsd3a8"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-green-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-green-600"
+    >
+      Join WhatsApp Community
+    </a>
+  </div>
+
+  {/* Telegram Community */}
+  <div className="mt-4 rounded-lg border border-border/30 bg-blue-500/10 p-4 sm:p-5">
+    <div className="flex items-center gap-3">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/20">
+        <svg
+          className="h-5 w-5 text-blue-400"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M21.5 3.5L2.8 10.7c-.9.35-.9 1.05-.16 1.3l4.8 1.5 1.85 5.8c.23.64.12.9.8.9.53 0 .76-.24 1.04-.53l2.3-2.24 4.78 3.53c.88.49 1.52.23 1.74-.82l3.13-14.76c.32-1.27-.48-1.84-1.28-1.39zM8.18 13.15l10.95-6.9c.55-.33 1.06-.15.64.2l-8.9 8.03-.35 3.76-1.83-5.09-.51-.15z" />
+        </svg>
+      </div>
+
+      <div>
+        <h3 className="text-base font-medium text-white">
+          Telegram Community
+        </h3>
+
+        <p className="mt-1 text-sm text-muted-foreground">
+          Click the button below to join our exclusive Telegram community and
+          access your digital product.
+        </p>
+      </div>
+    </div>
+
+    <a
+      href="https://telegram.me/+SzMQnpxrxJ1lMDQ0"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-blue-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-blue-600"
+    >
+      Join Telegram Community
+    </a>
+  </div>
+</section>
         {deliveryDiscordUrl ? (
           <section className="mt-4 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-5 sm:p-5">
             <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
