@@ -1,7 +1,7 @@
 import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
 
-const WHATSAPP_URL = "https://wa.link/yzvwzk0"
-const TELEGRAM_URL = "https://t.me/+SzMQnpxrxJ1lMDQ"
+const WHATSAPP_URL = "https://wa.link/lsd3a8"
+const TELEGRAM_URL = "https://telegram.me/+SzMQnpxrxJ1lMDQ0"
 const SUPPORT_EMAIL = "skroojmoney@gmail.com"
 
 export type OrderReadyProduct = {
