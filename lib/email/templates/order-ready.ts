@@ -181,15 +181,29 @@ Thank you for choosing SkroojMoney.`,
                       <p style="margin:10px 0 0 0;font-size:14px;line-height:1.6;color:#a3a3a3;">
                         Join our exclusive Telegram community to access your digital product.
                       </p>
-                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;width:100%;">
-                        <tr>
-                          <td align="center" bgcolor="#25D366" style="border-radius:12px;background-color:#25D366;">
-                            <a href="${WHATSAPP_URL}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
-                              Join Telegram Community
-                            </a>
-                          </td>
-                        </tr>
-                      </table>
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td align="center" bgcolor="#25D366" style="border-radius:12px;">
+      <a href="${WHATSAPP_URL}" target="_blank" style="display:inline-block; padding:14px 24px; color:#ffffff; text-decoration:none; font-size:14px; font-weight:700;">
+        Join WhatsApp Community
+      </a>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="height:12px; line-height:12px; font-size:1px;">
+      &nbsp;
+    </td>
+  </tr>
+
+  <tr>
+    <td align="center" bgcolor="#229ED9" style="border-radius:12px;">
+      <a href="${TELEGRAM_URL}" target="_blank" style="display:inline-block; padding:14px 24px; color:#ffffff; text-decoration:none; font-size:14px; font-weight:700;">
+        Join Telegram Community
+      </a>
+    </td>
+  </tr>
+</table>
                     </td>
                   </tr>
                 </table>
