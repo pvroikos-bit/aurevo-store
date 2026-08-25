@@ -22,7 +22,7 @@ import {
 const statusBodyClass =
   "mt-5 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg"
 
-const WHATSAPP_COMMUNITY_URL = "https://wa.link/yzvwzk"
+const WHATSAPP_COMMUNITY_URL = "https://wa.link/lsd3a8"
 
 const whatsappButtonClass = cn(
   buttonVariants({ variant: "default" }),
