@@ -118,11 +118,12 @@ export async function createStripeCheckoutSession(
     const metadata = buildCheckoutMetadata(items, customer)
 
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      customer_email: customer.email,
-      line_items: toStripeLineItems(items),
-      success_url: getStripeSuccessUrl(),
-      cancel_url: getStripeCancelUrl(),
+  mode: "payment",
+  allow_promotion_codes: true,
+  customer_email: customer.email,
+  line_items: toStripeLineItems(items),
+  success_url: getStripeSuccessUrl(),
+  cancel_url: getStripeCancelUrl(),
       metadata,
       payment_intent_data: {
         metadata,
