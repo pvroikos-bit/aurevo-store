@@ -327,7 +327,7 @@ export default function CheckoutPage() {
 
           <div className="sm:col-span-2">
             <label htmlFor="checkout-discord" className={labelClassName}>
-              Discord Username{" "}
+              Telegram Username{" "}
               <span className="normal-case tracking-normal text-muted-foreground/70">
                 (optional)
               </span>
@@ -335,7 +335,7 @@ export default function CheckoutPage() {
             <input
               id="checkout-discord"
               type="text"
-              placeholder="Discord Username"
+              placeholder="Telegram Username"
               value={discordUsername}
               onChange={(event) => setDiscordUsername(event.target.value)}
               className={inputFieldClass}

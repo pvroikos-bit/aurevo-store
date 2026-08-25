@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         {
           title: "Information we collect",
           bullets: [
-            "Account and order details you provide at checkout (name, email, billing address, optional phone and Discord username).",
+            "Account and order details you provide at checkout (name, email, billing address, optional phone and Telegram username).",
             "Payment information processed by Stripe — we do not store full card numbers on our servers.",
             "Technical data such as browser type, device, and approximate location derived from IP address for security and analytics.",
             "Usage analytics via Google Analytics 4 (page views and ecommerce events) when you visit the site in production.",
