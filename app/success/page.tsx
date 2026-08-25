@@ -169,7 +169,7 @@ function SuccessContent() {
 
         <section className="mt-8 rounded-xl border border-border/45 bg-background/30 p-4 transition-[border-color,background-color] duration-200 hover:border-border/60 hover:bg-background/40 sm:mt-10 sm:p-5">
           <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
-            📲 WhatsApp Community
+            📲 Telegram Community
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
             Click the button below to join our exclusive WhatsApp community and
@@ -181,7 +181,7 @@ function SuccessContent() {
             rel="noopener noreferrer"
             className={whatsappButtonClass}
           >
-            Join WhatsApp Community
+            Join Telegram Community
           </a>
         </section>
 
@@ -200,7 +200,7 @@ function SuccessContent() {
               rel="noopener noreferrer"
               className={discordButtonClass}
             >
-              Join Discord Server
+              Join Telegram Community
             </a>
           </section>
         ) : null}

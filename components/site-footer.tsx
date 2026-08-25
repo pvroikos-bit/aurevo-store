@@ -44,7 +44,7 @@ export function SiteFooter() {
                 rel="noopener noreferrer"
                 className={linkClassName}
               >
-                Community Discord
+                Telegram Community
               </a>
 
               <a

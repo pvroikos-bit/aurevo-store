@@ -74,7 +74,7 @@ export function CtaSection() {
                   )
                 }
               >
-                Join Discord Community
+                Join Telegram Community
               </Button>
             </div>
 

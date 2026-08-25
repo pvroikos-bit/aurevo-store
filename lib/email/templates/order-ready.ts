@@ -1,6 +1,7 @@
 import { getDeliveryDiscordUrl } from "@/lib/delivery/community-links"
 
-const WHATSAPP_URL = "https://wa.link/yzvwzk"
+const WHATSAPP_URL = "https://wa.link/yzvwzk0"
+const TELEGRAM_URL = "https://t.me/+SzMQnpxrxJ1lMDQ"
 const SUPPORT_EMAIL = "skroojmoney@gmail.com"
 
 export type OrderReadyProduct = {
@@ -100,10 +101,9 @@ ${productListText}
 
 Your digital products are ready. Access them using the links below:
 
-WhatsApp Community
+Telegram Community
 Join here to access your digital product:
-${WHATSAPP_URL}
-
+${TELEGRAM_URL}
 ${discordTextBlock}
 
 Need help? Reply to this email or contact ${SUPPORT_EMAIL} and we'll be happy to help.
@@ -176,16 +176,16 @@ Thank you for choosing SkroojMoney.`,
                   <tr>
                     <td style="padding:20px;">
                       <h2 style="margin:0;font-size:18px;line-height:1.4;font-weight:700;color:#ffffff;">
-                        WhatsApp Community
+                        Telegram Community
                       </h2>
                       <p style="margin:10px 0 0 0;font-size:14px;line-height:1.6;color:#a3a3a3;">
-                        Join our exclusive WhatsApp community to access your digital product.
+                        Join our exclusive Telegram community to access your digital product.
                       </p>
                       <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:18px;width:100%;">
                         <tr>
                           <td align="center" bgcolor="#25D366" style="border-radius:12px;background-color:#25D366;">
                             <a href="${WHATSAPP_URL}" target="_blank" style="display:inline-block;width:100%;box-sizing:border-box;padding:16px 20px;font-size:16px;font-weight:700;line-height:1.2;color:#ffffff;text-decoration:none;text-align:center;">
-                              Join WhatsApp Community
+                              Join Telegram Community
                             </a>
                           </td>
                         </tr>

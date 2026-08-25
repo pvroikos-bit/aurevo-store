@@ -67,13 +67,9 @@ export const env: EnvConfig = {
     mode: readStripeMode(process.env.STRIPE_SECRET_KEY),
   },
   social: {
-    discord:
-      process.env.NEXT_PUBLIC_DISCORD_URL?.trim() ||
-      "https://discord.gg/kAbCfrZ6rA",
+    discord: "https://telegram.me/+SzMQnpxrxJ1lMDQ0",
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL?.trim() || undefined,
-    tiktok:
-      process.env.NEXT_PUBLIC_TIKTOK_URL?.trim() ||
-      "https://www.tiktok.com/@skroojmoneyy?_r=1&_t=ZN-97S73YDVv1S",
+    tiktok: "https://www.tiktok.com/@skroojmoney?_r=1&_t=ZN-997t6yysJTq",
   },
 }
 
